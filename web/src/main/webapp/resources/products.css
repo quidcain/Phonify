@@ -1,0 +1,35 @@
+th {
+	background-color: #95979b;
+}
+
+td {
+	vertical-align: middle !important;
+}
+
+td:first-child {
+	width: 35%;
+}
+
+td:nth-child(2) {
+	width: 10%;
+}
+
+td:nth-child(3) {
+	width: 21%;
+}
+
+td:nth-child(4) {
+	width: 10%;
+}
+
+td:nth-child(5) {
+	width: 18%;
+}
+
+td:last-child {
+	width: 16%;
+}
+
+input[type="text"] {
+	text-align: right;
+}

@@ -1,0 +1,40 @@
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+#wrapper {
+	min-height: 100%;
+	padding: 0;
+}
+
+.container {
+	width: 1000px;
+}
+
+#wrapper header {
+	border-bottom: 3px solid #000;
+}
+
+#wrapper header button {
+	margin-top: 16px;
+	float: right;
+}
+
+h1 {
+	font-size: 25px;
+	margin: 20px 0;
+}
+
+.navBlock {
+	margin-bottom: 15px;
+}
+
+.navBlock button:last-of-type{
+	float: right;
+}
+
+button {
+	min-width: 70px; 
+}
