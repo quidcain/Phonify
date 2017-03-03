@@ -22,20 +22,22 @@ public class JdbcPhoneDao implements PhoneDao {
     public Phone get(Long id) {
         return jdbcOperations.queryForObject(
             "SELECT * from Phones where id = ?;",
-            (rs, rowNum) -> new Phone(
-                rs.getLong("id"),
+            (rs, rowNum) -> {
+                Phone phone = new Phone(
                 rs.getString("model"),
                 rs.getString("color"),
                 rs.getInt("displaySize"),
-                rs.getBigDecimal("price")),
+                rs.getBigDecimal("price"));
+                phone.setId(rs.getLong("id"));
+                return phone;
+            },
             id);
     }
 
     @Override
     public void save(Phone phone) {
         jdbcOperations.update(
-            "INSERT INTO Phones VALUES (?, ?, ?, ?, ?);",
-            phone.getId(),
+            "INSERT INTO Phones (model, color, displaySize, price) VALUES (?, ?, ?, ?);",
             phone.getModel(),
             phone.getColor(),
             phone.getDisplaySize(),

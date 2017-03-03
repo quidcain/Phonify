@@ -13,8 +13,7 @@ public class Phone {
     public Phone() {
     }
 
-    public Phone(long id, String model, String color, int displaySize, BigDecimal price) {
-        this.id = id;
+    public Phone( String model, String color, int displaySize, BigDecimal price) {
         this.model = model;
         this.color = color;
         this.displaySize = displaySize;
@@ -68,6 +67,10 @@ public class Phone {
             return false;
         if (o.getClass() != Phone.class)
             return false;
-        return this.id == ((Phone)o).id;
+        Phone p = (Phone)o;
+        //return this.id == ((Phone)o).id;
+        return this.model.equals(p.model) && this.color.equals(p.color) &&
+            this.displaySize == p.displaySize && this.price.equals(p.price);
+        //return this.model.equals(p.model) && this.color.equals(p.color);
     }
 }

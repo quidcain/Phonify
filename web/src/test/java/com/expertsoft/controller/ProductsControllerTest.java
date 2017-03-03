@@ -42,8 +42,7 @@ public class ProductsControllerTest {
     private List<Phone> createPhoneList(int count) {
         List<Phone> phones = new ArrayList<Phone>();
         for (int i=0; i < count; i++) {
-            phones.add(new Phone(i,
-                    "iPhone" + i, "black", 4, BigDecimal.valueOf(800)));
+            phones.add(new Phone("iPhone" + i, "black", 4, BigDecimal.valueOf(800)));
         }
         return phones;
     }
