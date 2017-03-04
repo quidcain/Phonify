@@ -20,7 +20,10 @@
         <div id="wrapper" class="container">
             <header>
                 <img src="<s:url value="/resources/images/phonify.svg" />">
-                <button type="button" class="btn">My cart: ${order.getOrderItems().size()} items 0$</button>
+                <c:if test="${itemsNumber == null}" >
+                    <c:set value="0" var="itemsNumber"/>
+                </c:if>
+                <button type="button" class="btn">My cart: ${itemsNumber} items 0$</button>
             </header>
             <section>
                 <h1>Phones</h1>

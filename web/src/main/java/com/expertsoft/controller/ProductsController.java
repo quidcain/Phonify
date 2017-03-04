@@ -30,8 +30,6 @@ public class ProductsController {
     @GetMapping({"/", "/products"})
     public String products(Model model) {
         model.addAttribute(phoneDao.findAll());
-        System.out.println(order);
-        model.addAttribute("order", order);
         return "products";
     }
 
@@ -45,7 +43,11 @@ public class ProductsController {
         }
         orderItem.setPhone(phoneDao.get(phoneId));
         order.getOrderItems().add(orderItem);
-        System.out.println(order.getOrderItems().size());
+        long itemsNumber = 0;
+        for (OrderItem item : order.getOrderItems()) {
+            itemsNumber += item.getQuantity();
+        }
+        model.addFlashAttribute("itemsNumber", itemsNumber);
         return "redirect:/products";
     }
 }

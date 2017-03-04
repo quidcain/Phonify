@@ -32,7 +32,6 @@ public class PhoneDaoTest {
     public void saveAndGetTest() {
         Phone originalPhone = new Phone("iPhone", "black", 4, BigDecimal.valueOf(800));
         phoneDao.save(originalPhone);
-        //Phone actualPhone = phoneDao.get(phone.getId());
         Phone actualPhone = null;
         List<Phone> list = phoneDao.findAll();
         for(Phone phone : list)
