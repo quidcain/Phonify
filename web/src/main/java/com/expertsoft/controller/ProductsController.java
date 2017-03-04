@@ -31,6 +31,7 @@ public class ProductsController {
     public String products(Model model) {
         model.addAttribute(phoneDao.findAll());
         System.out.println(order);
+        model.addAttribute("order", order);
         return "products";
     }
 
