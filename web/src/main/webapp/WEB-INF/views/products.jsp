@@ -42,7 +42,7 @@
                             <td>${phone.color}</td>
                             <td>${phone.displaySize}"</td>
                             <td>${phone.price}$</td>
-                            <form method="post" action="/add/${phone.id}">
+                            <form method="post" action="<s:url value="/add/${phone.id}" />">
                                 <td>
                                     <input type="text" name="quantity">
                                 </td>

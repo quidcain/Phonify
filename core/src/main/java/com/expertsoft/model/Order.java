@@ -12,12 +12,11 @@ import java.util.List;
  * Created by stoat on 3/3/17.
  */
 @Component
-//@SessionScope
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class Order {
-    private long key;
+    private long id;
     private List<OrderItem> orderItems;
-    private BigDecimal subtotal; // a sum of order item prices
+    private BigDecimal subtotal;
     private BigDecimal deliveryPrice;
     private BigDecimal totalPrice;
     private String firstName;
@@ -29,12 +28,12 @@ public class Order {
         orderItems = new ArrayList<>();
     }
 
-    public long getKey() {
-        return key;
+    public long getId() {
+        return id;
     }
 
-    public void setKey(long key) {
-        this.key = key;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public List<OrderItem> getOrderItems() {

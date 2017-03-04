@@ -42,6 +42,7 @@ public class ProductsController {
             System.out.println("done");
         }
         orderItem.setPhone(phoneDao.get(phoneId));
+        orderItem.setOrder(order);
         order.getOrderItems().add(orderItem);
         long itemsNumber = 0;
         for (OrderItem item : order.getOrderItems()) {
