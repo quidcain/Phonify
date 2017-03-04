@@ -45,6 +45,7 @@ public class PhoneDaoTest {
 
     @Test
     public void findAllTest() {
+        int originalSize = phoneDao.findAll().size();
         List<Phone> expectedList = Arrays.asList(
             new Phone("iPhone", "black",
                 4, BigDecimal.valueOf(800)),
@@ -56,9 +57,10 @@ public class PhoneDaoTest {
         for(Phone phone : expectedList)
             phoneDao.save(phone);
         List<Phone> actualList = phoneDao.findAll();
-        assertEquals(expectedList, actualList);
+        assertEquals(originalSize + expectedList.size(), actualList.size());
         for(Phone phone : actualList)
-            phoneDao.delete(phone.getId());
+            if (expectedList.contains(phone))
+                phoneDao.delete(phone.getId());
     }
 
 }

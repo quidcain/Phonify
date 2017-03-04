@@ -68,9 +68,7 @@ public class Phone {
         if (o.getClass() != Phone.class)
             return false;
         Phone p = (Phone)o;
-        //return this.id == ((Phone)o).id;
         return this.model.equals(p.model) && this.color.equals(p.color) &&
             this.displaySize == p.displaySize && this.price.equals(p.price);
-        //return this.model.equals(p.model) && this.color.equals(p.color);
     }
 }

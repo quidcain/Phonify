@@ -1,10 +1,10 @@
 package com.expertsoft.controller;
 
 import com.expertsoft.dao.PhoneDao;
+import com.expertsoft.model.Order;
 import com.expertsoft.model.Phone;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.servlet.view.InternalResourceView;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -25,7 +25,8 @@ public class ProductsControllerTest {
     public void testProductsPage() throws Exception {
         List<Phone> expectedPhones = createPhoneList(5);
         PhoneDao mockDao = mock(PhoneDao.class);
-        ProductsController controller = new ProductsController(mockDao);
+        Order order = new Order();
+        ProductsController controller = new ProductsController(mockDao, order);
         when(mockDao.findAll())
                 .thenReturn(expectedPhones);
 
@@ -37,10 +38,8 @@ public class ProductsControllerTest {
             .andExpect(model().attribute("phoneList", hasItems(expectedPhones.toArray())));
     }
 
-
-
     private List<Phone> createPhoneList(int count) {
-        List<Phone> phones = new ArrayList<Phone>();
+        List<Phone> phones = new ArrayList<>();
         for (int i=0; i < count; i++) {
             phones.add(new Phone("iPhone" + i, "black", 4, BigDecimal.valueOf(800)));
         }

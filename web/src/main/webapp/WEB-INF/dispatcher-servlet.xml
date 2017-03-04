@@ -13,6 +13,7 @@
         <property name="suffix">
             <value>.jsp</value>
         </property>
+        <property name="exposedContextBeanNames" value="order" />
     </bean>
 
     <context:component-scan base-package="com.expertsoft.controller"/>

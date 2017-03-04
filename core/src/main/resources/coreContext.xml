@@ -7,15 +7,10 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <context:component-scan base-package="com.expertsoft.dao" />
+    <context:component-scan base-package="com.expertsoft.model" />
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
         p:location="classpath:application.properties" />
-
-    <!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-          p:driverClassName="com.mysql.jdbc.Driver"
-          p:url="jdbc:mysql://localhost/phonify"
-          p:username="root"
-          p:password="weasel" />-->
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
           p:driverClassName="${db.driver}"

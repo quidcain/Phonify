@@ -4,7 +4,7 @@
 <!DOCTYPE HTML>
 <html>
     <head lang="en">
-        <title>My Future Blog</title>
+        <title>Phonify</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -20,7 +20,7 @@
         <div id="wrapper" class="container">
             <header>
                 <img src="<s:url value="/resources/images/phonify.svg" />">
-                <button type="button" class="btn">My cart: 0 items 0$</button>
+                <button type="button" class="btn">My cart: ${order.getOrderItems().size()} items 0$</button>
             </header>
             <section>
                 <h1>Phones</h1>
@@ -39,12 +39,14 @@
                             <td>${phone.color}</td>
                             <td>${phone.displaySize}"</td>
                             <td>${phone.price}$</td>
-                            <td>
-                                <input type="text">
-                            </td>
-                            <td>
-                                <button type="button" class="btn" >Add to cart</button>
-                            </td>
+                            <form method="post" action="/add/${phone.id}">
+                                <td>
+                                    <input type="text" name="quantity">
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn" >Add to cart</button>
+                                </td>
+                            </form>
                         </tr>
                     </c:forEach>
                 </table>
