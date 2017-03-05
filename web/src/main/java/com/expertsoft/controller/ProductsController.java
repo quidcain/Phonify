@@ -33,16 +33,16 @@ public class ProductsController {
 
     @ResponseBody
     @RequestMapping(value = "/addToCart")
-    public AddToCartResponse addToCart(@RequestBody @Valid AddToCardRequest addPhoneRequest){
-        Phone phone = phoneDao.get(addPhoneRequest.getPhoneId());
+    public AddToCartResponse addToCart(@RequestBody @Valid AddToCartRequest addToCartRequest){
+        Phone phone = phoneDao.get(addToCartRequest.getPhoneId());
         order.getOrderItems().add(new OrderItem(
                 phone,
-                addPhoneRequest.getQuantity(),
+                addToCartRequest.getQuantity(),
                 order)
         );
         long itemsQuantity = 0;
         order.setTotalPrice(order.getTotalPrice().add(
-            phone.getPrice().multiply(BigDecimal.valueOf(addPhoneRequest.getQuantity()))));
+            phone.getPrice().multiply(BigDecimal.valueOf(addToCartRequest.getQuantity()))));
         for (OrderItem item : order.getOrderItems()) {
             itemsQuantity += item.getQuantity();
         }
@@ -55,7 +55,7 @@ public class ProductsController {
         return "test";
     }
 
-    private static class AddToCardRequest {
+    private static class AddToCartRequest {
         private long phoneId;
 
         @Digits(integer = 100, fraction = 0)
@@ -83,9 +83,6 @@ public class ProductsController {
         private long itemsQuantity;
         private String totalPrice;
 
-        public AddToCartResponse(long itemsQuantity) {
-            this.itemsQuantity = itemsQuantity;
-        }
 
         public AddToCartResponse(long itemsQuantity, String totalPrice) {
             this.itemsQuantity = itemsQuantity;
@@ -96,17 +93,10 @@ public class ProductsController {
             return itemsQuantity;
         }
 
-        public void setItemsQuantity(long itemsQuantity) {
-            this.itemsQuantity = itemsQuantity;
-        }
-
         public String getTotalPrice() {
             return totalPrice;
         }
 
-        public void setTotalPrice(String totalPrice) {
-            this.totalPrice = totalPrice;
-        }
     }
 }
 
