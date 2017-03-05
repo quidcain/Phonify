@@ -49,12 +49,6 @@ public class ProductsController {
         return new AddToCartResponse(itemsQuantity, order.getTotalPrice().toString());
     }
 
-    @GetMapping("/test")
-    public String test(Model model) {
-        model.addAttribute(phoneDao.findAll());
-        return "test";
-    }
-
     private static class AddToCartRequest {
         private long phoneId;
 
