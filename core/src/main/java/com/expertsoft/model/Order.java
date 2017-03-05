@@ -26,6 +26,7 @@ public class Order {
 
     public Order() {
         orderItems = new ArrayList<>();
+        totalPrice = BigDecimal.ZERO;
     }
 
     public long getId() {

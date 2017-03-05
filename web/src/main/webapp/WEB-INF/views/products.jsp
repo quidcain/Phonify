@@ -15,44 +15,45 @@
         <c:set var="fullPageName" value="${pageContext.request.getRequestURI()}"/>
         <c:set var="pageName" value="${fullPageName.substring(fullPageName.lastIndexOf('/') + 1, fullPageName.indexOf('.'))}"/>
         <link rel="stylesheet" href="<s:url value="/resources/${pageName}.css" />">
+        <script src="<s:url value="/resources/${pageName}.js" />"></script>
     </head>
     <body>
         <div id="wrapper" class="container">
             <header>
                 <img src="<s:url value="/resources/images/phonify.svg" />">
-                <c:if test="${itemsNumber == null}" >
-                    <c:set value="0" var="itemsNumber"/>
+                <c:if test="${itemsQuantity == null}" >
+                    <c:set value="0" var="itemsQuantity"/>
                 </c:if>
-                <button type="button" class="btn">My cart: ${itemsNumber} items 0$</button>
+                <button type="button" class="btn">My cart: <span id="itemsQuantity">0</span> items <span id="totalPrice">0</span>$</button>
             </header>
             <section>
                 <h1>Phones</h1>
-                <table class="table table-striped table-bordered">
-                    <tr>
-                        <th>Model</th>
-                        <th>Color</th>
-                        <th>Display Size</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Action</th>
-                    </tr>
-                    <c:forEach items="${phoneList}" var="phone">
+                <form method="post" action="<s:url value="/addToCart" />">
+                    <table class="table table-striped table-bordered">
                         <tr>
-                            <td>${phone.model}</td>
-                            <td>${phone.color}</td>
-                            <td>${phone.displaySize}"</td>
-                            <td>${phone.price}$</td>
-                            <form method="post" action="<s:url value="/add/${phone.id}" />">
-                                <td>
-                                    <input type="text" name="quantity">
-                                </td>
-                                <td>
-                                    <button type="submit" class="btn" >Add to cart</button>
-                                </td>
-                            </form>
+                            <th>Model</th>
+                            <th>Color</th>
+                            <th>Display Size</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Action</th>
                         </tr>
-                    </c:forEach>
-                </table>
+                        <c:forEach items="${phoneList}" var="phone">
+                            <tr>
+                                <td>${phone.model}</td>
+                                <td>${phone.color}</td>
+                                <td>${phone.displaySize}"</td>
+                                <td>${phone.price}$</td>
+                                    <td>
+                                        <input type="text" name="quantity" id="input_${phone.id}">
+                                    </td>
+                                    <td>
+                                        <button type="submit" class="btn" id="button_${phone.id}">Add to cart</button>
+                                    </td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </form>
             </section>
         </div>
     </body>

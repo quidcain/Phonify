@@ -16,7 +16,12 @@ public class OrderItem {
     private Order order;
 
     public OrderItem() {
+    }
 
+    public OrderItem(Phone phone, long quantity, Order order) {
+        this.phone = phone;
+        this.quantity = quantity;
+        this.order = order;
     }
 
     public Phone getPhone() {

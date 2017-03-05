@@ -28,5 +28,10 @@ public class OrderItemTest {
 
         orderItem.setQuantity(4);
         assertEquals(4, orderItem.getQuantity());
+
+        OrderItem orderWithMassiveConstructor = new OrderItem(phone, 4, order);
+        assertEquals(phone, orderWithMassiveConstructor.getPhone());
+        assertEquals(4, orderWithMassiveConstructor.getQuantity());
+        assertEquals(order, orderWithMassiveConstructor.getOrder());
     }
 }
