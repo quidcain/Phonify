@@ -3,8 +3,11 @@ package com.expertsoft.controller;
 import com.expertsoft.dao.PhoneDao;
 import com.expertsoft.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -15,7 +18,6 @@ import java.math.BigDecimal;
 
 @Controller
 public class ProductsController {
-
     private PhoneDao phoneDao;
     private Order order;
 
@@ -33,28 +35,43 @@ public class ProductsController {
 
     @ResponseBody
     @RequestMapping(value = "/addToCart")
-    public AddToCartResponse addToCart(@RequestBody @Valid AddToCartRequest addToCartRequest){
+    public ResponseEntity<AddToCartResponse> addToCart(@Valid @RequestBody AddToCartRequest addToCartRequest, BindingResult result){
+        AddToCartResponse addToCartResponse = new AddToCartResponse();
+        if (result.hasErrors()) {
+            return new ResponseEntity<>(addToCartResponse, HttpStatus.BAD_REQUEST);
+        }
         Phone phone = phoneDao.get(addToCartRequest.getPhoneId());
         order.getOrderItems().add(new OrderItem(
                 phone,
-                addToCartRequest.getQuantity(),
+                Long.parseLong(addToCartRequest.getQuantity()),
                 order)
         );
         long itemsQuantity = 0;
         order.setTotalPrice(order.getTotalPrice().add(
-            phone.getPrice().multiply(BigDecimal.valueOf(addToCartRequest.getQuantity()))));
+            phone.getPrice().multiply(BigDecimal.valueOf(Long.parseLong(addToCartRequest.getQuantity())))));
         for (OrderItem item : order.getOrderItems()) {
             itemsQuantity += item.getQuantity();
         }
-        return new AddToCartResponse(itemsQuantity, order.getTotalPrice().toString());
+        addToCartResponse.setItemsQuantity(itemsQuantity);
+        addToCartResponse.setTotalPrice(order.getTotalPrice().toString());
+        return new ResponseEntity<>(addToCartResponse, HttpStatus.OK);
     }
 
     private static class AddToCartRequest {
         private long phoneId;
 
-        @Digits(integer = 100, fraction = 0)
+        @Digits(integer = 2, fraction = 0)
         @NotNull
-        private long quantity;
+        private String quantity;
+
+        public AddToCartRequest() {
+
+        }
+
+        public AddToCartRequest(long phoneId, String quantity) {
+            this.phoneId = phoneId;
+            this.quantity = quantity;
+        }
 
         public long getPhoneId() {
             return phoneId;
@@ -64,11 +81,11 @@ public class ProductsController {
             this.phoneId = phoneId;
         }
 
-        public long getQuantity() {
+        public String getQuantity() {
             return quantity;
         }
 
-        public void setQuantity(long quantity) {
+        public void setQuantity(String quantity) {
             this.quantity = quantity;
         }
     }
@@ -77,6 +94,9 @@ public class ProductsController {
         private long itemsQuantity;
         private String totalPrice;
 
+        public AddToCartResponse() {
+
+        }
 
         public AddToCartResponse(long itemsQuantity, String totalPrice) {
             this.itemsQuantity = itemsQuantity;
@@ -87,8 +107,16 @@ public class ProductsController {
             return itemsQuantity;
         }
 
+        public void setItemsQuantity(long itemsQuantity) {
+            this.itemsQuantity = itemsQuantity;
+        }
+
         public String getTotalPrice() {
             return totalPrice;
+        }
+
+        public void setTotalPrice(String totalPrice) {
+            this.totalPrice = totalPrice;
         }
 
     }

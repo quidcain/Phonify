@@ -22,7 +22,6 @@ public class PhoneDaoTest {
     @Autowired
     private PhoneDao phoneDao;
 
-
     @Test
     public void phoneDaoShouldNotBeNull() {
         assertNotNull(phoneDao);

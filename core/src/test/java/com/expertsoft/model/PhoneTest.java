@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
  */
 public class PhoneTest {
     private Phone phone = new Phone("iPhone", "black", 4, BigDecimal.valueOf(800));
+
     @Test
     public void equalsNull() {
         assertFalse(phone.equals(null));

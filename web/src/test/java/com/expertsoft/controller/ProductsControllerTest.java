@@ -21,6 +21,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
  * Created by stoat on 2/28/17.
  */
 public class ProductsControllerTest {
+
     @Test
     public void testProductsPage() throws Exception {
         List<Phone> expectedPhones = createPhoneList(5);

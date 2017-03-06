@@ -11,6 +11,7 @@ import static org.junit.Assert.*;
  */
 public class OrderItemTest {
     private OrderItem orderItem = new OrderItem();
+
     @Test
     public void equalsNull() {
         assertFalse(orderItem.equals(null));
