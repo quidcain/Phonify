@@ -7,31 +7,21 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
+
     <context:component-scan base-package="com.expertsoft.dao" />
     <context:component-scan base-package="com.expertsoft.model" />
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
-        p:location="classpath:application.properties" />
+          p:location="classpath:application.properties" />
 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-          p:driverClassName="${db.driver}"
-          p:url="${db.url}"
-          p:username="${db.user}"
-          p:password="${db.password}" />
-
-    <jdbc:initialize-database data-source="dataSource"
-                              enabled="${db.insertSchema}"
-                              ignore-failures="DROPS">
-            <jdbc:script location="classpath:insertSchema.sql" />
-    </jdbc:initialize-database>
-
-    <jdbc:initialize-database data-source="dataSource"
-                              enabled="${db.insertDemoData}">
-        <jdbc:script location="classpath:insertDemoData.sql" />
-    </jdbc:initialize-database>
+    <jdbc:embedded-database id="dataSource" type="HSQL" >
+        <jdbc:script location="classpath:testSchema.sql" />
+    </jdbc:embedded-database>
 
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"
           c:dataSource-ref="dataSource"/>
+
+
 
 
 
