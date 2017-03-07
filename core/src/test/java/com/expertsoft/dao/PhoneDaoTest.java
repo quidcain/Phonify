@@ -10,7 +10,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -31,20 +30,16 @@ public class PhoneDaoTest {
     public void saveAndGetTest() {
         Phone originalPhone = new Phone("iPhone", "black", 4, BigDecimal.valueOf(800));
         phoneDao.save(originalPhone);
-        Phone actualPhone = null;
         List<Phone> list = phoneDao.findAll();
-        for(Phone phone : list)
-            if (phone.equals(originalPhone))
-                actualPhone = phone;
-        assertEquals(actualPhone, phoneDao.get(actualPhone.getId()));
-        phoneDao.delete(actualPhone.getId());
-        phoneDao.get(actualPhone.getId());
+        assertEquals(1, list.size());
+        assertEquals(originalPhone.getModel(), phoneDao.get(0L).getModel());
+        phoneDao.delete(0L);
+        phoneDao.get(0L);
     }
 
     @Test
     public void findAllTest() {
-        int originalSize = phoneDao.findAll().size();
-        List<Phone> expectedList = Arrays.asList(
+        List<Phone> list = Arrays.asList(
             new Phone("iPhone", "black",
                 4, BigDecimal.valueOf(800)),
             new Phone("Nokia", "white",
@@ -52,13 +47,10 @@ public class PhoneDaoTest {
             new Phone("Motorolla", "vinous",
                 2, BigDecimal.valueOf(150))
         );
-        for(Phone phone : expectedList)
+        for(Phone phone : list)
             phoneDao.save(phone);
-        List<Phone> actualList = phoneDao.findAll();
-        assertEquals(originalSize + expectedList.size(), actualList.size());
-        for(Phone phone : actualList)
-            if (expectedList.contains(phone))
-                phoneDao.delete(phone.getId());
+        List<Phone> foundList = phoneDao.findAll();
+        assertEquals(list.size(), foundList.size());
     }
 
 }
