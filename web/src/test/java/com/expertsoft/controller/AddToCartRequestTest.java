@@ -24,18 +24,18 @@ public class AddToCartRequestTest {
 
     @Test
     public void setterGetterTest() throws Throwable {
-        Method getPhoneId = clazz.getMethod("getPhoneId");
-        assertEquals(4L, getPhoneId.invoke(addToCartRequest));
+        Method getId = clazz.getMethod("getId");
+        assertEquals(4L, getId.invoke(addToCartRequest));
         Method getQuantity = clazz.getMethod("getQuantity");
         assertEquals("100", getQuantity.invoke(addToCartRequest));
 
         Constructor constructor = clazz.getDeclaredConstructor();
         addToCartRequest = constructor.newInstance();
 
-        Method setPhoneId = clazz.getMethod("setPhoneId", long.class);
-        setPhoneId.invoke(addToCartRequest, 4L);
-        getPhoneId = clazz.getMethod("getPhoneId");
-        assertEquals(4L, getPhoneId.invoke(addToCartRequest));
+        Method setId = clazz.getMethod("setId", long.class);
+        setId.invoke(addToCartRequest, 4L);
+        getId = clazz.getMethod("getId");
+        assertEquals(4L, getId.invoke(addToCartRequest));
 
         Method setQuantity = clazz.getMethod("setQuantity", String.class);
         setQuantity.invoke(addToCartRequest, "4L");
