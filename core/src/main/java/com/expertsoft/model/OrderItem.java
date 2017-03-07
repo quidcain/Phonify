@@ -3,9 +3,7 @@ package com.expertsoft.model;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 
-/**
- * Created by stoat on 3/3/17.
- */
+
 public class OrderItem {
     private Phone phone;
     

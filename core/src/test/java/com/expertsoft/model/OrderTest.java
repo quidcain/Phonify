@@ -8,9 +8,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by stoat on 3/5/17.
- */
+
 public class OrderTest {
     private Order order = new Order();
 

@@ -6,16 +6,9 @@ import java.math.BigDecimal;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by stoat on 3/4/17.
- */
+
 public class OrderItemTest {
     private OrderItem orderItem = new OrderItem();
-
-    @Test
-    public void equalsNull() {
-        assertFalse(orderItem.equals(null));
-    }
 
     @Test
     public void setterGetterTest() {

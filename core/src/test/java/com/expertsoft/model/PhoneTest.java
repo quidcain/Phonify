@@ -5,11 +5,9 @@ import java.math.BigDecimal;
 import static org.junit.Assert.*;
 
 
-/**
- * Created by stoat on 2/27/17.
- */
+
 public class PhoneTest {
-    private Phone phone = new Phone("iPhone", "black", 4, BigDecimal.valueOf(800));
+    private Phone phone = new Phone();
 
     @Test
     public void equalsNull() {
@@ -23,48 +21,30 @@ public class PhoneTest {
 
     @Test
     public void equalsPhone() {
-        Phone anotherPhone = new Phone("iPod", "white", 6, BigDecimal.valueOf(700));
-        assertNotEquals(phone, anotherPhone);
-        anotherPhone.setPrice(BigDecimal.valueOf(800));
-        assertNotEquals(phone, anotherPhone);
-        anotherPhone.setPrice(BigDecimal.valueOf(700));
-        anotherPhone.setDisplaySize(4);
-        assertNotEquals(phone, anotherPhone);
-        anotherPhone.setPrice(BigDecimal.valueOf(800));
-        assertNotEquals(phone, anotherPhone);
-        anotherPhone.setPrice(BigDecimal.valueOf(700));
-        anotherPhone.setDisplaySize(6);
-        anotherPhone.setColor("black");
-        assertNotEquals(phone, anotherPhone);
-        anotherPhone.setPrice(BigDecimal.valueOf(800));
-        assertNotEquals(phone, anotherPhone);
-        anotherPhone.setPrice(BigDecimal.valueOf(700));
-        anotherPhone.setDisplaySize(4);
-        assertNotEquals(phone, anotherPhone);
-        anotherPhone.setPrice(BigDecimal.valueOf(800));
-        assertNotEquals(phone, anotherPhone);
-        anotherPhone.setPrice(BigDecimal.valueOf(700));
-        anotherPhone.setDisplaySize(6);
-        anotherPhone.setColor("white");
-        anotherPhone.setModel("iPhone");
-        assertNotEquals(phone, anotherPhone);
-        anotherPhone.setPrice(BigDecimal.valueOf(800));
-        assertNotEquals(phone, anotherPhone);
-        anotherPhone.setPrice(BigDecimal.valueOf(700));
-        anotherPhone.setDisplaySize(4);
-        assertNotEquals(phone, anotherPhone);
-        anotherPhone.setPrice(BigDecimal.valueOf(800));
-        assertNotEquals(phone, anotherPhone);
-        anotherPhone.setPrice(BigDecimal.valueOf(700));
-        anotherPhone.setDisplaySize(6);
-        anotherPhone.setColor("black");
-        assertNotEquals(phone, anotherPhone);
-        anotherPhone.setPrice(BigDecimal.valueOf(800));
-        assertNotEquals(phone, anotherPhone);
-        anotherPhone.setPrice(BigDecimal.valueOf(700));
-        anotherPhone.setDisplaySize(4);
-        assertNotEquals(phone, anotherPhone);
-        anotherPhone.setPrice(BigDecimal.valueOf(800));
-        assertEquals(phone, anotherPhone);
+        assertEquals(phone, phone);
+    }
+
+    @Test
+    public void setterGetterTest() {
+        phone.setId(123L);
+        assertEquals(123L, phone.getId());
+
+        phone.setModel("iPhone");
+        assertEquals("iPhone", phone.getModel());
+
+        phone.setColor("black");
+        assertEquals("black", phone.getColor());
+
+        phone.setDisplaySize(4);
+        assertEquals(4, phone.getDisplaySize());
+
+        phone.setPrice(BigDecimal.ONE);
+        assertEquals(BigDecimal.ONE, phone.getPrice());
+
+        phone = new Phone("iPhone", "black", 4, BigDecimal.ONE);
+        assertEquals("iPhone", phone.getModel());
+        assertEquals("black", phone.getColor());
+        assertEquals(4, phone.getDisplaySize());
+        assertEquals(BigDecimal.ONE, phone.getPrice());
     }
 }
