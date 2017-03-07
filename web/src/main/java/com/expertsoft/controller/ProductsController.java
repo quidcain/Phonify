@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
@@ -60,7 +62,9 @@ public class ProductsController {
     private static class AddToCartRequest {
         private long phoneId;
 
-        @Digits(integer = 2, fraction = 0)
+        //@Digits(integer = 2, fraction = 0)
+        @Max(99)
+        @Min(1)
         @NotNull
         private String quantity;
 

@@ -1,35 +1,44 @@
 th {
-	background-color: #95979b;
+    background-color: #95979b;
 }
 
 td {
-	vertical-align: middle !important;
+    vertical-align: middle !important;
 }
 
 td:first-child {
-	width: 35%;
+    width: 35%;
 }
 
 td:nth-child(2) {
-	width: 10%;
+    width: 10%;
 }
 
 td:nth-child(3) {
-	width: 21%;
+    width: 21%;
 }
 
 td:nth-child(4) {
-	width: 10%;
+    width: 10%;
 }
 
 td:nth-child(5) {
-	width: 18%;
+    width: 18%;
 }
 
 td:last-child {
-	width: 16%;
+    width: 16%;
 }
 
 input[type="text"] {
-	text-align: right;
+    text-align: right;
+}
+
+.incorrectInput {
+    color: #a94442;
+    background-color: #f2dede;
+    font-size: 13px;
+    width: 174px;
+    height: 26px;
+    outline: none;
 }
