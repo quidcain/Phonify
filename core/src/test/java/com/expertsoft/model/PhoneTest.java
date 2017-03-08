@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import static org.junit.Assert.*;
 
 
-
 public class PhoneTest {
     private Phone phone = new Phone();
 
@@ -22,6 +21,9 @@ public class PhoneTest {
     @Test
     public void equalsPhone() {
         assertEquals(phone, phone);
+        Phone anotherPhone = new Phone();
+        anotherPhone.setId(2L);
+        assertNotEquals(phone, anotherPhone);
     }
 
     @Test

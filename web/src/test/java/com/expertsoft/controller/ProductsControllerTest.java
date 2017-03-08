@@ -24,14 +24,15 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 
 
 public class ProductsControllerTest {
-
     private MockMvc mockMvc;
     private List<Phone> expectedPhones;
+    private PhoneDao mockDao;
+
 
     @Before
     public void init() {
+        mockDao = mock(PhoneDao.class);
         expectedPhones = createPhoneList(5);
-        PhoneDao mockDao = mock(PhoneDao.class);
         Order order = new Order();
         ProductsController controller = new ProductsController(mockDao, order);
         when(mockDao.findAll())
@@ -49,23 +50,26 @@ public class ProductsControllerTest {
 
     @Test
     public void addToCartTest() throws Exception {
-        expectedPhones = createPhoneList(5);
-        PhoneDao mockDao = mock(PhoneDao.class);
-        Order order = new Order();
-        ProductsController controller = new ProductsController(mockDao, order);
-        when(mockDao.findAll())
-                .thenReturn(expectedPhones);
-        mockMvc = standaloneSetup(controller).build();
         mockMvc.perform(post("/addToCart")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(createRequestInJson(0L, "2")))
                 .andExpect(MockMvcResultMatchers.status().isOk());
+        mockMvc.perform(post("/addToCart")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(createRequestInJson(0L, "100")))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+        mockMvc.perform(post("/addToCart")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(createRequestInJson(0L, "abc")))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
-    private static List<Phone> createPhoneList(int count) {
+    private List<Phone> createPhoneList(int count) {
         List<Phone> phones = new ArrayList<>();
         for (int i=0; i < count; i++) {
             phones.add(new Phone("iPhone" + i, "black", 4, BigDecimal.valueOf(800)));
+            when(mockDao.get((long)i))
+                    .thenReturn(phones.get(i));
         }
         return phones;
     }

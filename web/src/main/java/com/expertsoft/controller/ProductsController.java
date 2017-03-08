@@ -41,7 +41,7 @@ public class ProductsController {
         if (result.hasErrors()) {
             return new ResponseEntity<>(addToCartResponse, HttpStatus.BAD_REQUEST);
         }
-        Phone phone = phoneDao.get(addToCartRequest.getPhoneId());
+        Phone phone = phoneDao.get(addToCartRequest.getId());
         order.getOrderItems().add(new OrderItem(
                 phone,
                 Long.parseLong(addToCartRequest.getQuantity()),
@@ -59,7 +59,7 @@ public class ProductsController {
     }
 
     private static class AddToCartRequest {
-        private long phoneId;
+        private long id;
 
         @Max(99)
         @Min(1)
@@ -70,17 +70,17 @@ public class ProductsController {
 
         }
 
-        public AddToCartRequest(long phoneId, String quantity) {
-            this.phoneId = phoneId;
+        public AddToCartRequest(long id, String quantity) {
+            this.id = id;
             this.quantity = quantity;
         }
 
-        public long getPhoneId() {
-            return phoneId;
+        public long getId() {
+            return id;
         }
 
-        public void setPhoneId(long phoneId) {
-            this.phoneId = phoneId;
+        public void setId(long id) {
+            this.id = id;
         }
 
         public String getQuantity() {
