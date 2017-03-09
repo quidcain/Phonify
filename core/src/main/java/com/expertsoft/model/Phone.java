@@ -13,7 +13,7 @@ public class Phone {
     public Phone() {
     }
 
-    public Phone( String model, String color, int displaySize, BigDecimal price) {
+    public Phone(String model, String color, int displaySize, BigDecimal price) {
         this.model = model;
         this.color = color;
         this.displaySize = displaySize;

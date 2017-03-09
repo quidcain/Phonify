@@ -18,7 +18,7 @@ public class JdbcPhoneDao implements PhoneDao {
     }
 
     @Override
-    public Phone get(Long id) {
+    public Phone get(long id) {
         return jdbcOperations.queryForObject(
             "SELECT * from Phones where id = ?;",
             (rs, rowNum) -> {
@@ -45,16 +45,16 @@ public class JdbcPhoneDao implements PhoneDao {
     }
 
     @Override
-    public List<Phone> findAll() {
-        return jdbcOperations.query("SELECT * FROM Phones;",
-                new BeanPropertyRowMapper(Phone.class));
-    }
-
-    @Override
-    public void delete(Long id) {
+    public void delete(long id) {
         jdbcOperations.update(
             "DELETE FROM Phones WHERE id = ?",
             id
         );
+    }
+
+    @Override
+    public List<Phone> findAll() {
+            return jdbcOperations.query("SELECT * FROM Phones;",
+                    new BeanPropertyRowMapper(Phone.class));
     }
 }

@@ -44,17 +44,18 @@ public class ProductsController {
         Phone phone = phoneDao.get(addToCartRequest.getId());
         order.getOrderItems().add(new OrderItem(
                 phone,
-                Long.parseLong(addToCartRequest.getQuantity()),
-                order)
+                order,
+                Long.parseLong(addToCartRequest.getQuantity())
+                )
         );
         long itemsQuantity = 0;
-        order.setTotalPrice(order.getTotalPrice().add(
+        order.setSubtotal(order.getSubtotal().add(
             phone.getPrice().multiply(BigDecimal.valueOf(Long.parseLong(addToCartRequest.getQuantity())))));
         for (OrderItem item : order.getOrderItems()) {
             itemsQuantity += item.getQuantity();
         }
         addToCartResponse.setItemsQuantity(itemsQuantity);
-        addToCartResponse.setTotalPrice(order.getTotalPrice().toString());
+        addToCartResponse.setTotalPrice(order.getSubtotal().toString());
         return new ResponseEntity<>(addToCartResponse, HttpStatus.OK);
     }
 

@@ -11,16 +11,35 @@ import static org.junit.Assert.*;
 
 public class OrderTest {
     private Order order = new Order();
-
+    
     @Test
     public void equalsNull() {
         assertFalse(order.equals(null));
     }
 
     @Test
+    public void equalsAnotherClass() {
+        assertFalse(order.equals("order"));
+    }
+
+    @Test
+    public void equalsOrder() {
+        assertEquals(order, order);
+        Order anotherOrder = new Order();
+        anotherOrder.setId(-2L);
+        assertNotEquals(order, anotherOrder);
+    }
+
+    @Test
+    public void hashCodeTest() {
+        order.setId(-1L);
+        assertEquals(-1, order.hashCode());
+    }
+
+    @Test
     public void setterGetterTest() {
-        order.setId(123L);
-        assertEquals(123L, order.getId());
+        order.setId(-1L);
+        assertEquals(-1L, order.getId());
 
         List<OrderItem> list = new ArrayList<>();
         list.add(new OrderItem());
@@ -34,8 +53,7 @@ public class OrderTest {
         order.setDeliveryPrice(BigDecimal.ONE);
         assertEquals(BigDecimal.ONE, order.getDeliveryPrice());
 
-        order.setTotalPrice(BigDecimal.ONE);
-        assertEquals(BigDecimal.ONE, order.getTotalPrice());
+        assertEquals(BigDecimal.valueOf(2), order.getTotalPrice());
 
         order.setFirstName("John");
         assertEquals("John", order.getFirstName());
@@ -47,6 +65,17 @@ public class OrderTest {
         assertEquals("1234 Main Street Anytown, USA 123456", order.getDeliveryAddress());
 
         order.setContactPhoneNo("1-800-354-0387");
+        assertEquals("1-800-354-0387", order.getContactPhoneNo());
+        order = new Order(list, BigDecimal.ONE, BigDecimal.ONE,
+                "John", "Doe",
+                "1234 Main Street Anytown, USA 123456",
+                "1-800-354-0387");
+        assertEquals(list, order.getOrderItems());
+        assertEquals(BigDecimal.ONE, order.getSubtotal());
+        assertEquals(BigDecimal.ONE, order.getDeliveryPrice());
+        assertEquals("John", order.getFirstName());
+        assertEquals("Doe", order.getLastName());
+        assertEquals("1234 Main Street Anytown, USA 123456", order.getDeliveryAddress());
         assertEquals("1-800-354-0387", order.getContactPhoneNo());
     }
 }

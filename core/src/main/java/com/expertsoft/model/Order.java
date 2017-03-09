@@ -16,7 +16,6 @@ public class Order {
     private List<OrderItem> orderItems;
     private BigDecimal subtotal;
     private BigDecimal deliveryPrice;
-    private BigDecimal totalPrice;
     private String firstName;
     private String lastName;
     private String deliveryAddress;
@@ -24,7 +23,19 @@ public class Order {
 
     public Order() {
         orderItems = new ArrayList<>();
-        totalPrice = BigDecimal.ZERO;
+        subtotal = BigDecimal.ZERO;
+    }
+
+    public Order(List<OrderItem> orderItems, BigDecimal subtotal,
+                 BigDecimal deliveryPrice, String firstName, String lastName,
+                 String deliveryAddress, String contactPhoneNo) {
+        this.orderItems = orderItems;
+        this.subtotal = subtotal;
+        this.deliveryPrice = deliveryPrice;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.deliveryAddress = deliveryAddress;
+        this.contactPhoneNo = contactPhoneNo;
     }
 
     public long getId() {
@@ -60,11 +71,7 @@ public class Order {
     }
 
     public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
+        return subtotal.add(deliveryPrice);
     }
 
     public String getFirstName() {
@@ -97,5 +104,19 @@ public class Order {
 
     public void setContactPhoneNo(String contactPhoneNo) {
         this.contactPhoneNo = contactPhoneNo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null)
+            return false;
+        if (o.getClass() != Order.class)
+            return false;
+        return this.id == ((Order)o).id;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) id;
     }
 }

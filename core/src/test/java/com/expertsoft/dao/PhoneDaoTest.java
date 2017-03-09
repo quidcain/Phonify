@@ -1,6 +1,7 @@
 package com.expertsoft.dao;
 
 import com.expertsoft.model.Phone;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +27,24 @@ public class PhoneDaoTest {
         assertNotNull(phoneDao);
     }
 
+    @After
+    public void resetPhonesTable() {
+        for (Phone phone : phoneDao.findAll())
+            phoneDao.delete(phone.getId());
+    }
+
     @Test(expected = EmptyResultDataAccessException.class)
     public void saveAndGetTest() {
         Phone originalPhone = new Phone("iPhone", "black", 4, BigDecimal.valueOf(800));
         phoneDao.save(originalPhone);
         List<Phone> list = phoneDao.findAll();
         assertEquals(1, list.size());
-        assertEquals(originalPhone.getModel(), phoneDao.get(0L).getModel());
-        phoneDao.delete(0L);
-        phoneDao.get(0L);
+        for(Phone phone : phoneDao.findAll()) {
+            assertEquals(originalPhone.getModel(), phoneDao.get(phone.getId()).getModel());
+            phoneDao.delete(phone.getId());
+            phoneDao.get(phone.getId());
+        }
+
     }
 
     @Test

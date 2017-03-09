@@ -5,8 +5,8 @@ import com.expertsoft.model.Phone;
 import java.util.List;
 
 public interface PhoneDao {
-    Phone get(Long id);
+    Phone get(long id);
     void save(Phone phone);
-    void delete(Long id);
+    void delete(long id);
     List<Phone> findAll();
 }

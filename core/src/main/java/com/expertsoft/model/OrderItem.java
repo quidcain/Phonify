@@ -5,21 +5,30 @@ import javax.validation.constraints.NotNull;
 
 
 public class OrderItem {
+    private long id;
     private Phone phone;
-    
+    private Order order;
+
     @Digits(integer = 100, fraction = 0)
     @NotNull
     private long quantity;
 
-    private Order order;
-
     public OrderItem() {
+
     }
 
-    public OrderItem(Phone phone, long quantity, Order order) {
+    public OrderItem(Phone phone, Order order, long quantity) {
         this.phone = phone;
-        this.quantity = quantity;
         this.order = order;
+        this.quantity = quantity;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Phone getPhone() {
@@ -30,6 +39,14 @@ public class OrderItem {
         this.phone = phone;
     }
 
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
     public long getQuantity() {
         return quantity;
     }
@@ -38,11 +55,17 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public Order getOrder() {
-        return order;
+    @Override
+    public boolean equals(Object o) {
+        if (o == null)
+            return false;
+        if (o.getClass() != OrderItem.class)
+            return false;
+        return this.id == ((OrderItem)o).id;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    @Override
+    public int hashCode() {
+        return (int)id;
     }
 }
