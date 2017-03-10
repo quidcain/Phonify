@@ -1,5 +1,6 @@
 package com.expertsoft.model;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ public class Order {
     private long id;
     private List<OrderItem> orderItems;
     private BigDecimal subtotal;
+    @Value("${delivery.price}")
     private BigDecimal deliveryPrice;
     private String firstName;
     private String lastName;

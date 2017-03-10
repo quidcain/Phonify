@@ -120,7 +120,6 @@ public class JdbcOrderDao implements OrderDao {
                 "inner join Phones as P on I.pId=P.id;";
         return jdbcOperations.query(query, rs -> {
             Map<Integer, Order> orderMap = new HashMap<>();
-            Map<Integer, OrderItem> itemMap = new HashMap<>();
             Order order;
             OrderItem item;
             while (rs.next()) {
@@ -146,16 +145,11 @@ public class JdbcOrderDao implements OrderDao {
                         rs.getInt("displaySize"),
                         rs.getBigDecimal("price"));
                 phone.setId(rs.getInt("pId"));
-                int iId = rs.getInt("iId");
-                item = itemMap.get(iId);
-                if(item == null){
-                    item = new OrderItem(
-                            phone,
-                            order,
-                            rs.getLong("quantity"));
-                    item.setId(iId);
-                    itemMap.put(iId, item);
-                }
+                item = new OrderItem(
+                        phone,
+                        order,
+                        rs.getLong("quantity"));
+                item.setId(rs.getInt("iId"));
                 order.getOrderItems().add(item);
             }
             return new ArrayList<>(orderMap.values());

@@ -38,4 +38,5 @@
     p:dataSource-ref="dataSource" />
 
     <tx:annotation-driven transaction-manager="transactionManager" />
+
 </beans>
