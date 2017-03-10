@@ -7,9 +7,7 @@ import java.lang.reflect.Method;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by stoat on 3/6/17.
- */
+
 public class AddToCartResponseTest {
     private Class clazz;
     private Object addToCartResponse;
@@ -25,7 +23,7 @@ public class AddToCartResponseTest {
     public void setterGetterTest() throws Throwable {
         Method getItemsQuantity = clazz.getMethod("getItemsQuantity");
         assertEquals(4L, getItemsQuantity.invoke(addToCartResponse));
-        Method getTotalPrice = clazz.getMethod("getTotalPrice");
+        Method getTotalPrice = clazz.getMethod("getSubtotal");
         assertEquals("100", getTotalPrice.invoke(addToCartResponse));
 
         Constructor constructor = clazz.getDeclaredConstructor();
@@ -36,9 +34,9 @@ public class AddToCartResponseTest {
         getItemsQuantity = clazz.getMethod("getItemsQuantity");
         assertEquals(4L, getItemsQuantity.invoke(addToCartResponse));
 
-        Method setTotalPrice = clazz.getMethod("setTotalPrice", String.class);
+        Method setTotalPrice = clazz.getMethod("setSubtotal", String.class);
         setTotalPrice.invoke(addToCartResponse, "4L");
-        getTotalPrice = clazz.getMethod("getTotalPrice");
+        getTotalPrice = clazz.getMethod("getSubtotal");
         assertEquals("4L", getTotalPrice.invoke(addToCartResponse));
     }
 }

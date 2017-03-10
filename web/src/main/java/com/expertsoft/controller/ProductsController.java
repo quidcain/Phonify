@@ -1,7 +1,7 @@
 package com.expertsoft.controller;
 
-import com.expertsoft.dao.PhoneDao;
-import com.expertsoft.model.*;
+import com.expertsoft.service.OrderService;
+import com.expertsoft.service.PhoneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,23 +14,22 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 
 
 @Controller
 public class ProductsController {
-    private PhoneDao phoneDao;
-    private Order order;
+    private PhoneService phoneService;
+    private OrderService orderService;
 
     @Autowired
-    public ProductsController(PhoneDao phoneDao, Order order) {
-        this.phoneDao = phoneDao;
-        this.order = order;
+    public ProductsController(PhoneService phoneService, OrderService orderService) {
+        this.phoneService = phoneService;
+        this.orderService = orderService;
     }
 
     @GetMapping({"/", "/products"})
     public String products(Model model) {
-        model.addAttribute(phoneDao.findAll());
+        model.addAttribute(phoneService.findAll());
         return "products";
     }
 
@@ -41,21 +40,9 @@ public class ProductsController {
         if (result.hasErrors()) {
             return new ResponseEntity<>(addToCartResponse, HttpStatus.BAD_REQUEST);
         }
-        Phone phone = phoneDao.get(addToCartRequest.getId());
-        order.getOrderItems().add(new OrderItem(
-                phone,
-                order,
-                Long.parseLong(addToCartRequest.getQuantity())
-                )
-        );
-        long itemsQuantity = 0;
-        order.setSubtotal(order.getSubtotal().add(
-            phone.getPrice().multiply(BigDecimal.valueOf(Long.parseLong(addToCartRequest.getQuantity())))));
-        for (OrderItem item : order.getOrderItems()) {
-            itemsQuantity += item.getQuantity();
-        }
-        addToCartResponse.setItemsQuantity(itemsQuantity);
-        addToCartResponse.setTotalPrice(order.getSubtotal().toString());
+        orderService.addOrderItem(addToCartRequest.getId(), addToCartRequest.getQuantity());
+        addToCartResponse.setItemsQuantity(orderService.getItemsQuantity());
+        addToCartResponse.setSubtotal(orderService.getSubtotal());
         return new ResponseEntity<>(addToCartResponse, HttpStatus.OK);
     }
 
@@ -95,15 +82,15 @@ public class ProductsController {
 
     private static class AddToCartResponse {
         private long itemsQuantity;
-        private String totalPrice;
+        private String subtotal;
 
         public AddToCartResponse() {
 
         }
 
-        public AddToCartResponse(long itemsQuantity, String totalPrice) {
+        public AddToCartResponse(long itemsQuantity, String subtotal) {
             this.itemsQuantity = itemsQuantity;
-            this.totalPrice = totalPrice;
+            this.subtotal = subtotal;
         }
 
         public long getItemsQuantity() {
@@ -114,12 +101,12 @@ public class ProductsController {
             this.itemsQuantity = itemsQuantity;
         }
 
-        public String getTotalPrice() {
-            return totalPrice;
+        public String getSubtotal() {
+            return subtotal;
         }
 
-        public void setTotalPrice(String totalPrice) {
-            this.totalPrice = totalPrice;
+        public void setSubtotal(String subtotal) {
+            this.subtotal = subtotal;
         }
 
     }

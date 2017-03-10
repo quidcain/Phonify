@@ -1,8 +1,8 @@
 package com.expertsoft.controller;
 
-import com.expertsoft.dao.PhoneDao;
-import com.expertsoft.model.Order;
 import com.expertsoft.model.Phone;
+import com.expertsoft.service.OrderService;
+import com.expertsoft.service.PhoneService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -26,16 +26,17 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 public class ProductsControllerTest {
     private MockMvc mockMvc;
     private List<Phone> expectedPhones;
-    private PhoneDao mockDao;
+    private PhoneService phoneService;
+    private OrderService orderService;
 
 
     @Before
     public void init() {
-        mockDao = mock(PhoneDao.class);
+        phoneService = mock(PhoneService.class);
+        orderService = mock(OrderService.class);
         expectedPhones = createPhoneList(5);
-        Order order = new Order();
-        ProductsController controller = new ProductsController(mockDao, order);
-        when(mockDao.findAll())
+        ProductsController controller = new ProductsController(phoneService, orderService);
+        when(phoneService.findAll())
                 .thenReturn(expectedPhones);
         mockMvc = standaloneSetup(controller).build();
     }
@@ -50,6 +51,8 @@ public class ProductsControllerTest {
 
     @Test
     public void addToCartTest() throws Exception {
+        when(orderService.getItemsQuantity()).thenReturn(1L);
+        when(orderService.getSubtotal()).thenReturn("1");
         mockMvc.perform(post("/addToCart")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(createRequestInJson(0L, "2")))
@@ -68,7 +71,7 @@ public class ProductsControllerTest {
         List<Phone> phones = new ArrayList<>();
         for (int i=0; i < count; i++) {
             phones.add(new Phone("iPhone" + i, "black", 4, BigDecimal.valueOf(800)));
-            when(mockDao.get((long)i))
+            when(phoneService.get((long)i))
                     .thenReturn(phones.get(i));
         }
         return phones;

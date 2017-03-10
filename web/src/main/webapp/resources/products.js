@@ -24,7 +24,7 @@ function createRequest(id, field) {
             success : function(data) {
                 console.log("SUCCESS: ", data);
                 $("#itemsQuantity").html(data.itemsQuantity);
-                $("#totalPrice").html(data.totalPrice);
+                $("#subtotal").html(data.subtotal);
                 field.val("");
             },
             error : function(e) {

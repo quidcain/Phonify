@@ -6,5 +6,4 @@
 
     <import resource="classpath*:coreContext.xml" />
 
-
 </beans>

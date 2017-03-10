@@ -8,9 +8,6 @@ import java.lang.reflect.Method;
 import static org.junit.Assert.*;
 
 
-/**
- * Created by stoat on 3/6/17.
- */
 public class AddToCartRequestTest {
     private Class clazz;
     private Object addToCartRequest;
