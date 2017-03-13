@@ -4,8 +4,11 @@ import com.expertsoft.model.Order;
 import com.expertsoft.model.OrderItem;
 import com.expertsoft.model.Phone;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,23 +22,24 @@ import java.util.Map;
 
 @Repository
 public class JdbcOrderDao implements OrderDao {
-    private JdbcOperations jdbcOperations;
+    private NamedParameterJdbcOperations jdbcOperations;
 
     @Autowired
-    public JdbcOrderDao(JdbcOperations jdbcOperations) {
+    public JdbcOrderDao(NamedParameterJdbcOperations jdbcOperations) {
         this.jdbcOperations = jdbcOperations;
     }
 
     @Override
     public Order get(long id) {
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource("id", id);
         String query = "select " +
                 "O.id, O.subtotal, O.deliveryPrice, O.firstName, O.lastName, O.deliveryAddress, O.contactPhoneNo, " +
                 "I.id as iId, I.quantity, I.pId, " +
                 "P.model, P.color, P.displaySize, P.price " +
                 "from Orders as O " +
                 "inner join OrderItems as I on I.oId=O.id " +
-                "inner join Phones as P on I.pId=P.id where O.id = ?";
-        return jdbcOperations.query(query, rs -> {
+                "inner join Phones as P on I.pId=P.id where O.id = :id";
+        return jdbcOperations.query(query, parameterSource, rs -> {
             Order order = null;
             while (rs.next()) {
                 if(order == null){
@@ -62,14 +66,15 @@ public class JdbcOrderDao implements OrderDao {
                 order.getOrderItems().add(item);
             }
             return order;
-        }, id);
+        });
     }
 
     @Override
     @Transactional
     @SuppressWarnings("unchecked")
     public void save(Order order) {
-        SimpleJdbcInsert insert = new SimpleJdbcInsert((JdbcTemplate) jdbcOperations)
+        JdbcOperations operations = jdbcOperations.getJdbcOperations();
+        SimpleJdbcInsert insert = new SimpleJdbcInsert((JdbcTemplate)operations)
                 .withTableName("Orders")
                 .usingColumns("subtotal", "deliveryPrice", "firstName",
                               "lastName", "deliveryAddress", "contactPhoneNo")
@@ -82,7 +87,7 @@ public class JdbcOrderDao implements OrderDao {
         parameters.put("deliveryAddress", order.getDeliveryAddress());
         parameters.put("contactPhoneNo", order.getContactPhoneNo());
         long id = insert.executeAndReturnKey(parameters).longValue();
-        insert = new SimpleJdbcInsert((JdbcTemplate) jdbcOperations)
+        insert = new SimpleJdbcInsert((JdbcTemplate) operations)
                 .withTableName("OrderItems")
                 .usingColumns("pId", "oId", "quantity");
         List<Map<String, ?>> list = new ArrayList<>(order.getOrderItems().size());
@@ -99,13 +104,14 @@ public class JdbcOrderDao implements OrderDao {
     @Override
     @Transactional
     public void delete(long id) {
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource("id", id);
         jdbcOperations.update(
-                "DELETE FROM OrderItems WHERE oId = ?",
-                id
+                "DELETE FROM OrderItems WHERE oId = :id",
+                parameterSource
         );
         jdbcOperations.update(
-                "delete from Orders where id = ?",
-                id
+                "DELETE FROM Orders WHERE id = :id",
+                parameterSource
         );
     }
 
