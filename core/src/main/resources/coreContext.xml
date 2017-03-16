@@ -51,7 +51,7 @@
 
     <beans profile="test">
         <jdbc:embedded-database id="dataSource" type="HSQL" >
-            <jdbc:script location="classpath:testSchema.sql" />
+            <jdbc:script location="classpath:test/insertSchema.sql" />
         </jdbc:embedded-database>
     </beans>
 
