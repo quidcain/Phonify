@@ -28,18 +28,6 @@ public class Order {
         subtotal = BigDecimal.ZERO;
     }
 
-    public Order(List<OrderItem> orderItems, BigDecimal subtotal,
-                 BigDecimal deliveryPrice, String firstName, String lastName,
-                 String deliveryAddress, String contactPhoneNo) {
-        this.orderItems = orderItems;
-        this.subtotal = subtotal;
-        this.deliveryPrice = deliveryPrice;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.deliveryAddress = deliveryAddress;
-        this.contactPhoneNo = contactPhoneNo;
-    }
-
     public long getId() {
         return id;
     }

@@ -66,16 +66,5 @@ public class OrderTest {
 
         order.setContactPhoneNo("1-800-354-0387");
         assertEquals("1-800-354-0387", order.getContactPhoneNo());
-        order = new Order(list, BigDecimal.ONE, BigDecimal.ONE,
-                "John", "Doe",
-                "1234 Main Street Anytown, USA 123456",
-                "1-800-354-0387");
-        assertEquals(list, order.getOrderItems());
-        assertEquals(BigDecimal.ONE, order.getSubtotal());
-        assertEquals(BigDecimal.ONE, order.getDeliveryPrice());
-        assertEquals("John", order.getFirstName());
-        assertEquals("Doe", order.getLastName());
-        assertEquals("1234 Main Street Anytown, USA 123456", order.getDeliveryAddress());
-        assertEquals("1-800-354-0387", order.getContactPhoneNo());
     }
 }

@@ -13,13 +13,6 @@ public class Phone {
     public Phone() {
     }
 
-    public Phone(String model, String color, int displaySize, BigDecimal price) {
-        this.model = model;
-        this.color = color;
-        this.displaySize = displaySize;
-        this.price = price;
-    }
-
     public long getId() {
         return id;
     }
@@ -59,7 +52,6 @@ public class Phone {
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
-
 
     @Override
     public boolean equals(Object o) {

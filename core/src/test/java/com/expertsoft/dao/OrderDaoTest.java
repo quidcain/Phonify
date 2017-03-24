@@ -32,6 +32,29 @@ public class OrderDaoTest {
     @Autowired
     private PhoneDao phoneDao;
 
+    private void addOrderToList(List<Order> list, String firstName, String lastName) {
+        Order order = new Order();
+        order.setOrderItems(new ArrayList<>());
+        order.setSubtotal(BigDecimal.ONE);
+        order.setDeliveryPrice(BigDecimal.ONE);
+        order.setFirstName(firstName);
+        order.setLastName(lastName);
+        order.setDeliveryAddress("1234 Main Street Anytown, USA 123456");
+        order.setContactPhoneNo("1-800-354-0387");
+        list.add(order);
+    }
+
+    private void addAllPhones(Order order) {
+        List<OrderItem> orderItems = order.getOrderItems();
+        for(Phone phone : phoneDao.findAll()) {
+            OrderItem item = new OrderItem();
+            item.setPhone(phoneDao.get(phone.getId()));
+            item.setOrder(order);
+            item.setQuantity(1);
+            orderItems.add(item);
+        }
+    }
+
     @Test
     public void orderDaoShouldNotBeNull() {
         assertNotNull(orderDao);
@@ -55,16 +78,17 @@ public class OrderDaoTest {
             phoneDao.delete(phone.getId());
     }
 
-
     @Test
     public void saveAndGetTest() {
-        Order order = new Order(new ArrayList<>(), BigDecimal.ONE, BigDecimal.ONE,
-                "John", "Doe",
-                "1234 Main Street Anytown, USA 123456",
-                "1-800-354-0387");
-        for (Phone phone : phoneDao.findAll())
-            order.getOrderItems().add(new OrderItem(phoneDao.get(phone.getId()),
-                    order, 1));
+        Order order = new Order();
+        order.setOrderItems(new ArrayList<>());
+        order.setSubtotal(BigDecimal.ONE);
+        order.setDeliveryPrice(BigDecimal.ONE);
+        order.setFirstName("John");
+        order.setLastName("Doe");
+        order.setDeliveryAddress("1234 Main Street Anytown, USA 123456");
+        order.setContactPhoneNo("1-800-354-0387");
+        addAllPhones(order);
         orderDao.save(order);
         List<Order> list = orderDao.findAll();
         assertEquals(1, list.size());
@@ -75,24 +99,12 @@ public class OrderDaoTest {
 
     @Test
     public void findAllTest() {
-        List<Order> list = Arrays.asList(
-                new Order(new ArrayList<>(), BigDecimal.ONE, BigDecimal.ONE,
-                        "John", "Doe",
-                        "1234 Main Street Anytown, USA 123456",
-                        "1-800-354-0387"),
-                new Order(new ArrayList<>(), BigDecimal.ONE, BigDecimal.ONE,
-                        "Mary", "Lee",
-                        "1234 Main Street Anytown, USA 123456",
-                        "1-800-354-0387"),
-                new Order(new ArrayList<>(), BigDecimal.ONE, BigDecimal.ONE,
-                        "Irving", "Blake",
-                        "1234 Main Street Anytown, USA 123456",
-                        "1-800-354-0387")
-        );
+        List<Order> list = new ArrayList<>(3);
+        addOrderToList(list, "John", "Doe");
+        addOrderToList(list, "Mary", "Lee");
+        addOrderToList(list, "Irving", "Blake");
         for(Order order : list) {
-            for(Phone phone : phoneDao.findAll())
-                order.getOrderItems().add(new OrderItem(phoneDao.get(phone.getId()),
-                        order, 1));
+            addAllPhones(order);
             orderDao.save(order);
         }
         List<Order> foundList = orderDao.findAll();

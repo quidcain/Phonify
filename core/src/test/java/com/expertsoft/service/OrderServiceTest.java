@@ -60,7 +60,11 @@ public class OrderServiceTest {
 
     @Test
     public void addOrderItemTest() {
-        Phone phone = new Phone("iPhone", "black", 4, BigDecimal.ONE);
+        Phone phone = new Phone();
+        phone.setModel("iPhone");
+        phone.setColor("black");
+        phone.setDisplaySize(4);
+        phone.setPrice(BigDecimal.ONE);
         when(phoneDao.get(1)).thenReturn(phone);
         orderService.addOrderItem(1, "1");
         assertEquals(1, orderService.getItemsQuantity());

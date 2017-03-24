@@ -42,11 +42,5 @@ public class PhoneTest {
 
         phone.setPrice(BigDecimal.ONE);
         assertEquals(BigDecimal.ONE, phone.getPrice());
-
-        phone = new Phone("iPhone", "black", 4, BigDecimal.ONE);
-        assertEquals("iPhone", phone.getModel());
-        assertEquals("black", phone.getColor());
-        assertEquals(4, phone.getDisplaySize());
-        assertEquals(BigDecimal.ONE, phone.getPrice());
     }
 }

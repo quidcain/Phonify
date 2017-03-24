@@ -28,6 +28,7 @@ public class JdbcOrderDao implements OrderDao {
     private Order fillOrder(long id, ResultSet rs) throws SQLException {
         Order order = new Order();
         order.setId(id);
+        order.setOrderItems(new ArrayList<>());
         order.setSubtotal(rs.getBigDecimal("subTotal"));
         order.setDeliveryPrice(rs.getBigDecimal("deliveryPrice"));
         order.setFirstName(rs.getString("firstName"));
