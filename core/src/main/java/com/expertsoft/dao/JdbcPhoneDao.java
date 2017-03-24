@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 
@@ -23,15 +24,7 @@ public class JdbcPhoneDao implements PhoneDao {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource("id", id);
         return jdbcOperations.queryForObject(
             "SELECT * from Phones where id = :id;", parameterSource,
-            (rs, rowNum) -> {
-                Phone phone = new Phone(
-                rs.getString("model"),
-                rs.getString("color"),
-                rs.getInt("displaySize"),
-                rs.getBigDecimal("price"));
-                phone.setId(rs.getLong("id"));
-                return phone;
-            });
+                new BeanPropertyRowMapper<>(Phone.class));
     }
 
     @Override
@@ -57,6 +50,6 @@ public class JdbcPhoneDao implements PhoneDao {
     @Override
     public List<Phone> findAll() {
             return jdbcOperations.query("SELECT * FROM Phones;",
-                    new BeanPropertyRowMapper(Phone.class));
+                    new BeanPropertyRowMapper<>(Phone.class));
     }
 }
