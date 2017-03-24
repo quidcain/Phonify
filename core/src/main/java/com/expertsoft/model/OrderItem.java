@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 
 
 public class OrderItem {
-    private long id;
+    private Long id;
     private Phone phone;
     private Order order;
 
@@ -66,6 +66,6 @@ public class OrderItem {
 
     @Override
     public int hashCode() {
-        return (int)id;
+        return Long.hashCode(id);
     }
 }

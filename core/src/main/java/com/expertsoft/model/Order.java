@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class Order {
-    private long id;
+    private Long id;
     private List<OrderItem> orderItems;
     private BigDecimal subtotal;
     @Value("${delivery.price}")
@@ -119,6 +119,6 @@ public class Order {
 
     @Override
     public int hashCode() {
-        return (int) id;
+        return Long.hashCode(id);
     }
 }

@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 
 public class Phone {
-    private long id;
+    private Long id;
     private String model;
     private String color;
     private int displaySize;
