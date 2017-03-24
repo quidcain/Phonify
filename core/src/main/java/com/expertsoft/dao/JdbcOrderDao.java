@@ -13,7 +13,8 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,43 @@ import java.util.Map;
 @Repository
 public class JdbcOrderDao implements OrderDao {
     private NamedParameterJdbcOperations jdbcOperations;
+
+    private Order fillOrder(long id, ResultSet rs) throws SQLException {
+        Order order = new Order();
+        order.setId(id);
+        order.setSubtotal(rs.getBigDecimal("subTotal"));
+        order.setDeliveryPrice(rs.getBigDecimal("deliveryPrice"));
+        order.setFirstName(rs.getString("firstName"));
+        order.setLastName(rs.getString("lastName"));
+        order.setDeliveryAddress(rs.getString("deliveryAddress"));
+        order.setContactPhoneNo(rs.getString("contactPhoneNo"));
+        return order;
+    }
+
+    private Phone fillPhone(ResultSet rs) throws SQLException {
+        Phone phone = new Phone();
+        phone.setId(rs.getLong("pId"));
+        phone.setModel(rs.getString("model"));
+        phone.setColor(rs.getString("color"));
+        phone.setDisplaySize(rs.getInt("displaySize"));
+        phone.setPrice(rs.getBigDecimal("price"));
+        return phone;
+    }
+
+    private OrderItem fillOrderItem(Phone phone, Order order, ResultSet rs) throws SQLException {
+        OrderItem item = new OrderItem();
+        item.setId(rs.getLong("iId"));
+        item.setPhone(phone);
+        item.setOrder(order);
+        item.setQuantity(rs.getLong("quantity"));
+        return item;
+    }
+
+    private void addOrderItem(Order order, ResultSet rs) throws SQLException {
+        Phone phone = fillPhone(rs);
+        OrderItem item = fillOrderItem(phone, order, rs);
+        order.getOrderItems().add(item);
+    }
 
     @Autowired
     public JdbcOrderDao(NamedParameterJdbcOperations jdbcOperations) {
@@ -43,27 +81,9 @@ public class JdbcOrderDao implements OrderDao {
             Order order = null;
             while (rs.next()) {
                 if(order == null){
-                    BigDecimal subTotal = rs.getBigDecimal("subTotal");
-                    BigDecimal deliveryPrice = rs.getBigDecimal("deliveryPrice");
-                    String firstName = rs.getString("firstName");
-                    String lastName = rs.getString("lastName");
-                    String deliveryAddress = rs.getString("deliveryAddress");
-                    String contactPhoneNo = rs.getString("contactPhoneNo");
-                    order = new Order(
-                            new ArrayList<>(), subTotal, deliveryPrice, firstName,
-                            lastName, deliveryAddress, contactPhoneNo
-                    );
-                    order.setId(id);
+                    order = fillOrder(id, rs);
                 }
-                Phone phone = new Phone(
-                        rs.getString("model"),
-                        rs.getString("color"),
-                        rs.getInt("displaySize"),
-                        rs.getBigDecimal("price"));
-                phone.setId(rs.getInt("pId"));
-                OrderItem item = new OrderItem(phone, order, rs.getLong("quantity"));
-                item.setId(rs.getInt("iId"));
-                order.getOrderItems().add(item);
+                addOrderItem(order, rs);
             }
             return order;
         });
@@ -87,7 +107,7 @@ public class JdbcOrderDao implements OrderDao {
         parameters.put("deliveryAddress", order.getDeliveryAddress());
         parameters.put("contactPhoneNo", order.getContactPhoneNo());
         long id = insert.executeAndReturnKey(parameters).longValue();
-        insert = new SimpleJdbcInsert((JdbcTemplate) operations)
+        insert = new SimpleJdbcInsert((JdbcTemplate)operations)
                 .withTableName("OrderItems")
                 .usingColumns("pId", "oId", "quantity");
         List<Map<String, ?>> list = new ArrayList<>(order.getOrderItems().size());
@@ -125,38 +145,16 @@ public class JdbcOrderDao implements OrderDao {
                 "inner join OrderItems as I on I.oId=O.id " +
                 "inner join Phones as P on I.pId=P.id;";
         return jdbcOperations.query(query, rs -> {
-            Map<Integer, Order> orderMap = new HashMap<>();
+            Map<Long, Order> orderMap = new HashMap<>();
             Order order;
-            OrderItem item;
             while (rs.next()) {
-                int id = rs.getInt("id");
+                long id = rs.getLong("id");
                 order = orderMap.get(id);
                 if(order == null){
-                    BigDecimal subTotal = rs.getBigDecimal("subTotal");
-                    BigDecimal deliveryPrice = rs.getBigDecimal("deliveryPrice");
-                    String firstName = rs.getString("firstName");
-                    String lastName = rs.getString("lastName");
-                    String deliveryAddress = rs.getString("deliveryAddress");
-                    String contactPhoneNo = rs.getString("contactPhoneNo");
-                    order = new Order(
-                            new ArrayList<>(), subTotal, deliveryPrice, firstName,
-                            lastName, deliveryAddress, contactPhoneNo
-                            );
-                    order.setId(id);
+                    order = fillOrder(id, rs);
                     orderMap.put(id, order);
                 }
-                Phone phone = new Phone(
-                        rs.getString("model"),
-                        rs.getString("color"),
-                        rs.getInt("displaySize"),
-                        rs.getBigDecimal("price"));
-                phone.setId(rs.getInt("pId"));
-                item = new OrderItem(
-                        phone,
-                        order,
-                        rs.getLong("quantity"));
-                item.setId(rs.getInt("iId"));
-                order.getOrderItems().add(item);
+                addOrderItem(order, rs);
             }
             return new ArrayList<>(orderMap.values());
         });
