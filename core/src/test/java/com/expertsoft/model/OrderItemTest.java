@@ -30,7 +30,7 @@ public class OrderItemTest {
     @Test
     public void hashCodeTest() {
         orderItem.setId(-1L);
-        assertEquals(-1, orderItem.hashCode());
+        assertEquals((int)(-1L ^ -1L >>> 32), orderItem.hashCode());
     }
     
     @Test

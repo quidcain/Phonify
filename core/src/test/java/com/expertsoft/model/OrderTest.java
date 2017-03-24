@@ -33,7 +33,7 @@ public class OrderTest {
     @Test
     public void hashCodeTest() {
         order.setId(-1L);
-        assertEquals(-1, order.hashCode());
+        assertEquals((int)(-1L ^ -1L >>> 32), order.hashCode());
     }
 
     @Test
