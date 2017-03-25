@@ -2,92 +2,52 @@ package com.expertsoft.service;
 
 import com.expertsoft.dao.PhoneDao;
 import com.expertsoft.model.Phone;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
 
-
+@RunWith(MockitoJUnitRunner.class)
 public class PhoneServiceTest {
-    private PhoneService phoneService;
-    private PhoneDaoSpy phoneDaoSpy;
-    private Phone phone;
-
-    @Before
-    public void init() {
-        phone = new Phone();
-        phoneDaoSpy = new PhoneDaoSpy();
-        phoneService = new PhoneServiceImpl(phoneDaoSpy);
-    }
+    @Mock
+    private PhoneDao phoneDao;
+    @InjectMocks
+    private PhoneServiceImpl phoneService;
 
     @Test
     public void findAllTest() {
+        List <Phone> list = new ArrayList<>();
+        when(phoneDao.findAll()).thenReturn(list);
         phoneService.findAll();
-        assertEquals(1, phoneDaoSpy.getFindAllCallCount());
+        verify(phoneDao, times(1)).findAll();
     }
 
     @Test
     public void getTest() {
+        Phone phone = new Phone();
+        when(phoneDao.get(anyLong())).thenReturn(phone);
         phoneService.get(0);
-        assertEquals(1, phoneDaoSpy.getGetCallCount());
+        verify(phoneDao, times(1)).get(anyLong());
     }
 
     @Test
     public void saveTest() {
-        phoneService.save(phone);
-        assertEquals(1, phoneDaoSpy.getSaveCallCount());
+        doNothing().when(phoneDao).save(any(Phone.class));
+        phoneService.save(new Phone());
+        verify(phoneDao, times(1)).save(any(Phone.class));
     }
 
     @Test
     public void deleteTest() {
+        doNothing().when(phoneDao).delete(anyLong());
         phoneService.delete(0);
-        assertEquals(1, phoneDaoSpy.getDeleteCallCount());
+        verify(phoneDao, times(1)).delete(anyLong());
     }
 
-    private class PhoneDaoSpy implements PhoneDao {
-        private int getCallCount;
-        private int saveCallCount;
-        private int deleteCallCount;
-        private int findAllCallCount;
-
-        public int getGetCallCount() {
-            return getCallCount;
-        }
-
-        public int getSaveCallCount() {
-            return saveCallCount;
-        }
-
-        public int getDeleteCallCount() {
-            return deleteCallCount;
-        }
-
-        public int getFindAllCallCount() {
-            return findAllCallCount;
-        }
-
-        @Override
-        public Phone get(long id) {
-            getCallCount++;
-            return null;
-        }
-
-        @Override
-        public void save(Phone phone) {
-            saveCallCount++;
-        }
-
-        @Override
-        public void delete(long id) {
-            deleteCallCount++;
-        }
-
-        @Override
-        public List<Phone> findAll() {
-            findAllCallCount++;
-            return null;
-        }
-    }
 }

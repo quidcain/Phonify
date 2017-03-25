@@ -70,7 +70,12 @@ public class ProductsControllerTest {
     private List<Phone> createPhoneList(int count) {
         List<Phone> phones = new ArrayList<>();
         for (int i=0; i < count; i++) {
-            phones.add(new Phone("iPhone" + i, "black", 4, BigDecimal.valueOf(800)));
+            Phone phone = new Phone();
+            phone.setModel("iPhone" + i);
+            phone.setColor("black");
+            phone.setDisplaySize(4);
+            phone.setPrice(BigDecimal.ONE);
+            phones.add(phone);
             when(phoneService.get((long)i))
                     .thenReturn(phones.get(i));
         }
