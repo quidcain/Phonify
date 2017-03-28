@@ -10,12 +10,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -68,12 +66,12 @@ public class OrderDaoTest {
         phone.setDisplaySize(4);
         phone.setPrice(BigDecimal.ONE);
         phoneDao.save(phone);
+        phone.setModel("Samsung galaxy SIII");
+        phoneDao.save(phone);
     }
 
     @After
     public void resetTable() {
-        for (Order order : orderDao.findAll())
-            orderDao.delete(order.getId());
         for (Phone phone : phoneDao.findAll())
             phoneDao.delete(phone.getId());
     }
@@ -90,11 +88,8 @@ public class OrderDaoTest {
         order.setContactPhoneNo("1-800-354-0387");
         addAllPhones(order);
         orderDao.save(order);
-        List<Order> list = orderDao.findAll();
-        assertEquals(1, list.size());
-        assertEquals(order.getSubtotal(), orderDao.get(0L).getSubtotal());
-        orderDao.delete(0L);
-        assertEquals(null, orderDao.get(0L));
+        assertEquals(order, orderDao.get(order.getId()));
+        orderDao.delete(order.getId());
     }
 
     @Test
@@ -109,5 +104,8 @@ public class OrderDaoTest {
         }
         List<Order> foundList = orderDao.findAll();
         assertEquals(list.size(), foundList.size());
+        for(Order order : list)
+            orderDao.delete(order.getId());
+        assertEquals(0, orderDao.findAll().size());
     }
 }

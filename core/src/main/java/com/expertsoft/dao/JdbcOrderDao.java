@@ -108,6 +108,7 @@ public class JdbcOrderDao implements OrderDao {
         parameters.put("deliveryAddress", order.getDeliveryAddress());
         parameters.put("contactPhoneNo", order.getContactPhoneNo());
         long id = insert.executeAndReturnKey(parameters).longValue();
+        order.setId(id);
         insert = new SimpleJdbcInsert((JdbcTemplate)operations)
                 .withTableName("OrderItems")
                 .usingColumns("pId", "oId", "quantity");
