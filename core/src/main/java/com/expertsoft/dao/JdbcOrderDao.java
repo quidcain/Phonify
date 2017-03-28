@@ -146,18 +146,21 @@ public class JdbcOrderDao implements OrderDao {
                 "inner join OrderItems as I on I.oId=O.id " +
                 "inner join Phones as P on I.pId=P.id;";
         return jdbcOperations.query(query, rs -> {
-            Map<Long, Order> orderMap = new HashMap<>();
+            List<Order> list = new ArrayList<>();
+            int currentIndex = -1;
             Order order;
             while (rs.next()) {
                 long id = rs.getLong("id");
-                order = orderMap.get(id);
-                if(order == null){
+                if (currentIndex == -1 || list.get(currentIndex).getId() != id) {
                     order = fillOrder(id, rs);
-                    orderMap.put(id, order);
+                    list.add(order);
+                    currentIndex++;
+                } else {
+                    order = list.get(currentIndex);
                 }
                 addOrderItem(order, rs);
             }
-            return new ArrayList<>(orderMap.values());
+            return list;
         });
     }
 }
