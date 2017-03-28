@@ -1,13 +1,13 @@
 package com.expertsoft.dao;
 
 import com.expertsoft.model.Phone;
-import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -18,6 +18,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/coreContext.xml")
 @ActiveProfiles("test")
+@Transactional
 public class PhoneDaoTest {
 
     @Autowired
@@ -35,12 +36,6 @@ public class PhoneDaoTest {
     @Test
     public void phoneDaoShouldNotBeNull() {
         assertNotNull(phoneDao);
-    }
-
-    @After
-    public void resetPhonesTable() {
-        for (Phone phone : phoneDao.findAll())
-            phoneDao.delete(phone.getId());
     }
 
     @Test
