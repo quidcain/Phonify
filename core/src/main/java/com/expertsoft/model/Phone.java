@@ -13,7 +13,7 @@ public class Phone {
     public Phone() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

@@ -39,7 +39,7 @@ public class OrderTest {
     @Test
     public void setterGetterTest() {
         order.setId(-1L);
-        assertEquals(-1L, order.getId());
+        assertEquals(new Long(-1L), order.getId());
 
         List<OrderItem> list = new ArrayList<>();
         list.add(new OrderItem());

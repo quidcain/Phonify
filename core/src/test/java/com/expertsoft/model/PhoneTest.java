@@ -29,7 +29,7 @@ public class PhoneTest {
     @Test
     public void setterGetterTest() {
         phone.setId(123L);
-        assertEquals(123L, phone.getId());
+        assertEquals(new Long(123L), phone.getId());
 
         phone.setModel("iPhone");
         assertEquals("iPhone", phone.getModel());

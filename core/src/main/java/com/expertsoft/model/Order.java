@@ -28,7 +28,7 @@ public class Order {
         subtotal = BigDecimal.ZERO;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

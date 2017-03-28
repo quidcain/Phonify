@@ -23,7 +23,7 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

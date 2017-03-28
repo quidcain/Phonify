@@ -36,7 +36,7 @@ public class OrderItemTest {
     @Test
     public void setterGetterTest() {
         orderItem.setId(-1L);
-        assertEquals(-1L, orderItem.getId());
+        assertEquals(new Long(-1L), orderItem.getId());
 
         Phone phone = new Phone();
         orderItem.setPhone(phone);
