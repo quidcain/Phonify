@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,33 +25,35 @@ public class JdbcPhoneDao implements PhoneDao {
     public Phone get(long id) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource("id", id);
         return jdbcOperations.queryForObject(
-            "SELECT * from Phones where id = :id;", parameterSource,
+                "SELECT * from Phones where id = :id;", parameterSource,
                 new BeanPropertyRowMapper<>(Phone.class));
     }
 
     @Override
     public void save(Phone phone) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         parameterSource.addValue("model", phone.getModel());
         parameterSource.addValue("color", phone.getColor());
         parameterSource.addValue("displaySize", phone.getDisplaySize());
         parameterSource.addValue("price", phone.getPrice());
         jdbcOperations.update("INSERT INTO Phones (model, color, displaySize, price) VALUES (:model, " +
-                ":color, :displaySize, :price);", parameterSource);
+                ":color, :displaySize, :price);", parameterSource, keyHolder);
+        phone.setId(keyHolder.getKey().longValue());
     }
 
     @Override
     public void delete(long id) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource("id", id);
         jdbcOperations.update(
-            "DELETE FROM Phones WHERE id = :id",
-            parameterSource
+                "DELETE FROM Phones WHERE id = :id",
+                parameterSource
         );
     }
 
     @Override
     public List<Phone> findAll() {
-            return jdbcOperations.query("SELECT * FROM Phones;",
-                    new BeanPropertyRowMapper<>(Phone.class));
+        return jdbcOperations.query("SELECT * FROM Phones;",
+                new BeanPropertyRowMapper<>(Phone.class));
     }
 }

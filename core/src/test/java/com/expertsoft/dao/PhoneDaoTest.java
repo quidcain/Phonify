@@ -5,14 +5,12 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -40,13 +38,12 @@ public class PhoneDaoTest {
     }
 
     @After
-    // TODO: remove, use transactional integration test
     public void resetPhonesTable() {
         for (Phone phone : phoneDao.findAll())
             phoneDao.delete(phone.getId());
     }
 
-    @Test(expected = EmptyResultDataAccessException.class)
+    @Test
     public void saveAndGetTest() {
         Phone originalPhone = new Phone();
         originalPhone.setModel("iPhone");
@@ -54,13 +51,9 @@ public class PhoneDaoTest {
         originalPhone.setDisplaySize(4);
         originalPhone.setPrice(BigDecimal.valueOf(800));
         phoneDao.save(originalPhone);
-        List<Phone> list = phoneDao.findAll();
-        assertEquals(1, list.size());
-        for(Phone phone : phoneDao.findAll()) {
-            assertEquals(originalPhone.getModel(), phoneDao.get(phone.getId()).getModel());
-            phoneDao.delete(phone.getId());
-            phoneDao.get(phone.getId());
-        }
+        Phone phoneFromDb = phoneDao.get(originalPhone.getId());
+        assertEquals(originalPhone, phoneFromDb);
+        phoneDao.delete(phoneFromDb.getId());
     }
 
     @Test
@@ -71,7 +64,9 @@ public class PhoneDaoTest {
         addPhoneToList(list, "Motorolla");
         for(Phone phone : list)
             phoneDao.save(phone);
-        List<Phone> foundList = phoneDao.findAll();
-        assertEquals(list.size(), foundList.size());
+        assertEquals(list.size(), phoneDao.findAll().size());
+        for(Phone phone : list)
+            phoneDao.delete(phone.getId());
+        assertEquals(0, phoneDao.findAll().size());
     }
 }
