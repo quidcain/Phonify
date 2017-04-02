@@ -44,12 +44,12 @@
                                 <td>${phone.color}</td>
                                 <td>${phone.displaySize}"</td>
                                 <td>${phone.price}$</td>
-                                    <td>
-                                        <input type="text" name="quantity" id="input_${phone.id}">
-                                    </td>
-                                    <td>
-                                        <button type="submit" class="btn" id="button_${phone.id}">Add to cart</button>
-                                    </td>
+                                <td>
+                                    <input type="text" name="quantity" id="input_${phone.id}">
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn" id="button_${phone.id}">Add to cart</button>
+                                </td>
                             </tr>
                         </c:forEach>
                     </table>

@@ -9,34 +9,18 @@ import static org.junit.Assert.assertEquals;
 
 
 public class AddToCartResponseTest {
-    private Class clazz;
-    private Object addToCartResponse;
-
-    public AddToCartResponseTest() throws Throwable {
-        clazz = Class.forName("com.expertsoft.controller.ProductsController$AddToCartResponse");
-        Constructor constructor = clazz.getDeclaredConstructor(long.class, String.class);
-        addToCartResponse = constructor.newInstance(4L, "100");
-    }
-
+    AddToCartResponse response = new AddToCartResponse(4L, "100");
 
     @Test
     public void setterGetterTest() throws Throwable {
-        Method getItemsQuantity = clazz.getMethod("getItemsQuantity");
-        assertEquals(4L, getItemsQuantity.invoke(addToCartResponse));
-        Method getTotalPrice = clazz.getMethod("getSubtotal");
-        assertEquals("100", getTotalPrice.invoke(addToCartResponse));
+        assertEquals(4L, response.getItemsQuantity());
+        assertEquals("100", response.getSubtotal());
 
-        Constructor constructor = clazz.getDeclaredConstructor();
-        addToCartResponse = constructor.newInstance();
+        response = new AddToCartResponse();
+        response.setItemsQuantity(4L);
+        assertEquals(4L, response.getItemsQuantity());
+        response.setSubtotal("4L");
+        assertEquals("4L", response.getSubtotal());
 
-        Method setItemsQuantity = clazz.getMethod("setItemsQuantity", long.class);
-        setItemsQuantity.invoke(addToCartResponse, 4L);
-        getItemsQuantity = clazz.getMethod("getItemsQuantity");
-        assertEquals(4L, getItemsQuantity.invoke(addToCartResponse));
-
-        Method setTotalPrice = clazz.getMethod("setSubtotal", String.class);
-        setTotalPrice.invoke(addToCartResponse, "4L");
-        getTotalPrice = clazz.getMethod("getSubtotal");
-        assertEquals("4L", getTotalPrice.invoke(addToCartResponse));
     }
 }
