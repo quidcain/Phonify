@@ -5,6 +5,9 @@ import com.expertsoft.service.OrderService;
 import com.expertsoft.service.PhoneService;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -16,24 +19,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 
-
+@RunWith(MockitoJUnitRunner.class)
 public class ProductsControllerTest {
     private MockMvc mockMvc;
     private List<Phone> expectedPhones;
+    @Mock
     private PhoneService phoneService;
+    @Mock
     private OrderService orderService;
 
 
     @Before
     public void init() {
-        phoneService = mock(PhoneService.class);
-        orderService = mock(OrderService.class);
         expectedPhones = createPhoneList(5);
         ProductsController controller = new ProductsController(phoneService, orderService);
         when(phoneService.findAll())
