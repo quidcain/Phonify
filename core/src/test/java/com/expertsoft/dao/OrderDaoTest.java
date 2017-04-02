@@ -21,7 +21,6 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/coreContext.xml")
-@ActiveProfiles("test")
 @Transactional
 public class OrderDaoTest {
 

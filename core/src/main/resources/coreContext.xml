@@ -20,7 +20,7 @@
     <context:component-scan base-package="com.expertsoft.service" />
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
-        p:location="classpath:application.properties" />
+          p:location="classpath:application.properties" />
 
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate"
           c:dataSource-ref="dataSource"/>
@@ -30,29 +30,21 @@
 
     <tx:annotation-driven transaction-manager="transactionManager" />
 
-    <beans profile="dev">
-        <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-              p:driverClassName="${db.driver}"
-              p:url="${db.url}"
-              p:username="${db.user}"
-              p:password="${db.password}" />
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+          p:driverClassName="${db.driver}"
+          p:url="${db.url}"
+          p:username="${db.user}"
+          p:password="${db.password}" />
 
-        <jdbc:initialize-database data-source="dataSource"
-                                  enabled="${db.insertSchema}"
-                                  ignore-failures="DROPS">
-                <jdbc:script location="classpath:insertSchema.sql" />
-        </jdbc:initialize-database>
+    <jdbc:initialize-database data-source="dataSource"
+                              enabled="${db.insertSchema}"
+                              ignore-failures="DROPS">
+        <jdbc:script location="classpath:insertSchema.sql" />
+    </jdbc:initialize-database>
 
-        <jdbc:initialize-database data-source="dataSource"
-                                  enabled="${db.insertDemoData}">
-            <jdbc:script location="classpath:insertDemoData.sql" />
-        </jdbc:initialize-database>
-    </beans>
-
-    <beans profile="test">
-        <jdbc:embedded-database id="dataSource" type="HSQL" >
-            <jdbc:script location="classpath:test/insertSchema.sql" />
-        </jdbc:embedded-database>
-    </beans>
+    <jdbc:initialize-database data-source="dataSource"
+                              enabled="${db.insertDemoData}">
+        <jdbc:script location="classpath:insertDemoData.sql" />
+    </jdbc:initialize-database>
 
 </beans>
