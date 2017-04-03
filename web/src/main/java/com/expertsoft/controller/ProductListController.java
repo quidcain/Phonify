@@ -14,28 +14,26 @@ import javax.validation.Valid;
 
 
 @Controller
-// TODO: Use ecommerce naming. See spec (ProductListController)
-public class ProductsController {
+public class ProductListController {
     private PhoneService phoneService;
     private OrderService orderService;
 
     @Autowired
-    public ProductsController(PhoneService phoneService, OrderService orderService) {
+    public ProductListController(PhoneService phoneService, OrderService orderService) {
         this.phoneService = phoneService;
         this.orderService = orderService;
     }
 
-    @GetMapping({"/", "/products"})
+    @GetMapping({"/", "/ProductList"})
     public String products(Model model) {
         model.addAttribute(phoneService.findAll());
-        return "products";
+        return "ProductList";
     }
 
     @ResponseBody
     @RequestMapping(value = "/addToCart")
     public ResponseEntity<?> addToCart(@Valid @RequestBody AddToCartRequest addToCartRequest, BindingResult result){
         if (result.hasErrors()) {
-            // TODO: return errors
             AddToCartErrorResponse response = new AddToCartErrorResponse();
             response.setMessage("Value must be from 1 to 99!");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);

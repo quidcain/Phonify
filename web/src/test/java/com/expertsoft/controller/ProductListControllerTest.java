@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ProductsControllerTest {
+public class ProductListControllerTest {
     private MockMvc mockMvc;
     private List<Phone> expectedPhones;
     @Mock
@@ -37,7 +37,7 @@ public class ProductsControllerTest {
     @Before
     public void init() {
         expectedPhones = createPhoneList(5);
-        ProductsController controller = new ProductsController(phoneService, orderService);
+        ProductListController controller = new ProductListController(phoneService, orderService);
         when(phoneService.findAll())
                 .thenReturn(expectedPhones);
         mockMvc = standaloneSetup(controller).build();
@@ -46,7 +46,7 @@ public class ProductsControllerTest {
     @Test
     public void testProductsPage() throws Exception {
         mockMvc.perform(get("/"))
-                .andExpect(view().name("products"))
+                .andExpect(view().name("ProductList"))
                 .andExpect(model().attributeExists("phoneList"))
                 .andExpect(model().attribute("phoneList", hasItems(expectedPhones.toArray())));
     }
