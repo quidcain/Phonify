@@ -2,7 +2,7 @@ $(function() {
     $("button").click(function(event) {
         var id = $(this).attr("id").split('_')[1];
         var field = $("#input_" + id);
-        createRequest(id, field);
+        addToCart(id, field);
     });
     $("form").submit(function(event) {
         event.preventDefault();
@@ -10,7 +10,7 @@ $(function() {
 });
 
 
-function createRequest(id, field) {
+function addToCart(id, field) {
         var reqBody = {};
         reqBody["id"] = id;
         reqBody["quantity"] = field.val();
@@ -19,7 +19,7 @@ function createRequest(id, field) {
             contentType : "application/json",
             url : "addToCart",
             data : JSON.stringify(reqBody),
-            dataType : 'json',
+            dataType : "json",
             timeout : 100000,
             success : function(data) {
                 console.log("SUCCESS: ", data);
@@ -27,17 +27,15 @@ function createRequest(id, field) {
                 $("#subtotal").html(data.subtotal);
                 field.val("");
             },
-            error : function(e) {
-                console.log("ERROR: ", e);
-                field.val("value must be from 0 to 100!");
-                field.addClass("incorrectInput");
+            error : function(data) {
+                console.log("ERROR: ", data);
+                var errorMessage = $("#input_" + id + " + .errorMessage");
+                console.log(data.responseJSON.message);
+                errorMessage.html(data.responseJSON.message);
+                errorMessage.removeClass("hidden");
                 setTimeout(function(){
-                    field.removeClass("incorrectInput");
-                    field.val("");
+                    errorMessage.addClass("hidden");
                 }, 3000);
-            },
-            done : function(e) {
-                console.log("DONE");
             }
         });
 }

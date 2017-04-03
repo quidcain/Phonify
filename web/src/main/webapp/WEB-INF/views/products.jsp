@@ -46,6 +46,7 @@
                                 <td>${phone.price}$</td>
                                 <td>
                                     <input type="text" name="quantity" id="input_${phone.id}">
+                                    <span class="errorMessage hidden"></span>
                                 </td>
                                 <td>
                                     <button type="submit" class="btn" id="button_${phone.id}">Add to cart</button>

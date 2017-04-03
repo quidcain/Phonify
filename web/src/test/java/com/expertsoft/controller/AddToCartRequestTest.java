@@ -9,15 +9,10 @@ import static org.junit.Assert.*;
 
 
 public class AddToCartRequestTest {
-    AddToCartRequest request = new AddToCartRequest(4L, "100");
-
+    private AddToCartRequest request = new AddToCartRequest();
 
     @Test
     public void setterGetterTest() throws Throwable {
-        assertEquals(4L, request.getId());
-        assertEquals("100", request.getQuantity());
-
-        request = new AddToCartRequest();
         request.setId(4L);
         assertEquals(4L, request.getId());
         request.setQuantity("4L");

@@ -1,16 +1,10 @@
 package com.expertsoft.controller;
 
-public class AddToCartResponse {
+public class AddToCartSuccessResponse {
     private long itemsQuantity;
     private String subtotal;
 
-    public AddToCartResponse() {
-
-    }
-
-    public AddToCartResponse(long itemsQuantity, String subtotal) {
-        this.itemsQuantity = itemsQuantity;
-        this.subtotal = subtotal;
+    public AddToCartSuccessResponse() {
     }
 
     public long getItemsQuantity() {

@@ -13,12 +13,6 @@ public class AddToCartRequest {
     private String quantity;
 
     public AddToCartRequest() {
-
-    }
-
-    public AddToCartRequest(long id, String quantity) {
-        this.id = id;
-        this.quantity = quantity;
     }
 
     public long getId() {

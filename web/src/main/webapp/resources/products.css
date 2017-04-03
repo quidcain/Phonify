@@ -34,11 +34,10 @@ input[type="text"] {
     text-align: right;
 }
 
-.incorrectInput {
+.errorMessage {
     color: #a94442;
-    background-color: #f2dede;
-    font-size: 13px;
-    width: 174px;
-    height: 26px;
-    outline: none;
+}
+
+.hidden {
+    display: none;
 }
