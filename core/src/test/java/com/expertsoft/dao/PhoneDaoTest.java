@@ -4,7 +4,6 @@ import com.expertsoft.model.Phone;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +22,7 @@ public class PhoneDaoTest {
     @Autowired
     private PhoneDao phoneDao;
 
-    private void addPhoneToList(List<Phone> list, String phoneModel) {
+    private void addPhoneToListByModel(List<Phone> list, String phoneModel) {
         Phone phone = new Phone();
         phone.setModel(phoneModel);
         phone.setColor("black");
@@ -53,9 +52,9 @@ public class PhoneDaoTest {
     @Test
     public void findAllTest() {
         List<Phone> list = new ArrayList<>(3);
-        addPhoneToList(list, "iPhone");
-        addPhoneToList(list, "Nokia");
-        addPhoneToList(list, "Motorolla");
+        addPhoneToListByModel(list, "iPhone");
+        addPhoneToListByModel(list, "Nokia");
+        addPhoneToListByModel(list, "Motorolla");
         for(Phone phone : list)
             phoneDao.save(phone);
         assertEquals(list.size(), phoneDao.findAll().size());

@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +29,7 @@ public class OrderDaoTest {
     @Autowired
     private PhoneDao phoneDao;
 
-    private void addOrderToList(List<Order> list, String firstName, String lastName) {
+    private void addOrderToListByName(List<Order> list, String firstName, String lastName) {
         Order order = new Order();
         order.setOrderItems(new ArrayList<>());
         order.setSubtotal(BigDecimal.ONE);
@@ -89,9 +88,9 @@ public class OrderDaoTest {
     @Test
     public void findAllTest() {
         List<Order> list = new ArrayList<>(3);
-        addOrderToList(list, "John", "Doe");
-        addOrderToList(list, "Mary", "Lee");
-        addOrderToList(list, "Irving", "Blake");
+        addOrderToListByName(list, "John", "Doe");
+        addOrderToListByName(list, "Mary", "Lee");
+        addOrderToListByName(list, "Irving", "Blake");
         for(Order order : list) {
             addAllPhones(order);
             orderDao.save(order);
