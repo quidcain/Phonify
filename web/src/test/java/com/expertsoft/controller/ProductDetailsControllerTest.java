@@ -1,6 +1,7 @@
 package com.expertsoft.controller;
 
 import com.expertsoft.model.Phone;
+import com.expertsoft.service.OrderService;
 import com.expertsoft.service.PhoneService;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,12 +27,17 @@ public class ProductDetailsControllerTest {
     @Mock
     private PhoneService phoneService;
 
+    @Mock
+    private OrderService orderService;
+
     @Before
     public void init() {
         phone = createPhone();
-        ProductDetailsController controller = new ProductDetailsController(phoneService);
+        ProductDetailsController controller = new ProductDetailsController(phoneService, orderService);
         when(phoneService.get(anyLong()))
                 .thenReturn(phone);
+        when(orderService.getItemsQuantity()).thenReturn(0L);
+        when(orderService.getSubtotal()).thenReturn("0");
         mockMvc = standaloneSetup(controller).build();
     }
 
@@ -39,6 +45,10 @@ public class ProductDetailsControllerTest {
     public void testProductDetailsPage() throws Exception {
         mockMvc.perform(get("/productDetails/{phoneId}", 1))
                 .andExpect(view().name("productDetails"))
+                .andExpect(model().attributeExists("itemsQuantity"))
+                .andExpect(model().attribute("itemsQuantity", orderService.getItemsQuantity()))
+                .andExpect(model().attributeExists("subtotal"))
+                .andExpect(model().attribute("subtotal", orderService.getSubtotal()))
                 .andExpect(model().attributeExists("phone"))
                 .andExpect(model().attribute("phone", phone));
     }

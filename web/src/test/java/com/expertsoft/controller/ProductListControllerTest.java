@@ -32,12 +32,17 @@ public class ProductListControllerTest {
     @Mock
     private PhoneService phoneService;
 
+    @Mock
+    private OrderService orderService;
+
     @Before
     public void init() {
         expectedPhones = createPhoneList(5);
-        ProductListController controller = new ProductListController(phoneService);
+        ProductListController controller = new ProductListController(phoneService, orderService);
         when(phoneService.findAll())
                 .thenReturn(expectedPhones);
+        when(orderService.getItemsQuantity()).thenReturn(0L);
+        when(orderService.getSubtotal()).thenReturn("0");
         mockMvc = standaloneSetup(controller).build();
     }
 
@@ -45,6 +50,10 @@ public class ProductListControllerTest {
     public void testProductListPage() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(view().name("productList"))
+                .andExpect(model().attributeExists("itemsQuantity"))
+                .andExpect(model().attribute("itemsQuantity", orderService.getItemsQuantity()))
+                .andExpect(model().attributeExists("subtotal"))
+                .andExpect(model().attribute("subtotal", orderService.getSubtotal()))
                 .andExpect(model().attributeExists("phoneList"))
                 .andExpect(model().attribute("phoneList", hasItems(expectedPhones.toArray())));
     }

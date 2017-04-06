@@ -24,7 +24,7 @@
                 <c:if test="${itemsQuantity == null}" >
                     <c:set value="0" var="itemsQuantity"/>
                 </c:if>
-                <button type="button" class="btn">My cart: <span id="itemsQuantity">0</span> items <span id="subtotal">0</span>$</button>
+                <button type="button" class="btn">My cart: <span id="itemsQuantity">${itemsQuantity}</span> items <span id="subtotal">${subtotal}</span>$</button>
             </header>
             <section>
                 <a href="<s:url value='/' />" class="btn" role="button" id="backToProductList">Back to product list</a>
