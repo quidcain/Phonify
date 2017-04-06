@@ -15,12 +15,12 @@
         <c:set var="fullPageName" value="${pageContext.request.getRequestURI()}"/>
         <c:set var="pageName" value="${fullPageName.substring(fullPageName.lastIndexOf('/') + 1, fullPageName.indexOf('.'))}"/>
         <link rel="stylesheet" href="<s:url value="/resources/${pageName}.css" />">
-        <script src="<s:url value="/resources/${pageName}.js" />"></script>
+        <script src="<s:url value='/resources/addToCart.js' />"></script>
     </head>
     <body>
         <div id="wrapper" class="container">
             <header>
-                <img src="<s:url value="/resources/images/phonify.svg" />">
+                <img src="<s:url value='/resources/images/phonify.svg' />">
                 <c:if test="${itemsQuantity == null}" >
                     <c:set value="0" var="itemsQuantity"/>
                 </c:if>
@@ -28,7 +28,7 @@
             </header>
             <section>
                 <h1>Phones</h1>
-                <form method="post" action="<s:url value="/addToCart" />">
+                <form method="post" action="<s:url value='/addToCart' />">
                     <table class="table table-striped table-bordered">
                         <tr>
                             <th>Model</th>
@@ -40,7 +40,7 @@
                         </tr>
                         <c:forEach items="${phoneList}" var="phone">
                             <tr>
-                                <td>${phone.model}</td>
+                                <td><a href="<s:url value='/productDetails/${phone.id}' />">${phone.model}</a></td>
                                 <td>${phone.color}</td>
                                 <td>${phone.displaySize}"</td>
                                 <td>${phone.price}$</td>

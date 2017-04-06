@@ -38,3 +38,7 @@ h1 {
 button {
 	min-width: 70px; 
 }
+
+a, a:hover {
+	color: inherit;
+}

@@ -28,45 +28,25 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 public class ProductListControllerTest {
     private MockMvc mockMvc;
     private List<Phone> expectedPhones;
+
     @Mock
     private PhoneService phoneService;
-    @Mock
-    private OrderService orderService;
-
 
     @Before
     public void init() {
         expectedPhones = createPhoneList(5);
-        ProductListController controller = new ProductListController(phoneService, orderService);
+        ProductListController controller = new ProductListController(phoneService);
         when(phoneService.findAll())
                 .thenReturn(expectedPhones);
         mockMvc = standaloneSetup(controller).build();
     }
 
     @Test
-    public void testProductsPage() throws Exception {
+    public void testProductListPage() throws Exception {
         mockMvc.perform(get("/"))
-                .andExpect(view().name("ProductList"))
+                .andExpect(view().name("productList"))
                 .andExpect(model().attributeExists("phoneList"))
                 .andExpect(model().attribute("phoneList", hasItems(expectedPhones.toArray())));
-    }
-
-    @Test
-    public void addToCartTest() throws Exception {
-        when(orderService.getItemsQuantity()).thenReturn(1L);
-        when(orderService.getSubtotal()).thenReturn("1");
-        mockMvc.perform(post("/addToCart")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(createRequestInJson(0L, "2")))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-        mockMvc.perform(post("/addToCart")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(createRequestInJson(0L, "100")))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
-        mockMvc.perform(post("/addToCart")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(createRequestInJson(0L, "abc")))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     private List<Phone> createPhoneList(int count) {
@@ -84,8 +64,4 @@ public class ProductListControllerTest {
         return phones;
     }
 
-    private String createRequestInJson(long phoneId, String quantity) {
-        return "{ \"phoneId\": \"" + phoneId + "\", " +
-                "\"quantity\":\"" + quantity + "\"}";
-    }
 }

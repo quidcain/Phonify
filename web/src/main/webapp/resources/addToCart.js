@@ -17,7 +17,12 @@ function addToCart(id, field) {
         $.ajax({
             type : "POST",
             contentType : "application/json",
-            url : "addToCart",
+            url : function() {
+                if(location.pathname.search(/\d+$/) != -1)
+                    return "../addToCart";
+                else
+                    return "addToCart";
+            }(),
             data : JSON.stringify(reqBody),
             dataType : "json",
             timeout : 100000,
@@ -29,7 +34,7 @@ function addToCart(id, field) {
             },
             error : function(data) {
                 console.log("ERROR: ", data);
-                var errorMessage = $("#input_" + id + " + .errorMessage");
+                var errorMessage = $("#input_" + id + " ~ .errorMessage");
                 console.log(data.responseJSON.message);
                 errorMessage.html(data.responseJSON.message);
                 errorMessage.removeClass("hidden");
