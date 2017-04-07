@@ -1,6 +1,7 @@
 package com.expertsoft.service;
 
 import com.expertsoft.model.Order;
+import com.expertsoft.model.OrderItem;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface OrderService {
     void addOrderItem(long id, String quantity);
     long getItemsQuantity();
     String getSubtotal();
+    List<OrderItem> getOrderItems();
+    void reduceOrderItem(long phoneId, long quantity);
 }

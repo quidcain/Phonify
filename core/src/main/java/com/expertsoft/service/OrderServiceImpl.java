@@ -65,4 +65,23 @@ public class OrderServiceImpl implements OrderService {
     public String getSubtotal() {
         return order.getSubtotal().toString();
     }
+
+    @Override
+    public List<OrderItem> getOrderItems() {
+        return order.getOrderItems();
+    }
+
+    @Override
+    public void reduceOrderItem(long phoneId, long quantity) {
+        List<OrderItem> orderItems = order.getOrderItems();
+        for (int i = 0, j = orderItems.size(); i < j; i++) {
+            OrderItem item = orderItems.get(i);
+            if (item.getPhone().getId() == phoneId) {
+                item.setQuantity(item.getQuantity() - quantity);
+                if (item.getQuantity() < 1)
+                    orderItems.remove(i);
+                return;
+            }
+        }
+    }
 }

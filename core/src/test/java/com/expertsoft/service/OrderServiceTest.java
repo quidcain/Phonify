@@ -4,67 +4,72 @@ package com.expertsoft.service;
 import com.expertsoft.dao.OrderDao;
 import com.expertsoft.dao.PhoneDao;
 import com.expertsoft.model.Order;
+import com.expertsoft.model.OrderItem;
 import com.expertsoft.model.Phone;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.*;
 
+
+@RunWith(MockitoJUnitRunner.class)
 public class OrderServiceTest {
-    private OrderService orderService;
-    private OrderDaoSpy orderDaoSpy;
+    @Mock
+    private OrderDao orderDao;
+    @Mock
     private PhoneDao phoneDao;
-    private Order order;
-
-    @Test
-    public void orderDaoShouldNotBeNull() {
-        assertNotNull(orderService);
-    }
+    private Order order = new Order();
+    @InjectMocks
+    private OrderServiceImpl orderService;
 
     @Before
     public void init() {
-        order = new Order();
-        orderDaoSpy = new OrderDaoSpy();
-        phoneDao = mock(PhoneDao.class);
-        orderService = new OrderServiceImpl(orderDaoSpy, phoneDao, order);
+        orderService = new OrderServiceImpl(orderDao, phoneDao, order);
     }
 
     @Test
     public void findAllTest() {
+        List <Order> list = new ArrayList<>();
+        when(orderDao.findAll()).thenReturn(list);
         orderService.findAll();
-        assertEquals(1, orderDaoSpy.getFindAllCallCount());
+        verify(orderDao, times(1)).findAll();
     }
 
     @Test
     public void getTest() {
+        Order order = new Order();
+        when(orderDao.get(anyLong())).thenReturn(order);
         orderService.get(0);
-        assertEquals(1, orderDaoSpy.getGetCallCount());
+        verify(orderDao, times(1)).get(anyLong());
     }
 
     @Test
     public void saveTest() {
-        orderService.save(order);
-        assertEquals(1, orderDaoSpy.getSaveCallCount());
+        doNothing().when(orderDao).save(any(Order.class));
+        orderService.save(new Order());
+        verify(orderDao, times(1)).save(any(Order.class));
     }
 
     @Test
     public void deleteTest() {
+        doNothing().when(orderDao).delete(anyLong());
         orderService.delete(0);
-        assertEquals(1, orderDaoSpy.getDeleteCallCount());
+        verify(orderDao, times(1)).delete(anyLong());
     }
 
     @Test
     public void addOrderItemTest() {
-        Phone phone = new Phone();
-        phone.setModel("iPhone");
-        phone.setColor("black");
-        phone.setDisplaySize(4);
-        phone.setPrice(BigDecimal.ONE);
+        Phone phone = createPhone();
         when(phoneDao.get(1)).thenReturn(phone);
         orderService.addOrderItem(1, "1");
         assertEquals(1, orderService.getItemsQuantity());
@@ -74,48 +79,42 @@ public class OrderServiceTest {
         assertEquals("3", orderService.getSubtotal());
     }
 
-    private class OrderDaoSpy implements OrderDao {
-        private int getCallCount;
-        private int saveCallCount;
-        private int deleteCallCount;
-        private int findAllCallCount;
+    @Test
+    public void getOrderItemsTest() {
+        List<OrderItem> list = new ArrayList<>();
+        order.setOrderItems(list);
+        assertEquals(0, orderService.getOrderItems().size());
+        OrderItem orderItem = new OrderItem();
+        orderItem.setOrder(order);
+        list.add(orderItem);
+        assertEquals(1, orderService.getOrderItems().size());
+    }
 
-        public int getGetCallCount() {
-            return getCallCount;
-        }
+    @Test
+    public void reduceOrderItemTest() {
+        Phone phone = createPhone();
+        OrderItem orderItem = new OrderItem();
+        orderItem.setOrder(order);
+        orderItem.setPhone(phone);
+        orderItem.setQuantity(3);
+        List<OrderItem> list = new ArrayList<>();
+        list.add(orderItem);
+        order.setOrderItems(list);
+        orderService.reduceOrderItem(1, 2);
+        assertEquals(1L, orderItem.getQuantity());
+        orderService.reduceOrderItem(1, 1);
+        assertEquals(0, order.getOrderItems().size());
+        orderService.reduceOrderItem(2, 2);
+        assertEquals(0, order.getOrderItems().size());
+    }
 
-        public int getSaveCallCount() {
-            return saveCallCount;
-        }
-
-        public int getDeleteCallCount() {
-            return deleteCallCount;
-        }
-
-        public int getFindAllCallCount() {
-            return findAllCallCount;
-        }
-
-        @Override
-        public Order get(long id) {
-            getCallCount++;
-            return null;
-        }
-
-        @Override
-        public void save(Order order) {
-            saveCallCount++;
-        }
-
-        @Override
-        public void delete(long id) {
-            deleteCallCount++;
-        }
-
-        @Override
-        public List<Order> findAll() {
-            findAllCallCount++;
-            return null;
-        }
+    private Phone createPhone() {
+        Phone phone = new Phone();
+        phone.setId(1);
+        phone.setModel("iPhone");
+        phone.setColor("black");
+        phone.setDisplaySize(4);
+        phone.setPrice(BigDecimal.ONE);
+        return phone;
     }
 }
