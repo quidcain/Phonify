@@ -17,9 +17,9 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 @RunWith(MockitoJUnitRunner.class)
 public class AddToCartControllerTest {
     private MockMvc mockMvc;
+
     @Mock
     private OrderService orderService;
-
 
     @Before
     public void init() {

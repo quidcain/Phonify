@@ -24,11 +24,14 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderServiceTest {
+    private Order order = new Order();
+
     @Mock
     private OrderDao orderDao;
+
     @Mock
     private PhoneDao phoneDao;
-    private Order order = new Order();
+
     @InjectMocks
     private OrderServiceImpl orderService;
 

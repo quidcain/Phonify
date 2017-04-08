@@ -29,32 +29,14 @@ public class OrderDaoTest {
     @Autowired
     private PhoneDao phoneDao;
 
-    private void addOrderToListByName(List<Order> list, String firstName, String lastName) {
-        Order order = new Order();
-        order.setOrderItems(new ArrayList<>());
-        order.setSubtotal(BigDecimal.ONE);
-        order.setDeliveryPrice(BigDecimal.ONE);
-        order.setFirstName(firstName);
-        order.setLastName(lastName);
-        order.setDeliveryAddress("1234 Main Street Anytown, USA 123456");
-        order.setContactPhoneNo("1-800-354-0387");
-        list.add(order);
-    }
-
-    private void addAllPhones(Order order) {
-        List<OrderItem> orderItems = order.getOrderItems();
-        for(Phone phone : phoneDao.findAll()) {
-            OrderItem item = new OrderItem();
-            item.setPhone(phoneDao.get(phone.getId()));
-            item.setOrder(order);
-            item.setQuantity(1);
-            orderItems.add(item);
-        }
-    }
-
     @Test
     public void orderDaoShouldNotBeNull() {
         assertNotNull(orderDao);
+    }
+
+    @Test
+    public void phoneDaoShouldNotBeNull() {
+        assertNotNull(phoneDao);
     }
 
     @Before
@@ -100,5 +82,28 @@ public class OrderDaoTest {
         for(Order order : list)
             orderDao.delete(order.getId());
         assertEquals(0, orderDao.findAll().size());
+    }
+
+    private void addOrderToListByName(List<Order> list, String firstName, String lastName) {
+        Order order = new Order();
+        order.setOrderItems(new ArrayList<>());
+        order.setSubtotal(BigDecimal.ONE);
+        order.setDeliveryPrice(BigDecimal.ONE);
+        order.setFirstName(firstName);
+        order.setLastName(lastName);
+        order.setDeliveryAddress("1234 Main Street Anytown, USA 123456");
+        order.setContactPhoneNo("1-800-354-0387");
+        list.add(order);
+    }
+
+    private void addAllPhones(Order order) {
+        List<OrderItem> orderItems = order.getOrderItems();
+        for(Phone phone : phoneDao.findAll()) {
+            OrderItem item = new OrderItem();
+            item.setPhone(phoneDao.get(phone.getId()));
+            item.setOrder(order);
+            item.setQuantity(1);
+            orderItems.add(item);
+        }
     }
 }

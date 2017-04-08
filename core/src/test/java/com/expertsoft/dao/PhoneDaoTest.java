@@ -22,15 +22,6 @@ public class PhoneDaoTest {
     @Autowired
     private PhoneDao phoneDao;
 
-    private void addPhoneToListByModel(List<Phone> list, String phoneModel) {
-        Phone phone = new Phone();
-        phone.setModel(phoneModel);
-        phone.setColor("black");
-        phone.setDisplaySize(4);
-        phone.setPrice(BigDecimal.valueOf(800));
-        list.add(phone);
-    }
-
     @Test
     public void phoneDaoShouldNotBeNull() {
         assertNotNull(phoneDao);
@@ -61,5 +52,14 @@ public class PhoneDaoTest {
         for(Phone phone : list)
             phoneDao.delete(phone.getId());
         assertEquals(0, phoneDao.findAll().size());
+    }
+
+    private void addPhoneToListByModel(List<Phone> list, String phoneModel) {
+        Phone phone = new Phone();
+        phone.setModel(phoneModel);
+        phone.setColor("black");
+        phone.setDisplaySize(4);
+        phone.setPrice(BigDecimal.valueOf(800));
+        list.add(phone);
     }
 }

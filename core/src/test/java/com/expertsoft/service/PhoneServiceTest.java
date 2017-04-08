@@ -15,8 +15,10 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PhoneServiceTest {
+
     @Mock
     private PhoneDao phoneDao;
+
     @InjectMocks
     private PhoneServiceImpl phoneService;
 
