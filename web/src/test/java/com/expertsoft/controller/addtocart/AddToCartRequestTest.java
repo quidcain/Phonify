@@ -1,4 +1,4 @@
-package com.expertsoft.controller;
+package com.expertsoft.controller.addtocart;
 
 import com.expertsoft.controller.addtocart.AddToCartRequest;
 import org.junit.Test;
