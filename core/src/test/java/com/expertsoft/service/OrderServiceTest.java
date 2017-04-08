@@ -102,18 +102,18 @@ public class OrderServiceTest {
     @Test
     public void reduceOrderItemTest() {
         Phone phone = createPhone("iPhone");
-        OrderItem orderItem = new OrderItem();
-        orderItem.setOrder(order);
-        orderItem.setPhone(phone);
-        orderItem.setQuantity(3);
-        List<OrderItem> list = new ArrayList<>();
-        list.add(orderItem);
-        order.setOrderItems(list);
+        when(phoneDao.get(1)).thenReturn(phone);
+        orderService.addOrderItem(phone.getId(), "3");
         orderService.reduceOrderItem(1, 2);
-        assertEquals(1L, orderItem.getQuantity());
+        assertEquals(1, orderService.getItemsQuantity());
+        assertEquals("1", orderService.getSubtotal());
         orderService.reduceOrderItem(1, 1);
+        assertEquals(0, orderService.getItemsQuantity());
+        assertEquals("0", orderService.getSubtotal());
         assertEquals(0, order.getOrderItems().size());
         orderService.reduceOrderItem(2, 2);
+        assertEquals("0", orderService.getSubtotal());
+        assertEquals(0, orderService.getItemsQuantity());
         assertEquals(0, order.getOrderItems().size());
     }
 

@@ -89,8 +89,12 @@ public class OrderServiceImpl implements OrderService {
         List<OrderItem> orderItems = order.getOrderItems();
         for (int i = 0, j = orderItems.size(); i < j; i++) {
             OrderItem item = orderItems.get(i);
-            if (item.getPhone().getId() == phoneId) {
+            Phone phone = item.getPhone();
+            if (phone.getId() == phoneId) {
                 item.setQuantity(item.getQuantity() - quantity);
+                itemsQuantity -= quantity;
+                order.setSubtotal(order.getSubtotal().subtract(
+                        phone.getPrice().multiply(BigDecimal.valueOf(quantity))));
                 if (item.getQuantity() < 1)
                     orderItems.remove(i);
                 return;
