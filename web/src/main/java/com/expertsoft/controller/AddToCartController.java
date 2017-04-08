@@ -1,5 +1,8 @@
 package com.expertsoft.controller;
 
+import com.expertsoft.controller.addtocart.AddToCartErrorResponse;
+import com.expertsoft.controller.addtocart.AddToCartRequest;
+import com.expertsoft.controller.addtocart.AddToCartSuccessResponse;
 import com.expertsoft.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

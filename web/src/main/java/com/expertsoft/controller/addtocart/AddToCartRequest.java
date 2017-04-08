@@ -1,4 +1,4 @@
-package com.expertsoft.controller;
+package com.expertsoft.controller.addtocart;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;

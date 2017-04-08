@@ -1,9 +1,7 @@
 package com.expertsoft.controller;
 
+import com.expertsoft.controller.addtocart.AddToCartRequest;
 import org.junit.Test;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 
 import static org.junit.Assert.*;
 

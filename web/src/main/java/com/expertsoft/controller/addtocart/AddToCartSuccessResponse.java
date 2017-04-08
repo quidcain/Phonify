@@ -1,4 +1,4 @@
-package com.expertsoft.controller;
+package com.expertsoft.controller.addtocart;
 
 public class AddToCartSuccessResponse {
     private long itemsQuantity;
