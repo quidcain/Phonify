@@ -72,14 +72,20 @@ public class OrderServiceTest {
 
     @Test
     public void addOrderItemTest() {
-        Phone phone = createPhone();
+        Phone phone = createPhone("iPhone");
         when(phoneDao.get(1)).thenReturn(phone);
+        phone = createPhone("Motorola");
+        when(phoneDao.get(2)).thenReturn(phone);
         orderService.addOrderItem(1, "1");
         assertEquals(1, orderService.getItemsQuantity());
         assertEquals("1", orderService.getSubtotal());
         orderService.addOrderItem(1, "2");
         assertEquals(3, orderService.getItemsQuantity());
         assertEquals("3", orderService.getSubtotal());
+
+        orderService.addOrderItem(2, "3");
+        assertEquals(6, orderService.getItemsQuantity());
+        assertEquals("6", orderService.getSubtotal());
     }
 
     @Test
@@ -95,7 +101,7 @@ public class OrderServiceTest {
 
     @Test
     public void reduceOrderItemTest() {
-        Phone phone = createPhone();
+        Phone phone = createPhone("iPhone");
         OrderItem orderItem = new OrderItem();
         orderItem.setOrder(order);
         orderItem.setPhone(phone);
@@ -111,10 +117,10 @@ public class OrderServiceTest {
         assertEquals(0, order.getOrderItems().size());
     }
 
-    private Phone createPhone() {
+    private Phone createPhone(String model) {
         Phone phone = new Phone();
         phone.setId(1);
-        phone.setModel("iPhone");
+        phone.setModel(model);
         phone.setColor("black");
         phone.setDisplaySize(4);
         phone.setPrice(BigDecimal.ONE);
