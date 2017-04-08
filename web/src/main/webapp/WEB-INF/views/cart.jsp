@@ -15,7 +15,6 @@
         <c:set var="fullPageName" value="${pageContext.request.getRequestURI()}"/>
         <c:set var="pageName" value="${fullPageName.substring(fullPageName.lastIndexOf('/') + 1, fullPageName.indexOf('.'))}"/>
         <link rel="stylesheet" href="<s:url value="/resources/${pageName}.css" />">
-        <script src="<s:url value='/resources/addToCart.js' />"></script>
     </head>
     <body>
         <div id="wrapper" class="container">
@@ -27,8 +26,10 @@
                 <a href="<s:url value='/cart' />" class="btn" role="button">My cart: <span id="itemsQuantity">${itemsQuantity}</span> items <span id="subtotal">${subtotal}</span>$</a>
             </header>
             <section>
-                <h1>Phones</h1>
-                <form method="post" action="<s:url value='/addToCart' />">
+                <h1>Cart</h1>
+                <a href="<s:url value='/' />" class="btn aButton backToProductList" role="button">Back to product list</a>
+                <a href="#" class="btn aButton order" role="button">Order</a>
+                <%--<form method="post" action="<s:url value='/reduceOrderItem' />">--%>
                     <table class="table table-striped table-bordered">
                         <tr>
                             <th>Model</th>
@@ -38,23 +39,27 @@
                             <th>Quantity</th>
                             <th>Action</th>
                         </tr>
-                        <c:forEach items="${phoneList}" var="phone">
+                        <c:forEach items="${orderItemList}" var="orderItem">
                             <tr>
-                                <td><a href="<s:url value='/productDetails/${phone.id}' />">${phone.model}</a></td>
-                                <td>${phone.color}</td>
-                                <td>${phone.displaySize}"</td>
-                                <td>${phone.price}$</td>
-                                <td>
-                                    <input type="text" name="quantity" id="input_${phone.id}">
-                                    <span class="errorMessage hidden"></span>
-                                </td>
-                                <td>
-                                    <button type="submit" class="btn" id="button_${phone.id}">Add to cart</button>
-                                </td>
+                                <td><a href="<s:url value='/productDetails/${orderItem.phone.id}' />">${orderItem.phone.model}</a></td>
+                                <td>${orderItem.phone.color}</td>
+                                <td>${orderItem.phone.displaySize}"</td>
+                                <td>${orderItem.phone.price}$</td>
+                                <form method="post" action="deleteOrderItem/${orderItem.phone.id}" id="${orderItem.phone.id}">
+                                    <td>
+                                        <input type="text" name="quantity" value="${orderItem.quantity}" form="${orderItem.phone.id}">
+                                        <span class="errorMessage hidden"></span>
+                                    </td>
+                                    <td>
+                                        <button type="submit" class="btn" form="${orderItem.phone.id}">Delete</button>
+                                    </td>
+                                </form>
                             </tr>
                         </c:forEach>
                     </table>
-                </form>
+                <%--</form>--%>
+                <a href="#" class="btn aButton update" role="button">Update</a>
+                <a href="#" class="btn aButton order" role="button">Order</a>
             </section>
         </div>
     </body>

@@ -17,7 +17,7 @@ html, body {
 	border-bottom: 3px solid #000;
 }
 
-#wrapper header button {
+#wrapper header a[role=button] {
 	margin-top: 16px;
 	float: right;
 }
@@ -27,18 +27,14 @@ h1 {
 	margin: 20px 0;
 }
 
-.navBlock {
-	margin-bottom: 15px;
-}
-
-.navBlock button:last-of-type{
-	float: right;
-}
-
-button {
+button, a[role=button] {
 	min-width: 70px; 
 }
 
 a, a:hover {
 	color: inherit;
+}
+
+a[role=button] {
+	background-color: buttonface;
 }

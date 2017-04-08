@@ -20,11 +20,11 @@
     <body>
         <div id="wrapper" class="container">
             <header>
-                <img src="<s:url value="/resources/images/phonify.svg" />">
+                <a href="<s:url value='/' />"><img src="<s:url value="/resources/images/phonify.svg" />"></a>
                 <c:if test="${itemsQuantity == null}" >
                     <c:set value="0" var="itemsQuantity"/>
                 </c:if>
-                <button type="button" class="btn">My cart: <span id="itemsQuantity">${itemsQuantity}</span> items <span id="subtotal">${subtotal}</span>$</button>
+                <a href="<s:url value='/cart' />" class="btn" role="button">My cart: <span id="itemsQuantity">${itemsQuantity}</span> items <span id="subtotal">${subtotal}</span>$</a>
             </header>
             <section>
                 <a href="<s:url value='/' />" class="btn" role="button" id="backToProductList">Back to product list</a>
@@ -42,30 +42,6 @@
                         <td>Price</td>
                         <td>${phone.price}$</td>
                     </tr>
-                    <%--<tr>
-                        <td>Display</td>
-                        <td>4"</td>
-                    </tr>
-					<tr>
-                        <td>Length</td>
-                        <td>14mm</td>
-                    </tr>
-					<tr>
-                        <td>Width</td>
-                        <td>56mm</td>
-                    </tr>
-					<tr>
-                        <td>Color</td>
-                        <td>black</td>
-                    </tr>
-					<tr>
-                        <td>Price</td>
-                        <td>100$</td>
-                    </tr>
-					<tr>
-                        <td>Camera</td>
-                        <td>12mp</td>
-                    </tr>--%>
                 </table>
                 <form method="post" action="<s:url value='/addToCart' />">
                 	<input type="text" name="quantity" id="input_${phone.id}">
