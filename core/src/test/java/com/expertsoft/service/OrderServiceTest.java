@@ -99,11 +99,15 @@ public class OrderServiceTest {
         assertEquals(1, orderService.getOrderItems().size());
     }
 
-    @Test
+    @Test(expected = ItemsQuantityUnderflow.class)
     public void reduceOrderItemTest() {
         Phone phone = createPhone("iPhone");
         when(phoneDao.get(1)).thenReturn(phone);
         orderService.addOrderItem(phone.getId(), 3);
+        orderService.reduceOrderItem(2, 2);
+        assertEquals(BigDecimal.valueOf(3), orderService.getSubtotal());
+        assertEquals(3, orderService.getItemsQuantity());
+        assertEquals(1, order.getOrderItems().size());
         orderService.reduceOrderItem(1, 2);
         assertEquals(1, orderService.getItemsQuantity());
         assertEquals(BigDecimal.ONE, orderService.getSubtotal());
@@ -111,10 +115,8 @@ public class OrderServiceTest {
         assertEquals(0, orderService.getItemsQuantity());
         assertEquals(BigDecimal.ZERO, orderService.getSubtotal());
         assertEquals(0, order.getOrderItems().size());
-        orderService.reduceOrderItem(2, 2);
-        assertEquals(BigDecimal.ZERO, orderService.getSubtotal());
-        assertEquals(0, orderService.getItemsQuantity());
-        assertEquals(0, order.getOrderItems().size());
+        orderService.addOrderItem(phone.getId(), 1);
+        orderService.reduceOrderItem(1, 2);
     }
 
     private Phone createPhone(String model) {

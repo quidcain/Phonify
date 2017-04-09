@@ -2,6 +2,7 @@ package com.expertsoft.controller;
 
 import com.expertsoft.model.OrderItem;
 import com.expertsoft.model.Phone;
+import com.expertsoft.service.ItemsQuantityUnderflow;
 import com.expertsoft.service.OrderService;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,9 +21,7 @@ import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -64,15 +63,24 @@ public class CartControllerTest {
     public void testDelete() throws Exception {
         mockMvc = standaloneSetup(controller)
                 .build();
-        doNothing().when(orderService).reduceOrderItem(anyLong(), anyLong());
+        doNothing().when(orderService).reduceOrderItem(anyLong(), eq(1L));
+        doThrow(new ItemsQuantityUnderflow()).when(orderService).reduceOrderItem(anyLong(), eq(2L));
         mockMvc.perform(post("/deleteOrderItem/{phoneId}", 1)
                 .param("quantity", "1"))
                 .andExpect(redirectedUrl("/cart"));
         verify(orderService, times(1)).reduceOrderItem(anyLong(), anyLong());
         mockMvc.perform(post("/deleteOrderItem/{phoneId}", 1)
                 .param("quantity", "ф"))
+                .andExpect(flash().attributeExists("errorMessage_1"))
+                .andExpect(flash().attribute("errorMessage_1", "Value must be from 1 to 99!"))
                 .andExpect(redirectedUrl("/cart"));
         verify(orderService, times(1)).reduceOrderItem(anyLong(), anyLong());
+        mockMvc.perform(post("/deleteOrderItem/{phoneId}", 1)
+                .param("quantity", "2"))
+                .andExpect(flash().attributeExists("errorMessage_1"))
+                .andExpect(flash().attribute("errorMessage_1", "Too few items!"))
+                .andExpect(redirectedUrl("/cart"));
+        verify(orderService, times(2)).reduceOrderItem(anyLong(), anyLong());
     }
 
     private List<OrderItem> createOrderItemList() {
