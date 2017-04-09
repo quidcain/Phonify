@@ -10,7 +10,7 @@ public class QuantityWrapperTest {
 
     @Test
     public void setterGetterTest() throws Throwable {
-        quantityWrapper.setQuantity("1");
-        assertEquals("1", quantityWrapper.getQuantity());
+        quantityWrapper.setQuantity(1);
+        assertEquals(1, quantityWrapper.getQuantity());
     }
 }

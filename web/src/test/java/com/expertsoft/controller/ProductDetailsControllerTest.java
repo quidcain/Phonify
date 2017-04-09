@@ -37,7 +37,7 @@ public class ProductDetailsControllerTest {
         when(phoneService.get(anyLong()))
                 .thenReturn(phone);
         when(orderService.getItemsQuantity()).thenReturn(0L);
-        when(orderService.getSubtotal()).thenReturn("0");
+        when(orderService.getSubtotal()).thenReturn(BigDecimal.ZERO);
         mockMvc = standaloneSetup(controller).build();
     }
 

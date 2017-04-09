@@ -38,7 +38,7 @@ public class CartController {
             model.addFlashAttribute("errorMessage_" + phoneId, "Value must be from 1 to 99!");
             return "redirect:/cart";
         }
-        orderService.reduceOrderItem(phoneId, Long.parseLong(quantityWrapper.getQuantity()));
+        orderService.reduceOrderItem(phoneId, quantityWrapper.getQuantity());
         return "redirect:/cart";
     }
 

@@ -47,26 +47,25 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void addOrderItem(long id, String quantity) {
+    public void addOrderItem(long id, long quantity) {
         boolean itemAlreadyPresents = false;
-        long parsedQuantity = Long.parseLong(quantity);
         Phone phone = null;
         for (OrderItem item : order.getOrderItems()) {
             phone = item.getPhone();
             if (phone.getId() == id) {
-                item.setQuantity(item.getQuantity() + parsedQuantity);
+                item.setQuantity(item.getQuantity() + quantity);
                 itemAlreadyPresents = true;
                 break;
             }
         }
         if (!itemAlreadyPresents) {
             phone = phoneDao.get(id);
-            OrderItem item = new OrderItem(phone, order, parsedQuantity);
+            OrderItem item = new OrderItem(phone, order, quantity);
             order.getOrderItems().add(item);
         }
         order.setSubtotal(order.getSubtotal().add(
-                phone.getPrice().multiply(BigDecimal.valueOf(parsedQuantity))));
-        itemsQuantity += parsedQuantity;
+                phone.getPrice().multiply(BigDecimal.valueOf(quantity))));
+        itemsQuantity += quantity;
     }
 
     @Override
@@ -75,8 +74,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public String getSubtotal() {
-        return order.getSubtotal().toString();
+    public BigDecimal getSubtotal() {
+        return order.getSubtotal();
     }
 
     @Override

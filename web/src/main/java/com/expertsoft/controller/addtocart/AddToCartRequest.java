@@ -10,7 +10,7 @@ public class AddToCartRequest {
     @Max(99)
     @Min(1)
     @NotNull
-    private String quantity;
+    private long quantity;
 
     public long getId() {
         return id;
@@ -20,11 +20,11 @@ public class AddToCartRequest {
         this.id = id;
     }
 
-    public String getQuantity() {
+    public long getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(long quantity) {
         this.quantity = quantity;
     }
 }

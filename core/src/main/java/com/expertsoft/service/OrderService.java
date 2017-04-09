@@ -3,6 +3,7 @@ package com.expertsoft.service;
 import com.expertsoft.model.Order;
 import com.expertsoft.model.OrderItem;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -11,9 +12,9 @@ public interface OrderService {
     void save(Order order);
     void delete(long id);
     List<Order> findAll();
-    void addOrderItem(long id, String quantity);
+    void addOrderItem(long id, long quantity);
     long getItemsQuantity();
-    String getSubtotal();
+    BigDecimal getSubtotal();
     List<OrderItem> getOrderItems();
     void reduceOrderItem(long phoneId, long quantity);
 }

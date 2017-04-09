@@ -11,6 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.view.InternalResourceView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class CartControllerTest {
         when(orderService.getOrderItems())
                 .thenReturn(expectedOrderItems);
         when(orderService.getItemsQuantity()).thenReturn(0L);
-        when(orderService.getSubtotal()).thenReturn("0");
+        when(orderService.getSubtotal()).thenReturn(BigDecimal.ZERO);
     }
 
     @Test
@@ -66,6 +67,10 @@ public class CartControllerTest {
         doNothing().when(orderService).reduceOrderItem(anyLong(), anyLong());
         mockMvc.perform(post("/deleteOrderItem/{phoneId}", 1)
                 .param("quantity", "1"))
+                .andExpect(redirectedUrl("/cart"));
+        verify(orderService, times(1)).reduceOrderItem(anyLong(), anyLong());
+        mockMvc.perform(post("/deleteOrderItem/{phoneId}", 1)
+                .param("quantity", "ф"))
                 .andExpect(redirectedUrl("/cart"));
         verify(orderService, times(1)).reduceOrderItem(anyLong(), anyLong());
     }

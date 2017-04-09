@@ -9,13 +9,13 @@ public class QuantityWrapper {
     @Max(99)
     @Min(1)
     @NotNull
-    private String quantity;
+    private long quantity;
 
-    public String getQuantity() {
+    public long getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(long quantity) {
         this.quantity = quantity;
     }
 }

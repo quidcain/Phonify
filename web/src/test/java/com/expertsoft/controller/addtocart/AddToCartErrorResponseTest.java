@@ -1,6 +1,5 @@
 package com.expertsoft.controller.addtocart;
 
-import com.expertsoft.controller.addtocart.AddToCartErrorResponse;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

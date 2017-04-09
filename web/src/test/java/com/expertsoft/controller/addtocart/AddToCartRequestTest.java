@@ -10,9 +10,9 @@ public class AddToCartRequestTest {
 
     @Test
     public void setterGetterTest() throws Throwable {
-        request.setId(4L);
-        assertEquals(4L, request.getId());
-        request.setQuantity("4L");
-        assertEquals("4L", request.getQuantity());
+        request.setId(4);
+        assertEquals(4, request.getId());
+        request.setQuantity(4);
+        assertEquals(4, request.getQuantity());
     }
 }

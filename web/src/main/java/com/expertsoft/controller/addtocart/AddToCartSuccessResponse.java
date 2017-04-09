@@ -1,8 +1,10 @@
 package com.expertsoft.controller.addtocart;
 
+import java.math.BigDecimal;
+
 public class AddToCartSuccessResponse {
     private long itemsQuantity;
-    private String subtotal;
+    private BigDecimal subtotal;
 
 
     public long getItemsQuantity() {
@@ -13,11 +15,11 @@ public class AddToCartSuccessResponse {
         this.itemsQuantity = itemsQuantity;
     }
 
-    public String getSubtotal() {
+    public BigDecimal getSubtotal() {
         return subtotal;
     }
 
-    public void setSubtotal(String subtotal) {
+    public void setSubtotal(BigDecimal subtotal) {
         this.subtotal = subtotal;
     }
 }

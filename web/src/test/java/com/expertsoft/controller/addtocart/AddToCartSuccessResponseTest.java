@@ -1,7 +1,8 @@
 package com.expertsoft.controller.addtocart;
 
-import com.expertsoft.controller.addtocart.AddToCartSuccessResponse;
 import org.junit.Test;
+
+import java.math.BigDecimal;
 
 import static org.junit.Assert.assertEquals;
 
@@ -11,9 +12,9 @@ public class AddToCartSuccessResponseTest {
 
     @Test
     public void setterGetterTest() throws Throwable {
-        response.setItemsQuantity(4L);
-        assertEquals(4L, response.getItemsQuantity());
-        response.setSubtotal("4L");
-        assertEquals("4L", response.getSubtotal());
+        response.setItemsQuantity(4);
+        assertEquals(4, response.getItemsQuantity());
+        response.setSubtotal(BigDecimal.valueOf(4));
+        assertEquals(BigDecimal.valueOf(4), response.getSubtotal());
     }
 }

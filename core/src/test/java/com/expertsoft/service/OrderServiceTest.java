@@ -76,16 +76,16 @@ public class OrderServiceTest {
         when(phoneDao.get(1)).thenReturn(phone);
         phone = createPhone("Motorola");
         when(phoneDao.get(2)).thenReturn(phone);
-        orderService.addOrderItem(1, "1");
+        orderService.addOrderItem(1, 1);
         assertEquals(1, orderService.getItemsQuantity());
-        assertEquals("1", orderService.getSubtotal());
-        orderService.addOrderItem(1, "2");
+        assertEquals(BigDecimal.ONE, orderService.getSubtotal());
+        orderService.addOrderItem(1, 2);
         assertEquals(3, orderService.getItemsQuantity());
-        assertEquals("3", orderService.getSubtotal());
+        assertEquals(BigDecimal.valueOf(3), orderService.getSubtotal());
 
-        orderService.addOrderItem(2, "3");
+        orderService.addOrderItem(2, 3);
         assertEquals(6, orderService.getItemsQuantity());
-        assertEquals("6", orderService.getSubtotal());
+        assertEquals(BigDecimal.valueOf(6), orderService.getSubtotal());
     }
 
     @Test
@@ -103,16 +103,16 @@ public class OrderServiceTest {
     public void reduceOrderItemTest() {
         Phone phone = createPhone("iPhone");
         when(phoneDao.get(1)).thenReturn(phone);
-        orderService.addOrderItem(phone.getId(), "3");
+        orderService.addOrderItem(phone.getId(), 3);
         orderService.reduceOrderItem(1, 2);
         assertEquals(1, orderService.getItemsQuantity());
-        assertEquals("1", orderService.getSubtotal());
+        assertEquals(BigDecimal.ONE, orderService.getSubtotal());
         orderService.reduceOrderItem(1, 1);
         assertEquals(0, orderService.getItemsQuantity());
-        assertEquals("0", orderService.getSubtotal());
+        assertEquals(BigDecimal.ZERO, orderService.getSubtotal());
         assertEquals(0, order.getOrderItems().size());
         orderService.reduceOrderItem(2, 2);
-        assertEquals("0", orderService.getSubtotal());
+        assertEquals(BigDecimal.ZERO, orderService.getSubtotal());
         assertEquals(0, orderService.getItemsQuantity());
         assertEquals(0, order.getOrderItems().size());
     }

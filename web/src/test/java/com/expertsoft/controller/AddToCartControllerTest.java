@@ -10,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.math.BigDecimal;
+
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
@@ -30,18 +32,18 @@ public class AddToCartControllerTest {
     @Test
     public void addToCartTest() throws Exception {
         when(orderService.getItemsQuantity()).thenReturn(1L);
-        when(orderService.getSubtotal()).thenReturn("1");
+        when(orderService.getSubtotal()).thenReturn(BigDecimal.ONE);
         mockMvc.perform(post("/addToCart")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(createRequestInJson(0L, "2")))
+                .content(createRequestInJson(0, "2")))
                 .andExpect(MockMvcResultMatchers.status().isOk());
         mockMvc.perform(post("/addToCart")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(createRequestInJson(0L, "100")))
+                .content(createRequestInJson(0, "100")))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
         mockMvc.perform(post("/addToCart")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(createRequestInJson(0L, "abc")))
+                .content(createRequestInJson(0, "abc")))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
