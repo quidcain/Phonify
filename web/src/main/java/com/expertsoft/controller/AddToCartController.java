@@ -33,7 +33,7 @@ public class AddToCartController {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
         AddToCartSuccessResponse response = new AddToCartSuccessResponse();
-        orderService.addOrderItem(addToCartRequest.getId(), addToCartRequest.getQuantity());
+        orderService.addOrderItem(addToCartRequest.getId(), Long.parseLong(addToCartRequest.getQuantity()));
         response.setItemsQuantity(orderService.getItemsQuantity());
         response.setSubtotal(orderService.getSubtotal());
         return new ResponseEntity<>(response, HttpStatus.OK);

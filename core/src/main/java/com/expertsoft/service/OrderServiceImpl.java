@@ -90,6 +90,8 @@ public class OrderServiceImpl implements OrderService {
             OrderItem item = orderItems.get(i);
             Phone phone = item.getPhone();
             if (phone.getId() == phoneId) {
+                if(item.getQuantity() < quantity)
+                    throw new ItemsQuantityUnderflow();
                 item.setQuantity(item.getQuantity() - quantity);
                 itemsQuantity -= quantity;
                 order.setSubtotal(order.getSubtotal().subtract(
