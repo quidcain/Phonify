@@ -29,7 +29,6 @@
                 <h1>Cart</h1>
                 <a href="<s:url value='/' />" class="btn aButton backToProductList" role="button">Back to product list</a>
                 <a href="#" class="btn aButton order" role="button">Order</a>
-                <%--<form method="post" action="<s:url value='/reduceOrderItem' />">--%>
                     <table class="table table-striped table-bordered">
                         <tr>
                             <th>Model</th>
@@ -48,7 +47,8 @@
                                 <form method="post" action="deleteOrderItem/${orderItem.phone.id}" id="${orderItem.phone.id}">
                                     <td>
                                         <input type="text" name="quantity" value="${orderItem.quantity}" form="${orderItem.phone.id}">
-                                        <span class="errorMessage hidden"></span>
+                                        <c:set var="errorMessage" value="errorMessage_${orderItem.phone.id}"/>
+                                        <span class="errorMessage">${requestScope[errorMessage]}</span>
                                     </td>
                                     <td>
                                         <button type="submit" class="btn" form="${orderItem.phone.id}">Delete</button>
@@ -57,7 +57,6 @@
                             </tr>
                         </c:forEach>
                     </table>
-                <%--</form>--%>
                 <a href="#" class="btn aButton update" role="button">Update</a>
                 <a href="#" class="btn aButton order" role="button">Order</a>
             </section>

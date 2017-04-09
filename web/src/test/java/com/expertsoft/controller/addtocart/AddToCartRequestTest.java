@@ -1,6 +1,5 @@
 package com.expertsoft.controller.addtocart;
 
-import com.expertsoft.controller.addtocart.AddToCartRequest;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

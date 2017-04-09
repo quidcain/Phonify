@@ -46,6 +46,7 @@ td:nth-child(4) {
 
 td:nth-child(5) {
     width: 18%;
+    text-align: center;
 }
 
 td button {
@@ -62,8 +63,6 @@ input[type="text"] {
 
 .errorMessage {
     color: #a94442;
+    font-size: 13px;
 }
 
-.hidden {
-    display: none;
-}

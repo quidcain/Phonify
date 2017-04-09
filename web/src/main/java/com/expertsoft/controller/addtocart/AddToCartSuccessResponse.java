@@ -4,8 +4,6 @@ public class AddToCartSuccessResponse {
     private long itemsQuantity;
     private String subtotal;
 
-    public AddToCartSuccessResponse() {
-    }
 
     public long getItemsQuantity() {
         return itemsQuantity;

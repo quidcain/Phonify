@@ -1,15 +1,21 @@
 package com.expertsoft.controller;
 
+import com.expertsoft.controller.cart.QuantityWrapper;
 import com.expertsoft.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
 
 @Controller
+@Validated
 public class CartController {
     private OrderService orderService;
 
@@ -27,8 +33,12 @@ public class CartController {
     }
 
     @PostMapping("/deleteOrderItem/{phoneId}")
-    public String delete(@PathVariable long phoneId, @RequestParam long quantity) {
-        orderService.reduceOrderItem(phoneId, quantity);
+    public String delete(@PathVariable long phoneId, @Valid QuantityWrapper quantityWrapper, BindingResult result, RedirectAttributes model) {
+        if (result.hasErrors()) {
+            model.addFlashAttribute("errorMessage_" + phoneId, "Value must be from 1 to 99!");
+            return "redirect:/cart";
+        }
+        orderService.reduceOrderItem(phoneId, Long.parseLong(quantityWrapper.getQuantity()));
         return "redirect:/cart";
     }
 
