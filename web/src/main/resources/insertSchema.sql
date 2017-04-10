@@ -4,6 +4,9 @@ CREATE TABLE IF NOT EXISTS  Phones (
   color VARCHAR(40) NOT NULL,
   displaySize INT NOT NULL,
   price DECIMAL(10,0) NOT NULL,
+  length INT NOT NULL,
+  width INT NOT NULL,
+  camera INT NOT NULL,
   PRIMARY KEY (id)
 );
 

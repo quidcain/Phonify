@@ -45,6 +45,9 @@ public class JdbcOrderDao implements OrderDao {
         phone.setColor(rs.getString("color"));
         phone.setDisplaySize(rs.getInt("displaySize"));
         phone.setPrice(rs.getBigDecimal("price"));
+        phone.setLength(rs.getInt("length"));
+        phone.setWidth(rs.getInt("width"));
+        phone.setCamera(rs.getInt("camera"));
         return phone;
     }
 
@@ -74,7 +77,7 @@ public class JdbcOrderDao implements OrderDao {
         String query = "select " +
                 "O.id, O.subtotal, O.deliveryPrice, O.firstName, O.lastName, O.deliveryAddress, O.contactPhoneNo, " +
                 "I.id as iId, I.quantity, I.pId, " +
-                "P.model, P.color, P.displaySize, P.price " +
+                "P.model, P.color, P.displaySize, P.price, P.length, P.width, P.camera " +
                 "from Orders as O " +
                 "inner join OrderItems as I on I.oId=O.id " +
                 "inner join Phones as P on I.pId=P.id where O.id = :id";
@@ -142,7 +145,7 @@ public class JdbcOrderDao implements OrderDao {
         String query = "select " +
                 "O.id, O.subtotal, O.deliveryPrice, O.firstName, O.lastName, O.deliveryAddress, O.contactPhoneNo, " +
                 "I.id as iId, I.quantity, I.pId, " +
-                "P.model, P.color, P.displaySize, P.price " +
+                "P.model, P.color, P.displaySize, P.price, P.length, P.width, P.camera " +
                 "from Orders as O " +
                 "inner join OrderItems as I on I.oId=O.id " +
                 "inner join Phones as P on I.pId=P.id;";

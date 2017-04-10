@@ -2,8 +2,11 @@ CREATE TABLE Phones(
   id BIGINT NOT NULL IDENTITY,
   model  VARCHAR(40) NOT NULL,
   color VARCHAR(40) NOT NULL,
-  displaySize VARCHAR(35) NOT NULL,
-  price DECIMAL(10,0) NOT NULL
+  displaySize INT NOT NULL,
+  price DECIMAL(10,0) NOT NULL,
+  length INT NOT NULL,
+  width INT NOT NULL,
+  camera INT NOT NULL
 );
 
 CREATE TABLE Orders(

@@ -31,16 +31,28 @@
                 <h1>${phone.model}</h1>
                 <table class="table table-striped table-bordered">
                     <tr>
-                        <td>Color</td>
-                        <td>${phone.color}</td>
-                    </tr>
-                    <tr>
                         <td>Display</td>
                         <td>${phone.displaySize}"</td>
                     </tr>
                     <tr>
+                        <td>Length</td>
+                        <td>${phone.length}mm</td>
+                    </tr>
+                    <tr>
+                        <td>Width</td>
+                        <td>${phone.width}mm</td>
+                    </tr>
+                    <tr>
+                        <td>Color</td>
+                        <td>${phone.color}</td>
+                    </tr>
+                    <tr>
                         <td>Price</td>
                         <td>${phone.price}$</td>
+                    </tr>
+                    <tr>
+                        <td>Camera</td>
+                        <td>${phone.camera}MP</td>
                     </tr>
                 </table>
                 <form method="post" action="<s:url value='/addToCart' />">

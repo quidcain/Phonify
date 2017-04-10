@@ -37,8 +37,11 @@ public class JdbcPhoneDao implements PhoneDao {
         parameterSource.addValue("color", phone.getColor());
         parameterSource.addValue("displaySize", phone.getDisplaySize());
         parameterSource.addValue("price", phone.getPrice());
-        jdbcOperations.update("INSERT INTO Phones (model, color, displaySize, price) VALUES (:model, " +
-                ":color, :displaySize, :price);", parameterSource, keyHolder);
+        parameterSource.addValue("length", phone.getPrice());
+        parameterSource.addValue("width", phone.getPrice());
+        parameterSource.addValue("camera", phone.getPrice());
+        jdbcOperations.update("INSERT INTO Phones (model, color, displaySize, price, length, width, camera) VALUES (:model, " +
+                ":color, :displaySize, :price, :length, :width, :camera);", parameterSource, keyHolder);
         phone.setId(keyHolder.getKey().longValue());
     }
 

@@ -42,5 +42,14 @@ public class PhoneTest {
 
         phone.setPrice(BigDecimal.ONE);
         assertEquals(BigDecimal.ONE, phone.getPrice());
+
+        phone.setLength(4);
+        assertEquals(4, phone.getLength());
+
+        phone.setWidth(4);
+        assertEquals(4, phone.getWidth());
+
+        phone.setCamera(4);
+        assertEquals(4, phone.getCamera());
     }
 }

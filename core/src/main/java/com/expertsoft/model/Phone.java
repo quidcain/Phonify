@@ -9,6 +9,9 @@ public class Phone {
     private String color;
     private int displaySize;
     private BigDecimal price;
+    private int length;
+    private int width;
+    private int camera;
 
     public Phone() {
     }
@@ -51,6 +54,30 @@ public class Phone {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getCamera() {
+        return camera;
+    }
+
+    public void setCamera(int camera) {
+        this.camera = camera;
     }
 
     @Override
