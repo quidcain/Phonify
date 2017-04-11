@@ -83,6 +83,33 @@ public class CartControllerTest {
         verify(orderService, times(2)).reduceOrderItem(anyLong(), anyLong());
     }
 
+    @Test
+    public void testUpdate() throws Exception {
+        mockMvc = standaloneSetup(controller)
+                .build();
+        mockMvc.perform(post("/updateOrderItems")
+                .param("quantity_1", "1")
+                .param("quantity_2", "2"))
+                /*.andExpect(flash().attributeExists("errorMessage_1"))
+                .andExpect(flash().attribute("errorMessage_1", "Too few items!"))*/
+                .andExpect(redirectedUrl("/cart"));
+        mockMvc.perform(post("/updateOrderItems")
+                .param("quantity_1", "-3")
+                .param("quantity_2", "800"))
+                .andExpect(flash().attributeExists("errorMessage_1"))
+                .andExpect(flash().attribute("errorMessage_1", "Value must be from 1 to 99!"))
+                .andExpect(flash().attributeExists("errorMessage_2"))
+                .andExpect(flash().attribute("errorMessage_2", "Value must be from 1 to 99!"))
+                .andExpect(redirectedUrl("/cart"));
+        mockMvc.perform(post("/updateOrderItems")
+                .param("quantity_1", "3")
+                .param("quantity_2", "a"))
+                .andExpect(flash().attributeExists("errorMessage_2"))
+                .andExpect(flash().attribute("errorMessage_2", "Value must be from 1 to 99!"))
+                .andExpect(redirectedUrl("/cart"));
+
+    }
+
     private List<OrderItem> createOrderItemList() {
         List<OrderItem> orderItems = new ArrayList<>(2);
         OrderItem orderItem = new OrderItem();
@@ -94,13 +121,18 @@ public class CartControllerTest {
         phone.setDisplaySize(4);
 
         orderItem.setPhone(phone);
+        orderItem.setQuantity(1);
         orderItems.add(orderItem);
 
         orderItem = new OrderItem();
+        phone = new Phone();
         phone.setId(2);
         phone.setModel("Motorolla Moto X");
+        phone.setColor("black");
+        phone.setDisplaySize(4);
 
         orderItem.setPhone(phone);
+        orderItem.setQuantity(2);
         orderItems.add(orderItem);
 
         return orderItems;

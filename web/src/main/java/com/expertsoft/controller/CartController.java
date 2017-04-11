@@ -1,19 +1,19 @@
 package com.expertsoft.controller;
 
 import com.expertsoft.controller.cart.QuantityWrapper;
+import com.expertsoft.model.OrderItem;
 import com.expertsoft.service.ItemsQuantityUnderflow;
 import com.expertsoft.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class CartController {
@@ -33,7 +33,7 @@ public class CartController {
     }
 
     @PostMapping("/deleteOrderItem/{phoneId}")
-    public String delete(@PathVariable long phoneId, @Valid QuantityWrapper quantityWrapper, BindingResult result, RedirectAttributes model) {
+    public String deleteOrderItem(@PathVariable long phoneId, @Valid QuantityWrapper quantityWrapper, BindingResult result, RedirectAttributes model) {
         if (result.hasErrors()) {
             model.addFlashAttribute("errorMessage_" + phoneId, "Value must be from 1 to 99!");
             return "redirect:/cart";
@@ -42,6 +42,26 @@ public class CartController {
             orderService.reduceOrderItem(phoneId, quantityWrapper.getQuantity());
         } catch (ItemsQuantityUnderflow e) {
             model.addFlashAttribute("errorMessage_" + phoneId, "Too few items!");
+        }
+        return "redirect:/cart";
+    }
+
+    @PostMapping("/updateOrderItems")
+    public String updateOrderItem(@RequestParam Map<String, String> params, RedirectAttributes model) {
+        System.out.println(params);
+        Map<Long, OrderItem> items = new HashMap<>();
+        for (OrderItem item : orderService.getOrderItems())
+            items.put(item.getPhone().getId(), item);
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            long phoneId = Long.parseLong(entry.getKey().split("_")[1]);
+            try {
+                long parsedQuantity = Long.parseLong(entry.getValue());
+                if (parsedQuantity < 1 || parsedQuantity > 99)
+                    throw new NumberFormatException();
+                items.get(phoneId).setQuantity(parsedQuantity);
+            } catch (NumberFormatException e ) {
+                model.addFlashAttribute("errorMessage_" + phoneId, "Value must be from 1 to 99!");
+            }
         }
         return "redirect:/cart";
     }

@@ -29,35 +29,40 @@
                 <h1>Cart</h1>
                 <a href="<s:url value='/' />" class="btn aButton backToProductList" role="button">Back to product list</a>
                 <a href="#" class="btn aButton order" role="button">Order</a>
-                    <table class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered">
+                    <tr>
+                        <th>Model</th>
+                        <th>Color</th>
+                        <th>Display Size</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Action</th>
+                    </tr>
+                    <c:forEach items="${orderItemList}" var="orderItem">
                         <tr>
-                            <th>Model</th>
-                            <th>Color</th>
-                            <th>Display Size</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Action</th>
+                            <td><a href="<s:url value='/productDetails/${orderItem.phone.id}' />">${orderItem.phone.model}</a></td>
+                            <td>${orderItem.phone.color}</td>
+                            <td>${orderItem.phone.displaySize}"</td>
+                            <td>${orderItem.phone.price}$</td>
+                            <form method="post" action="deleteOrderItem/${orderItem.phone.id}" id="${orderItem.phone.id}">
+                                <td>
+                                    <input type="text" name="quantity" value="${orderItem.quantity}" form="${orderItem.phone.id}" onblur="document.updateForm.quantity_${orderItem.phone.id}.value = this.value;">
+                                    <c:set var="errorMessage" value="errorMessage_${orderItem.phone.id}"/>
+                                    <span class="errorMessage">${requestScope[errorMessage]}</span>
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn" form="${orderItem.phone.id}" formaction="deleteOrderItem/${orderItem.phone.id}">Delete</button>
+                                </td>
+                            </form>
                         </tr>
-                        <c:forEach items="${orderItemList}" var="orderItem">
-                            <tr>
-                                <td><a href="<s:url value='/productDetails/${orderItem.phone.id}' />">${orderItem.phone.model}</a></td>
-                                <td>${orderItem.phone.color}</td>
-                                <td>${orderItem.phone.displaySize}"</td>
-                                <td>${orderItem.phone.price}$</td>
-                                <form method="post" action="deleteOrderItem/${orderItem.phone.id}" id="${orderItem.phone.id}">
-                                    <td>
-                                        <input type="text" name="quantity" value="${orderItem.quantity}" form="${orderItem.phone.id}">
-                                        <c:set var="errorMessage" value="errorMessage_${orderItem.phone.id}"/>
-                                        <span class="errorMessage">${requestScope[errorMessage]}</span>
-                                    </td>
-                                    <td>
-                                        <button type="submit" class="btn" form="${orderItem.phone.id}">Delete</button>
-                                    </td>
-                                </form>
-                            </tr>
-                        </c:forEach>
-                    </table>
-                <a href="#" class="btn aButton update" role="button">Update</a>
+                    </c:forEach>
+                </table>
+                <form method="post" action="<s:url value='/updateOrderItems' />" name="updateForm">
+                    <c:forEach items="${orderItemList}" var="orderItem">
+                        <input type="hidden" name="quantity_${orderItem.phone.id}" value="${orderItem.quantity}">
+                    </c:forEach>
+                    <button type="submit" class="btn update">Update</button>
+                </form>
                 <a href="#" class="btn aButton order" role="button">Order</a>
             </section>
         </div>
