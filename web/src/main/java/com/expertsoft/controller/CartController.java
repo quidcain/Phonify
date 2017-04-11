@@ -1,7 +1,6 @@
 package com.expertsoft.controller;
 
 import com.expertsoft.controller.cart.QuantityWrapper;
-import com.expertsoft.model.OrderItem;
 import com.expertsoft.service.ItemsQuantityUnderflow;
 import com.expertsoft.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.Map;
 
 @Controller

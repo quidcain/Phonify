@@ -55,9 +55,9 @@
                         <td>${phone.camera}MP</td>
                     </tr>
                 </table>
-                <form method="post" action="<s:url value='/addToCart' />">
-                	<input type="text" name="quantity" id="input_${phone.id}">
-                	<button type="submit" class="btn addToCart" id="button_${phone.id}">Add to cart</button>
+                <form method="post" action="<s:url value='/addToCart' />" id="form_${phone.id}">
+                	<input type="text" name="quantity" form="form_${phone.id}">
+                	<button type="submit" class="btn addToCart">Add to cart</button>
                     <div class="errorMessage hidden"></div>
                 </form>
             </section>
