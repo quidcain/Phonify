@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -85,21 +86,37 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void reduceOrderItem(long phoneId, long quantity) {
+        int itemIndex = getItemIndex(phoneId);
+        OrderItem item = order.getOrderItems().get(itemIndex);
+        if(item.getQuantity() < quantity)
+            throw new ItemsQuantityUnderflow();
+        item.setQuantity(item.getQuantity() - quantity);
+        itemsQuantity -= quantity;
+        order.setSubtotal(order.getSubtotal().subtract(
+                item.getPhone().getPrice().multiply(BigDecimal.valueOf(quantity))));
+        if (item.getQuantity() < 1)
+            order.getOrderItems().remove(itemIndex);
+    }
+
+    @Override
+    public void updateOrderItem(long phoneId, long newQuantity) {
+        int itemIndex = getItemIndex(phoneId);
+        OrderItem item = order.getOrderItems().get(itemIndex);
+        long quantity = newQuantity - item.getQuantity();
+        item.setQuantity(newQuantity);
+        itemsQuantity += quantity;
+        order.setSubtotal(order.getSubtotal().add(
+                item.getPhone().getPrice().multiply(BigDecimal.valueOf(quantity))));
+    }
+
+    private int getItemIndex(long phoneId) {
         List<OrderItem> orderItems = order.getOrderItems();
         for (int i = 0, j = orderItems.size(); i < j; i++) {
             OrderItem item = orderItems.get(i);
-            Phone phone = item.getPhone();
-            if (phone.getId() == phoneId) {
-                if(item.getQuantity() < quantity)
-                    throw new ItemsQuantityUnderflow();
-                item.setQuantity(item.getQuantity() - quantity);
-                itemsQuantity -= quantity;
-                order.setSubtotal(order.getSubtotal().subtract(
-                        phone.getPrice().multiply(BigDecimal.valueOf(quantity))));
-                if (item.getQuantity() < 1)
-                    orderItems.remove(i);
-                return;
+            if (item.getPhone().getId() == phoneId) {
+                return i;
             }
         }
+        throw new NoSuchElementException();
     }
 }

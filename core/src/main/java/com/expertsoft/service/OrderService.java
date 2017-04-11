@@ -17,4 +17,5 @@ public interface OrderService {
     BigDecimal getSubtotal();
     List<OrderItem> getOrderItems();
     void reduceOrderItem(long phoneId, long quantity);
+    void updateOrderItem(long phoneId, long newQuantity);
 }

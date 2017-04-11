@@ -46,7 +46,8 @@
                             <td>${orderItem.phone.price}$</td>
                             <form method="post" action="deleteOrderItem/${orderItem.phone.id}" id="${orderItem.phone.id}">
                                 <td>
-                                    <input type="text" name="quantity" value="${orderItem.quantity}" form="${orderItem.phone.id}" onblur="document.updateForm.quantity_${orderItem.phone.id}.value = this.value;">
+                                    <c:set var="quantity" value="quantity_${orderItem.phone.id}"/>
+                                    <input type="text" name="quantity" value="${empty requestScope[quantity] ? orderItem.quantity : requestScope[quantity]}" form="${orderItem.phone.id}" onblur="document.updateForm.quantity_${orderItem.phone.id}.value = this.value;">
                                     <c:set var="errorMessage" value="errorMessage_${orderItem.phone.id}"/>
                                     <span class="errorMessage">${requestScope[errorMessage]}</span>
                                 </td>
@@ -59,11 +60,12 @@
                 </table>
                 <form method="post" action="<s:url value='/updateOrderItems' />" name="updateForm">
                     <c:forEach items="${orderItemList}" var="orderItem">
-                        <input type="hidden" name="quantity_${orderItem.phone.id}" value="${orderItem.quantity}">
+                        <c:set var="quantity" value="quantity_${orderItem.phone.id}"/>
+                        <input type="hidden" name="quantity_${orderItem.phone.id}" value="${empty requestScope[quantity] ? orderItem.quantity : requestScope[quantity]}">
                     </c:forEach>
                     <button type="submit" class="btn update">Update</button>
+                    <a href="#" class="btn aButton order" role="button">Order</a>
                 </form>
-                <a href="#" class="btn aButton order" role="button">Order</a>
             </section>
         </div>
     </body>

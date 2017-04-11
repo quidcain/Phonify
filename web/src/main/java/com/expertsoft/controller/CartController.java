@@ -48,19 +48,16 @@ public class CartController {
 
     @PostMapping("/updateOrderItems")
     public String updateOrderItem(@RequestParam Map<String, String> params, RedirectAttributes model) {
-        System.out.println(params);
-        Map<Long, OrderItem> items = new HashMap<>();
-        for (OrderItem item : orderService.getOrderItems())
-            items.put(item.getPhone().getId(), item);
         for (Map.Entry<String, String> entry : params.entrySet()) {
             long phoneId = Long.parseLong(entry.getKey().split("_")[1]);
             try {
                 long parsedQuantity = Long.parseLong(entry.getValue());
                 if (parsedQuantity < 1 || parsedQuantity > 99)
                     throw new NumberFormatException();
-                items.get(phoneId).setQuantity(parsedQuantity);
+                orderService.updateOrderItem(phoneId, parsedQuantity);
             } catch (NumberFormatException e ) {
                 model.addFlashAttribute("errorMessage_" + phoneId, "Value must be from 1 to 99!");
+                model.addFlashAttribute(entry.getKey(), entry.getValue());
             }
         }
         return "redirect:/cart";

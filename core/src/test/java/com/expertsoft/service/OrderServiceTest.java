@@ -13,9 +13,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyLong;
@@ -32,7 +35,6 @@ public class OrderServiceTest {
     @Mock
     private PhoneDao phoneDao;
 
-    @InjectMocks
     private OrderServiceImpl orderService;
 
     @Before
@@ -82,7 +84,6 @@ public class OrderServiceTest {
         orderService.addOrderItem(1, 2);
         assertEquals(3, orderService.getItemsQuantity());
         assertEquals(BigDecimal.valueOf(3), orderService.getSubtotal());
-
         orderService.addOrderItem(2, 3);
         assertEquals(6, orderService.getItemsQuantity());
         assertEquals(BigDecimal.valueOf(6), orderService.getSubtotal());
@@ -104,7 +105,13 @@ public class OrderServiceTest {
         Phone phone = createPhone("iPhone");
         when(phoneDao.get(1)).thenReturn(phone);
         orderService.addOrderItem(phone.getId(), 3);
-        orderService.reduceOrderItem(2, 2);
+        boolean noSuchElementExceptionThrown = false;
+        try {
+            orderService.reduceOrderItem(2, 2);
+        } catch (NoSuchElementException e) {
+            noSuchElementExceptionThrown = true;
+        }
+        assertTrue(noSuchElementExceptionThrown);
         assertEquals(BigDecimal.valueOf(3), orderService.getSubtotal());
         assertEquals(3, orderService.getItemsQuantity());
         assertEquals(1, order.getOrderItems().size());
@@ -117,6 +124,19 @@ public class OrderServiceTest {
         assertEquals(0, order.getOrderItems().size());
         orderService.addOrderItem(phone.getId(), 1);
         orderService.reduceOrderItem(1, 2);
+    }
+
+    @Test
+    public void updateOrderItemTest() {
+        Phone phone = createPhone("iPhone");
+        when(phoneDao.get(1)).thenReturn(phone);
+        orderService.addOrderItem(phone.getId(), 3);
+        orderService.updateOrderItem(phone.getId(), 4);
+        assertEquals(BigDecimal.valueOf(4), orderService.getSubtotal());
+        assertEquals(4, orderService.getItemsQuantity());
+        orderService.updateOrderItem(phone.getId(), 2);
+        assertEquals(BigDecimal.valueOf(2), orderService.getSubtotal());
+        assertEquals(2, orderService.getItemsQuantity());
     }
 
     private Phone createPhone(String model) {
