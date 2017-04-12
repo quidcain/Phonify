@@ -3,6 +3,7 @@ package com.expertsoft.dao;
 import com.expertsoft.model.Order;
 import com.expertsoft.model.OrderItem;
 import com.expertsoft.model.Phone;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +21,6 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/coreContext.xml")
-@Transactional
 public class OrderDaoTest {
 
     @Autowired
@@ -47,8 +47,18 @@ public class OrderDaoTest {
         phone.setDisplaySize(4);
         phone.setPrice(BigDecimal.ONE);
         phoneDao.save(phone);
+        phone = new Phone();
         phone.setModel("Samsung galaxy SIII");
+        phone.setColor("black");
+        phone.setDisplaySize(4);
+        phone.setPrice(BigDecimal.ONE);
         phoneDao.save(phone);
+    }
+
+    @After
+    public void clearPhonesTable() {
+        for(Phone phone : phoneDao.findAll())
+            phoneDao.delete(phone.getId());
     }
 
     @Test

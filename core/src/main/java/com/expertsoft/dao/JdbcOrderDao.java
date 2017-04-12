@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,7 @@ import java.util.Map;
 @Repository
 public class JdbcOrderDao implements OrderDao {
     private NamedParameterJdbcOperations jdbcOperations;
+    private PhoneDao phoneDao;
 
     private Order fillOrder(long id, ResultSet rs) throws SQLException {
         Order order = new Order();
@@ -39,16 +42,7 @@ public class JdbcOrderDao implements OrderDao {
     }
 
     private Phone fillPhone(ResultSet rs) throws SQLException {
-        Phone phone = new Phone();
-        phone.setId(rs.getLong("pId"));
-        phone.setModel(rs.getString("model"));
-        phone.setColor(rs.getString("color"));
-        phone.setDisplaySize(rs.getInt("displaySize"));
-        phone.setPrice(rs.getBigDecimal("price"));
-        phone.setLength(rs.getInt("length"));
-        phone.setWidth(rs.getInt("width"));
-        phone.setCamera(rs.getInt("camera"));
-        return phone;
+        return phoneDao.get(rs.getLong("pId"));
     }
 
     private OrderItem fillOrderItem(Phone phone, Order order, ResultSet rs) throws SQLException {
@@ -67,8 +61,9 @@ public class JdbcOrderDao implements OrderDao {
     }
 
     @Autowired
-    public JdbcOrderDao(NamedParameterJdbcOperations jdbcOperations) {
+    public JdbcOrderDao(NamedParameterJdbcOperations jdbcOperations, PhoneDao phoneDao) {
         this.jdbcOperations = jdbcOperations;
+        this.phoneDao = phoneDao;
     }
 
     @Override
@@ -76,11 +71,10 @@ public class JdbcOrderDao implements OrderDao {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource("id", id);
         String query = "select " +
                 "O.id, O.subtotal, O.deliveryPrice, O.firstName, O.lastName, O.deliveryAddress, O.contactPhoneNo, " +
-                "I.id as iId, I.quantity, I.pId, " +
-                "P.model, P.color, P.displaySize, P.price, P.length, P.width, P.camera " +
+                "I.id as iId, I.quantity, I.pId " +
                 "from Orders as O " +
                 "inner join OrderItems as I on I.oId=O.id " +
-                "inner join Phones as P on I.pId=P.id where O.id = :id";
+                "where O.id = :id";
         return jdbcOperations.query(query, parameterSource, rs -> {
             Order order = null;
             while (rs.next()) {
@@ -97,33 +91,27 @@ public class JdbcOrderDao implements OrderDao {
     @Transactional
     @SuppressWarnings("unchecked")
     public void save(Order order) {
-        JdbcOperations operations = jdbcOperations.getJdbcOperations();
-        SimpleJdbcInsert insert = new SimpleJdbcInsert((JdbcTemplate)operations)
-                .withTableName("Orders")
-                .usingColumns("subtotal", "deliveryPrice", "firstName",
-                              "lastName", "deliveryAddress", "contactPhoneNo")
-                .usingGeneratedKeyColumns("id");
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("subtotal", order.getSubtotal());
-        parameters.put("deliveryPrice", order.getDeliveryPrice());
-        parameters.put("firstName", order.getFirstName());
-        parameters.put("lastName", order.getLastName());
-        parameters.put("deliveryAddress", order.getDeliveryAddress());
-        parameters.put("contactPhoneNo", order.getContactPhoneNo());
-        long id = insert.executeAndReturnKey(parameters).longValue();
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        parameterSource.addValue("subtotal", order.getSubtotal());
+        parameterSource.addValue("deliveryPrice", order.getDeliveryPrice());
+        parameterSource.addValue("firstName", order.getFirstName());
+        parameterSource.addValue("lastName", order.getLastName());
+        parameterSource.addValue("deliveryAddress", order.getDeliveryAddress());
+        parameterSource.addValue("contactPhoneNo", order.getContactPhoneNo());
+        jdbcOperations.update("INSERT INTO Orders (subtotal, deliveryPrice, firstName, lastName, deliveryAddress, contactPhoneNo) " +
+                "VALUES (:subtotal,  :deliveryPrice, :firstName, :lastName, :deliveryAddress, :contactPhoneNo);", parameterSource, keyHolder);
+        long id = keyHolder.getKey().longValue();
         order.setId(id);
-        insert = new SimpleJdbcInsert((JdbcTemplate)operations)
-                .withTableName("OrderItems")
-                .usingColumns("pId", "oId", "quantity");
-        List<Map<String, ?>> list = new ArrayList<>(order.getOrderItems().size());
-        for (OrderItem item : order.getOrderItems()) {
-            parameters = new HashMap<>();
-            parameters.put("pId", item.getPhone().getId());
-            parameters.put("oId", id);
-            parameters.put("quantity", item.getQuantity());
-            list.add(parameters);
+        MapSqlParameterSource[] batchArgs = new MapSqlParameterSource[order.getOrderItems().size()];
+        for (int i = 0, j = order.getOrderItems().size(); i < j; i++) {
+            batchArgs[i] = new MapSqlParameterSource();
+            OrderItem item = order.getOrderItems().get(i);
+            batchArgs[i].addValue("pId", item.getPhone().getId());
+            batchArgs[i].addValue("oId", id);
+            batchArgs[i].addValue("quantity", item.getQuantity());
         }
-        insert.executeBatch(list.toArray(new HashMap[list.size()]));
+        jdbcOperations.batchUpdate("INSERT INTO OrderItems (pId, oId, quantity) VALUES(:pId, :oId, :quantity);", batchArgs);
     }
 
     @Override
@@ -144,11 +132,9 @@ public class JdbcOrderDao implements OrderDao {
     public List<Order> findAll() {
         String query = "select " +
                 "O.id, O.subtotal, O.deliveryPrice, O.firstName, O.lastName, O.deliveryAddress, O.contactPhoneNo, " +
-                "I.id as iId, I.quantity, I.pId, " +
-                "P.model, P.color, P.displaySize, P.price, P.length, P.width, P.camera " +
+                "I.id as iId, I.quantity, I.pId " +
                 "from Orders as O " +
-                "inner join OrderItems as I on I.oId=O.id " +
-                "inner join Phones as P on I.pId=P.id;";
+                "inner join OrderItems as I on I.oId=O.id";
         return jdbcOperations.query(query, rs -> {
             List<Order> list = new ArrayList<>();
             int currentIndex = -1;

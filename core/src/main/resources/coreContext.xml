@@ -6,6 +6,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:cache="http://www.springframework.org/schema/cache"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
@@ -13,7 +14,8 @@
        http://www.springframework.org/schema/jdbc
        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
        http://www.springframework.org/schema/tx
-       http://www.springframework.org/schema/tx/spring-tx.xsd">
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
     <context:component-scan base-package="com.expertsoft.dao" />
     <context:component-scan base-package="com.expertsoft.model" />
@@ -46,5 +48,10 @@
                               enabled="${db.insertDemoData}">
         <jdbc:script location="classpath:insertDemoData.sql" />
     </jdbc:initialize-database>
+
+    <cache:annotation-driven />
+
+    <bean id="cacheManager" class=
+            "org.springframework.cache.concurrent.ConcurrentMapCacheManager" />
 
 </beans>
