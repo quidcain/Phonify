@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/coreContext.xml")
-public class OrderDaoTest {
+public class JdbcOrderDaoTest {
 
     @Autowired
     private OrderDao orderDao;

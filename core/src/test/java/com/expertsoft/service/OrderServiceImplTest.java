@@ -26,7 +26,7 @@ import static org.mockito.Mockito.*;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class OrderServiceTest {
+public class OrderServiceImplTest {
     private Order order = new Order();
 
     @Mock

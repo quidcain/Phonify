@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PhoneServiceTest {
+public class PhoneServiceImplTest {
 
     @Mock
     private PhoneDao phoneDao;
