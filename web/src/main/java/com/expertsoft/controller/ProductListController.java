@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @Controller
+@RequestMapping({"/", "/productList"})
 public class ProductListController {
     private PhoneService phoneService;
     private OrderService orderService;
@@ -19,7 +20,7 @@ public class ProductListController {
         this.orderService = orderService;
     }
 
-    @GetMapping({"/", "/productList"})
+    @GetMapping()
     public String productList(Model model) {
         model.addAttribute("itemsQuantity", orderService.getItemsQuantity());
         model.addAttribute("subtotal", orderService.getSubtotal());

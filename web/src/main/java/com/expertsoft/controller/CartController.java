@@ -14,6 +14,7 @@ import javax.validation.Valid;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/cart")
 public class CartController {
     private OrderService orderService;
 
@@ -22,7 +23,7 @@ public class CartController {
         this.orderService = orderService;
     }
 
-    @GetMapping("/cart")
+    @GetMapping()
     public String cart(Model model) {
         model.addAttribute("itemsQuantity", orderService.getItemsQuantity());
         model.addAttribute("subtotal", orderService.getSubtotal());
@@ -45,7 +46,7 @@ public class CartController {
     }
 
     @PostMapping("/updateOrderItems")
-    public String updateOrderItem(@RequestParam Map<String, String> params, RedirectAttributes model) {
+    public String updateOrderItem(@RequestParam Map<String, String> params, RedirectAttributes model) { //TODO: spring mvc form and validation
         for (Map.Entry<String, String> entry : params.entrySet()) {
             long phoneId = Long.parseLong(entry.getKey().split("_")[1]);
             try {

@@ -52,13 +52,13 @@
                                     <span class="errorMessage">${requestScope[errorMessage]}</span>
                                 </td>
                                 <td>
-                                    <button type="submit" class="btn" form="${orderItem.phone.id}" formaction="deleteOrderItem/${orderItem.phone.id}">Delete</button>
+                                    <button type="submit" class="btn" form="${orderItem.phone.id}" formaction="cart/deleteOrderItem/${orderItem.phone.id}">Delete</button>
                                 </td>
                             </form>
                         </tr>
                     </c:forEach>
                 </table>
-                <form method="post" action="<s:url value='/updateOrderItems' />" name="updateForm">
+                <form method="post" action="<s:url value='/cart/updateOrderItems' />" name="updateForm">
                     <c:forEach items="${orderItemList}" var="orderItem">
                         <c:set var="quantity" value="quantity_${orderItem.phone.id}"/>
                         <input type="hidden" name="quantity_${orderItem.phone.id}" value="${empty requestScope[quantity] ? orderItem.quantity : requestScope[quantity]}">
