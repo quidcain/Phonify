@@ -101,7 +101,7 @@ public class OrderServiceImplTest {
     }
 
     @Test(expected = ItemsQuantityUnderflow.class)
-    public void reduceOrderItemTest() {
+    public void reduceOrderItemTest() throws ItemsQuantityUnderflow {
         Phone phone = createPhone("iPhone");
         when(phoneDao.get(1)).thenReturn(phone);
         orderService.addOrderItem(phone.getId(), 3);

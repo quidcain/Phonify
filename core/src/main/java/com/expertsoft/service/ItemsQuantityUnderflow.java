@@ -1,5 +1,5 @@
 package com.expertsoft.service;
 
 
-public class ItemsQuantityUnderflow extends RuntimeException {
+public class ItemsQuantityUnderflow extends Exception {
 }

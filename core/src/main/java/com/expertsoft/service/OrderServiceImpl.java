@@ -85,7 +85,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void reduceOrderItem(long phoneId, long quantity) {
+    public void reduceOrderItem(long phoneId, long quantity) throws ItemsQuantityUnderflow {
         int itemIndex = getItemIndex(phoneId);
         OrderItem item = order.getOrderItems().get(itemIndex);
         if(item.getQuantity() < quantity)
