@@ -11,6 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -26,8 +27,7 @@ public class PhoneServiceTest {
     public void findAllTest() {
         List <Phone> list = new ArrayList<>();
         when(phoneDao.findAll()).thenReturn(list);
-        phoneService.findAll();
-        verify(phoneDao, times(1)).findAll();
+        assertEquals(list.size(), phoneService.findAll().size());
     }
 
     @Test
@@ -35,7 +35,7 @@ public class PhoneServiceTest {
         Phone phone = new Phone();
         when(phoneDao.get(anyLong())).thenReturn(phone);
         phoneService.get(0);
-        verify(phoneDao, times(1)).get(anyLong());
+        assertEquals(phone, phoneService.get(0));
     }
 
     @Test

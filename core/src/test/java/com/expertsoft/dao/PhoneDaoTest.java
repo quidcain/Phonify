@@ -1,7 +1,6 @@
 package com.expertsoft.dao;
 
 import com.expertsoft.model.Phone;
-import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,6 @@ public class PhoneDaoTest {
         phoneDao.save(originalPhone);
         Phone phoneFromDb = phoneDao.get(originalPhone.getId());
         assertEquals(originalPhone, phoneFromDb);
-        phoneDao.delete(phoneFromDb.getId());
     }
 
     @Test
