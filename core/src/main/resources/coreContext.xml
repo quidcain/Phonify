@@ -41,7 +41,7 @@
     <jdbc:initialize-database data-source="dataSource"
                               enabled="${db.insertSchema}"
                               ignore-failures="DROPS">
-        <jdbc:script location="classpath:insertSchema.sql" />
+        <jdbc:script location="classpath:insertSchema_${db.vendor}.sql" />
     </jdbc:initialize-database>
 
     <jdbc:initialize-database data-source="dataSource"
