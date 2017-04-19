@@ -19,4 +19,14 @@
     <mvc:annotation-driven />
     <mvc:resources mapping="/resources/**" location="/resources/" />
 
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/"/>
+            <mvc:mapping path="/productList" />
+            <mvc:mapping path="/productDetails/*" />
+            <mvc:mapping path="/cart" />
+            <bean class="com.expertsoft.interceptor.CartIndicatorInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
 </beans>

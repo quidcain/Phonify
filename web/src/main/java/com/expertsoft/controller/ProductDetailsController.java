@@ -1,7 +1,6 @@
 package com.expertsoft.controller;
 
 
-import com.expertsoft.service.OrderService;
 import com.expertsoft.service.PhoneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,21 +10,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/productDetails/{phoneId}")
+@RequestMapping("/productDetails")
 public class ProductDetailsController {
     private PhoneService phoneService;
-    private OrderService orderService;
 
     @Autowired
-    public ProductDetailsController(PhoneService phoneService, OrderService orderService) {
+    public ProductDetailsController(PhoneService phoneService) {
         this.phoneService = phoneService;
-        this.orderService = orderService;
     }
 
-    @GetMapping()
+    @GetMapping("/{phoneId}")
     public String productDetails(@PathVariable long phoneId, Model model) {
-        model.addAttribute("itemsQuantity", orderService.getItemsQuantity());
-        model.addAttribute("subtotal", orderService.getSubtotal());
         model.addAttribute(phoneService.get(phoneId));
         return "productDetails";
     }

@@ -1,16 +1,12 @@
 package com.expertsoft.controller;
 
-import com.expertsoft.controller.cart.QuantityWrapper;
-import com.expertsoft.service.ItemsQuantityUnderflow;
 import com.expertsoft.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
 import java.util.Map;
 
 @Controller
@@ -25,8 +21,6 @@ public class CartController {
 
     @GetMapping()
     public String cart(Model model) {
-        model.addAttribute("itemsQuantity", orderService.getItemsQuantity());
-        model.addAttribute("subtotal", orderService.getSubtotal());
         model.addAttribute(orderService.getOrderItems());
         return "cart";
     }
@@ -38,7 +32,7 @@ public class CartController {
     }
 
     @PostMapping("/updateOrderItems")
-    public String updateOrderItem(@RequestParam Map<String, String> params, RedirectAttributes model) { //TODO: spring mvc form and validation
+    public String updateOrderItem(@RequestParam Map<String, String> params, RedirectAttributes model) {
         for (Map.Entry<String, String> entry : params.entrySet()) {
             long phoneId = Long.parseLong(entry.getKey().split("_")[1]);
             try {

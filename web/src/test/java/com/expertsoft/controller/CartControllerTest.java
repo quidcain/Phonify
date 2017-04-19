@@ -2,7 +2,6 @@ package com.expertsoft.controller;
 
 import com.expertsoft.model.OrderItem;
 import com.expertsoft.model.Phone;
-import com.expertsoft.service.ItemsQuantityUnderflow;
 import com.expertsoft.service.OrderService;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +11,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.view.InternalResourceView;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +37,6 @@ public class CartControllerTest {
         controller = new CartController(orderService);
         when(orderService.getOrderItems())
                 .thenReturn(expectedOrderItems);
-        when(orderService.getItemsQuantity()).thenReturn(0L);
-        when(orderService.getSubtotal()).thenReturn(BigDecimal.ZERO);
     }
 
     @Test
@@ -51,10 +47,6 @@ public class CartControllerTest {
                 .build();
         mockMvc.perform(get("/cart"))
                 .andExpect(view().name("cart"))
-                .andExpect(model().attributeExists("itemsQuantity"))
-                .andExpect(model().attribute("itemsQuantity", orderService.getItemsQuantity()))
-                .andExpect(model().attributeExists("subtotal"))
-                .andExpect(model().attribute("subtotal", orderService.getSubtotal()))
                 .andExpect(model().attributeExists("orderItemList"))
                 .andExpect(model().attribute("orderItemList", hasItems(expectedOrderItems.toArray())));
     }
