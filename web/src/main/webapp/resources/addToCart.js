@@ -2,8 +2,11 @@ $(function() {
     $("form").submit(function(event) {
         event.preventDefault();
         var id = $(this).attr("id").split('_')[1];
-        var field = $(this).parent('tr').find('input').val();
-        addToCart(id, field);
+        console.log($(this).find('input') == $(this).find('input'));
+        var field = $(this).parent('tr').find('input');
+        if (!field.length)
+            field = $(this).find('input');
+        addToCart(id, field.val());
     });
 });
 

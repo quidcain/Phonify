@@ -56,7 +56,7 @@
                     </tr>
                 </table>
                 <form method="post" action="<s:url value='/addToCart' />" id="form_${phone.id}">
-                	<input type="text" name="quantity" form="form_${phone.id}">
+                	<input type="text" name="quantity" form="form_${phone.id}" value="1">
                 	<button type="submit" class="btn addToCart">Add to cart</button>
                     <div class="errorMessage hidden"></div>
                 </form>
