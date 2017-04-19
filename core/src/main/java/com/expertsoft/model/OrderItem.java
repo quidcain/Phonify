@@ -1,16 +1,10 @@
 package com.expertsoft.model;
 
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotNull;
-
-
 public class OrderItem {
     private Long id;
     private Phone phone;
     private Order order;
 
-    @Digits(integer = 100, fraction = 0)
-    @NotNull
     private long quantity;
 
     public OrderItem() {

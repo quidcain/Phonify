@@ -29,7 +29,7 @@ public class AddToCartController {
     public ResponseEntity<?> addToCart(@Valid @RequestBody AddToCartRequest addToCartRequest, BindingResult result){
         if (result.hasErrors()) {
             AddToCartErrorResponse response = new AddToCartErrorResponse();
-            response.setMessage("Value must be from 1 to 99!"); //TODO: use binding result
+            response.setMessage(result.getFieldError().getDefaultMessage());
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
         AddToCartSuccessResponse response = new AddToCartSuccessResponse();

@@ -7,9 +7,8 @@ import javax.validation.constraints.NotNull;
 public class AddToCartRequest {
     private long id;
 
-    @Max(99)
-    @Min(1)
-    @NotNull
+    @Max(value = 99, message = "{quantity.minmax}")
+    @Min(value = 1, message = "{quantity.minmax}")
     private String quantity;
 
     public long getId() {
