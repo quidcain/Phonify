@@ -45,7 +45,7 @@
                             <td>${phone.price}$</td>
                             <form method="post" action="<s:url value='/addToCart' />" id="form_${phone.id}">
                                 <td>
-                                    <input type="text" name="quantity" form="form_${phone.id}">
+                                    <input type="text" name="quantity" form="form_${phone.id}" value="1">
                                     <span class="errorMessage hidden"></span>
                                 </td>
                                 <td>
