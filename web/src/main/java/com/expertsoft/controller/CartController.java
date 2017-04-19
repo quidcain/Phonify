@@ -32,16 +32,8 @@ public class CartController {
     }
 
     @PostMapping("/deleteOrderItem/{phoneId}")
-    public String deleteOrderItem(@PathVariable long phoneId, @Valid QuantityWrapper quantityWrapper, BindingResult result, RedirectAttributes model) {
-        if (result.hasErrors()) {
-            model.addFlashAttribute("errorMessage_" + phoneId, "Value must be from 1 to 99!");
-            return "redirect:/cart";
-        }
-        try {
-            orderService.reduceOrderItem(phoneId, quantityWrapper.getQuantity());
-        } catch (ItemsQuantityUnderflow e) {
-            model.addFlashAttribute("errorMessage_" + phoneId, "Too few items!");
-        }
+    public String deleteOrderItem(@PathVariable long phoneId) {
+        orderService.deleteOrderItem(phoneId);
         return "redirect:/cart";
     }
 

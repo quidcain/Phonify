@@ -85,17 +85,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void reduceOrderItem(long phoneId, long quantity) throws ItemsQuantityUnderflow {
+    public void deleteOrderItem(long phoneId) {
         int itemIndex = getItemIndex(phoneId);
-        OrderItem item = order.getOrderItems().get(itemIndex);
-        if(item.getQuantity() < quantity)
-            throw new ItemsQuantityUnderflow();
-        item.setQuantity(item.getQuantity() - quantity);
-        itemsQuantity -= quantity;
+        List<OrderItem> orderItems = order.getOrderItems();
+        OrderItem item = orderItems.get(itemIndex);
+        itemsQuantity -= item.getQuantity();
         order.setSubtotal(order.getSubtotal().subtract(
-                item.getPhone().getPrice().multiply(BigDecimal.valueOf(quantity))));
-        if (item.getQuantity() < 1)
-            order.getOrderItems().remove(itemIndex);
+            item.getPhone().getPrice().multiply(BigDecimal.valueOf(item.getQuantity()))));
+        orderItems.remove(itemIndex);
     }
 
     @Override

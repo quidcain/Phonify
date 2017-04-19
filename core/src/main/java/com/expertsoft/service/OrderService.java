@@ -16,6 +16,6 @@ public interface OrderService {
     long getItemsQuantity();
     BigDecimal getSubtotal();
     List<OrderItem> getOrderItems();
-    void reduceOrderItem(long phoneId, long quantity) throws ItemsQuantityUnderflow;
+    void deleteOrderItem(long phoneId);
     void updateOrderItem(long phoneId, long newQuantity);
 }

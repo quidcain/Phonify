@@ -63,24 +63,10 @@ public class CartControllerTest {
     public void testDelete() throws Exception {
         mockMvc = standaloneSetup(controller)
                 .build();
-        doNothing().when(orderService).reduceOrderItem(anyLong(), eq(1L));
-        doThrow(new ItemsQuantityUnderflow()).when(orderService).reduceOrderItem(anyLong(), eq(2L));
-        mockMvc.perform(post("/cart/deleteOrderItem/{phoneId}", 1)
-                .param("quantity", "1"))
+        doNothing().when(orderService).deleteOrderItem(anyLong());
+        mockMvc.perform(post("/cart/deleteOrderItem/{phoneId}", 1))
                 .andExpect(redirectedUrl("/cart"));
-        verify(orderService, times(1)).reduceOrderItem(anyLong(), anyLong());
-        mockMvc.perform(post("/cart/deleteOrderItem/{phoneId}", 1)
-                .param("quantity", "ф"))
-                .andExpect(flash().attributeExists("errorMessage_1"))
-                .andExpect(flash().attribute("errorMessage_1", "Value must be from 1 to 99!"))
-                .andExpect(redirectedUrl("/cart"));
-        verify(orderService, times(1)).reduceOrderItem(anyLong(), anyLong());
-        mockMvc.perform(post("/cart/deleteOrderItem/{phoneId}", 1)
-                .param("quantity", "2"))
-                .andExpect(flash().attributeExists("errorMessage_1"))
-                .andExpect(flash().attribute("errorMessage_1", "Too few items!"))
-                .andExpect(redirectedUrl("/cart"));
-        verify(orderService, times(2)).reduceOrderItem(anyLong(), anyLong());
+        verify(orderService, times(1)).deleteOrderItem(anyLong());
     }
 
     @Test
