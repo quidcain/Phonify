@@ -1,11 +1,11 @@
-package com.expertsoft.controller.addtocart;
+package com.expertsoft.controller.form;
 
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class AddToCartErrorResponseTest {
-    private AddToCartErrorResponse response = new AddToCartErrorResponse();
+public class ErrorMessageResponseTest {
+    private ErrorMessageResponse response = new ErrorMessageResponse();
 
     @Test
     public void setterGetterTest() throws Throwable {

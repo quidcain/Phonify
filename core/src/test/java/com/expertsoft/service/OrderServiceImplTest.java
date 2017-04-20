@@ -3,6 +3,7 @@ package com.expertsoft.service;
 
 import com.expertsoft.dao.OrderDao;
 import com.expertsoft.dao.PhoneDao;
+import com.expertsoft.model.CartIndicator;
 import com.expertsoft.model.Order;
 import com.expertsoft.model.OrderItem;
 import com.expertsoft.model.Phone;
@@ -79,14 +80,15 @@ public class OrderServiceImplTest {
         phone = createPhone("Motorola");
         when(phoneDao.get(2)).thenReturn(phone);
         orderService.addOrderItem(1, 1);
-        assertEquals(1, orderService.getItemsQuantity());
-        assertEquals(BigDecimal.ONE, orderService.getSubtotal());
+        CartIndicator cartIndicator = orderService.getCartIndicator();
+        assertEquals(1, cartIndicator.getItemsQuantity());
+        assertEquals(BigDecimal.ONE, cartIndicator.getSubtotal());
         orderService.addOrderItem(1, 2);
-        assertEquals(3, orderService.getItemsQuantity());
-        assertEquals(BigDecimal.valueOf(3), orderService.getSubtotal());
+        assertEquals(3, cartIndicator.getItemsQuantity());
+        assertEquals(BigDecimal.valueOf(3), cartIndicator.getSubtotal());
         orderService.addOrderItem(2, 3);
-        assertEquals(6, orderService.getItemsQuantity());
-        assertEquals(BigDecimal.valueOf(6), orderService.getSubtotal());
+        assertEquals(6, cartIndicator.getItemsQuantity());
+        assertEquals(BigDecimal.valueOf(6), cartIndicator.getSubtotal());
     }
 
     @Test
@@ -112,13 +114,14 @@ public class OrderServiceImplTest {
             noSuchElementExceptionThrown = true;
         }
         assertTrue(noSuchElementExceptionThrown);
-        assertEquals(BigDecimal.valueOf(3), orderService.getSubtotal());
-        assertEquals(3, orderService.getItemsQuantity());
+        CartIndicator cartIndicator = orderService.getCartIndicator();
+        assertEquals(BigDecimal.valueOf(3), cartIndicator.getSubtotal());
+        assertEquals(3, cartIndicator.getItemsQuantity());
         assertEquals(1, order.getOrderItems().size());
 
         orderService.deleteOrderItem(1);
-        assertEquals(0, orderService.getItemsQuantity());
-        assertEquals(BigDecimal.ZERO, orderService.getSubtotal());
+        assertEquals(0, cartIndicator.getItemsQuantity());
+        assertEquals(BigDecimal.ZERO, cartIndicator.getSubtotal());
         assertEquals(0, order.getOrderItems().size());
     }
 
@@ -128,11 +131,15 @@ public class OrderServiceImplTest {
         when(phoneDao.get(1)).thenReturn(phone);
         orderService.addOrderItem(phone.getId(), 3);
         orderService.updateOrderItem(phone.getId(), 4);
-        assertEquals(BigDecimal.valueOf(4), orderService.getSubtotal());
-        assertEquals(4, orderService.getItemsQuantity());
+        CartIndicator cartIndicator = orderService.getCartIndicator();
+        assertEquals(BigDecimal.valueOf(4), cartIndicator.getSubtotal());
+        assertEquals(4, cartIndicator.getItemsQuantity());
         orderService.updateOrderItem(phone.getId(), 2);
-        assertEquals(BigDecimal.valueOf(2), orderService.getSubtotal());
-        assertEquals(2, orderService.getItemsQuantity());
+        assertEquals(BigDecimal.valueOf(2), cartIndicator.getSubtotal());
+        assertEquals(2, cartIndicator.getItemsQuantity());
+        orderService.updateOrderItem(phone.getId(), 2);
+        assertEquals(BigDecimal.valueOf(2), cartIndicator.getSubtotal());
+        assertEquals(2, cartIndicator.getItemsQuantity());
     }
 
     private Phone createPhone(String model) {

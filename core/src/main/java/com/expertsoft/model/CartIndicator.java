@@ -1,8 +1,8 @@
-package com.expertsoft.controller.addtocart;
+package com.expertsoft.model;
 
 import java.math.BigDecimal;
 
-public class AddToCartSuccessResponse {
+public class CartIndicator {
     private long itemsQuantity;
     private BigDecimal subtotal;
 

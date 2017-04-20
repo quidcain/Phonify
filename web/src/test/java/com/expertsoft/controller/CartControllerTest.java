@@ -66,20 +66,20 @@ public class CartControllerTest {
         mockMvc = standaloneSetup(controller)
                 .build();
         mockMvc.perform(post("/cart/updateOrderItems")
-                .param("quantity_1", "1")
-                .param("quantity_2", "2"))
+                .param("items[1].quantity", "1")
+                .param("items[2].quantity", "2"))
                 .andExpect(redirectedUrl("/cart"));
         mockMvc.perform(post("/cart/updateOrderItems")
-                .param("quantity_1", "-3")
-                .param("quantity_2", "800"))
+                .param("items[1].quantity", "-3")
+                .param("items[2].quantity", "800"))
                 .andExpect(flash().attributeExists("errorMessage_1"))
                 .andExpect(flash().attribute("errorMessage_1", "Value must be from 1 to 99!"))
                 .andExpect(flash().attributeExists("errorMessage_2"))
                 .andExpect(flash().attribute("errorMessage_2", "Value must be from 1 to 99!"))
                 .andExpect(redirectedUrl("/cart"));
         mockMvc.perform(post("/cart/updateOrderItems")
-                .param("quantity_1", "3")
-                .param("quantity_2", "a"))
+                .param("items[1].quantity", "3")
+                .param("items[2].quantity", "a"))
                 .andExpect(flash().attributeExists("errorMessage_2"))
                 .andExpect(flash().attribute("errorMessage_2", "Value must be from 1 to 99!"))
                 .andExpect(redirectedUrl("/cart"));

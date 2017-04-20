@@ -2,6 +2,7 @@ package com.expertsoft.service;
 
 import com.expertsoft.dao.OrderDao;
 import com.expertsoft.dao.PhoneDao;
+import com.expertsoft.model.CartIndicator;
 import com.expertsoft.model.Order;
 import com.expertsoft.model.OrderItem;
 import com.expertsoft.model.Phone;
@@ -17,14 +18,16 @@ public class OrderServiceImpl implements OrderService {
     private OrderDao orderDao;
     private PhoneDao phoneDao;
     private Order order;
-    private long itemsQuantity;
+    private CartIndicator cartIndicator;
 
     @Autowired
     public OrderServiceImpl(OrderDao orderDao, PhoneDao phoneDao, Order order) {
         this.orderDao = orderDao;
         this.phoneDao = phoneDao;
         this.order = order;
-        itemsQuantity = 0;
+        cartIndicator = new CartIndicator();
+        cartIndicator.setItemsQuantity(0);
+        cartIndicator.setSubtotal(BigDecimal.ZERO);
     }
 
     @Override
@@ -66,17 +69,13 @@ public class OrderServiceImpl implements OrderService {
         }
         order.setSubtotal(order.getSubtotal().add(
                 phone.getPrice().multiply(BigDecimal.valueOf(quantity))));
-        itemsQuantity += quantity;
+        cartIndicator.setItemsQuantity(cartIndicator.getItemsQuantity() + quantity);
+        cartIndicator.setSubtotal(order.getSubtotal());
     }
 
     @Override
-    public long getItemsQuantity() {
-        return itemsQuantity;
-    }
-
-    @Override
-    public BigDecimal getSubtotal() {
-        return order.getSubtotal();
+    public CartIndicator getCartIndicator() {
+        return cartIndicator;
     }
 
     @Override
@@ -89,9 +88,10 @@ public class OrderServiceImpl implements OrderService {
         int itemIndex = getItemIndex(phoneId);
         List<OrderItem> orderItems = order.getOrderItems();
         OrderItem item = orderItems.get(itemIndex);
-        itemsQuantity -= item.getQuantity();
         order.setSubtotal(order.getSubtotal().subtract(
             item.getPhone().getPrice().multiply(BigDecimal.valueOf(item.getQuantity()))));
+        cartIndicator.setItemsQuantity(cartIndicator.getItemsQuantity() - item.getQuantity());
+        cartIndicator.setSubtotal(order.getSubtotal());
         orderItems.remove(itemIndex);
     }
 
@@ -99,11 +99,14 @@ public class OrderServiceImpl implements OrderService {
     public void updateOrderItem(long phoneId, long newQuantity) {
         int itemIndex = getItemIndex(phoneId);
         OrderItem item = order.getOrderItems().get(itemIndex);
-        long quantity = newQuantity - item.getQuantity();
+        long quantityDifference = newQuantity - item.getQuantity();
+        if (quantityDifference == 0)
+            return;
         item.setQuantity(newQuantity);
-        itemsQuantity += quantity;
         order.setSubtotal(order.getSubtotal().add(
-                item.getPhone().getPrice().multiply(BigDecimal.valueOf(quantity))));
+                item.getPhone().getPrice().multiply(BigDecimal.valueOf(quantityDifference))));
+        cartIndicator.setItemsQuantity(cartIndicator.getItemsQuantity() + quantityDifference);
+        cartIndicator.setSubtotal(order.getSubtotal());
     }
 
     private int getItemIndex(long phoneId) {

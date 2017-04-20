@@ -20,11 +20,11 @@
     <body>
         <div id="wrapper" class="container">
             <header>
-                <a href="<s:url value='/' />"><img src="<s:url value="/resources/images/phonify.svg" />"></a>
-                <c:if test="${itemsQuantity == null}" >
-                    <c:set value="0" var="itemsQuantity"/>
+                <a href="<s:url value='/' />"><img src="<s:url value='/resources/images/phonify.svg' />"></a>
+                <c:if test="${cartIndicator.itemsQuantity == null}" >
+                    <c:set value="0" var="cartIndicator.itemsQuantity"/>
                 </c:if>
-                <a href="<s:url value='/cart' />" class="btn" role="button">My cart: <span id="itemsQuantity">${itemsQuantity}</span> items <span id="subtotal">${subtotal}</span>$</a>
+                <a href="<s:url value='/cart' />" class="btn" role="button">My cart: <span id="itemsQuantity">${cartIndicator.itemsQuantity}</span> items <span id="subtotal">${cartIndicator.subtotal}</span>$</a>
             </header>
             <section>
                 <a href="<s:url value='/' />" class="btn" role="button" id="backToProductList">Back to product list</a>

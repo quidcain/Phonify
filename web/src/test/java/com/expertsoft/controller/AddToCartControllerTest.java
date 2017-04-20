@@ -1,5 +1,6 @@
 package com.expertsoft.controller;
 
+import com.expertsoft.model.CartIndicator;
 import com.expertsoft.service.OrderService;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,8 +32,10 @@ public class AddToCartControllerTest {
 
     @Test
     public void addToCartTest() throws Exception {
-        when(orderService.getItemsQuantity()).thenReturn(1L);
-        when(orderService.getSubtotal()).thenReturn(BigDecimal.ONE);
+        CartIndicator cartIndicator = new CartIndicator();
+        cartIndicator.setItemsQuantity(1);
+        cartIndicator.setSubtotal(BigDecimal.ONE);
+        when(orderService.getCartIndicator()).thenReturn(cartIndicator);
         mockMvc.perform(post("/addToCart")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(createRequestInJson(0, "2")))

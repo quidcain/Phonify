@@ -18,8 +18,7 @@ public class CartIndicatorInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        request.setAttribute("itemsQuantity", orderService.getItemsQuantity());
-        request.setAttribute("subtotal", orderService.getSubtotal());
+        request.setAttribute("cartIndicator", orderService.getCartIndicator());
         return true;
     }
 }

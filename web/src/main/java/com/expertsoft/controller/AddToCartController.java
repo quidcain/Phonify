@@ -1,8 +1,7 @@
 package com.expertsoft.controller;
 
-import com.expertsoft.controller.addtocart.AddToCartErrorResponse;
-import com.expertsoft.controller.addtocart.AddToCartRequest;
-import com.expertsoft.controller.addtocart.AddToCartSuccessResponse;
+import com.expertsoft.controller.form.ErrorMessageResponse;
+import com.expertsoft.controller.form.SpecificItemForm;
 import com.expertsoft.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,17 +25,14 @@ public class AddToCartController {
 
     @ResponseBody
     @RequestMapping(value = "/addToCart")
-    public ResponseEntity<?> addToCart(@Valid @RequestBody AddToCartRequest addToCartRequest, BindingResult result){
+    public ResponseEntity<?> addToCart(@Valid @RequestBody SpecificItemForm specificItemForm, BindingResult result){
         if (result.hasErrors()) {
-            AddToCartErrorResponse response = new AddToCartErrorResponse();
-            response.setMessage(result.getFieldError().getDefaultMessage());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            ErrorMessageResponse errorMessageResponse = new ErrorMessageResponse();
+            errorMessageResponse.setMessage(result.getFieldError().getDefaultMessage());
+            return new ResponseEntity<>(errorMessageResponse, HttpStatus.BAD_REQUEST);
         }
-        AddToCartSuccessResponse response = new AddToCartSuccessResponse();
-        orderService.addOrderItem(addToCartRequest.getId(), Long.parseLong(addToCartRequest.getQuantity()));
-        response.setItemsQuantity(orderService.getItemsQuantity());
-        response.setSubtotal(orderService.getSubtotal());
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        orderService.addOrderItem(specificItemForm.getId(), Long.parseLong(specificItemForm.getQuantity()));
+        return new ResponseEntity<>(orderService.getCartIndicator(), HttpStatus.OK);
     }
 
 }

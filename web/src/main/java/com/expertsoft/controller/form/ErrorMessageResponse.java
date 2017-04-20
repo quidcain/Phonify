@@ -1,6 +1,6 @@
-package com.expertsoft.controller.addtocart;
+package com.expertsoft.controller.form;
 
-public class AddToCartErrorResponse {
+public class ErrorMessageResponse {
     private String message;
 
     public String getMessage() {

@@ -41,8 +41,7 @@ public class CartIndicatorInterceptorTest {
         for(HandlerInterceptor interceptor : interceptors){
             interceptor.preHandle(request, response, handlerExecutionChain.getHandler());
         }
-        assertNotNull(request.getAttribute("itemsQuantity"));
-        assertNotNull(request.getAttribute("subtotal"));
+        assertNotNull(request.getAttribute("cartIndicator"));
         ModelAndView mav = handlerAdapter.handle(request, response, handlerExecutionChain.getHandler());
         for(HandlerInterceptor interceptor : interceptors){
             interceptor.postHandle(request, response, handlerExecutionChain.getHandler(), mav);
