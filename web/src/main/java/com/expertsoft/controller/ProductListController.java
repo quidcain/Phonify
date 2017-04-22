@@ -17,7 +17,7 @@ public class ProductListController {
         this.phoneService = phoneService;
     }
 
-    @GetMapping()
+    @GetMapping
     public String productList(Model model) {
         model.addAttribute(phoneService.findAll());
         return "productList";

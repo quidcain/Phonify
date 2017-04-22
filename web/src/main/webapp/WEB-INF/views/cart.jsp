@@ -28,7 +28,7 @@
             <section>
                 <h1>Cart</h1>
                 <a href="<s:url value='/' />" class="btn aButton backToProductList" role="button">Back to product list</a>
-                <a href="#" class="btn aButton order" role="button">Order</a>
+                <a href="<s:url value='/order' />" class="btn aButton order" role="button">Order</a>
                 <form method="post" action="<s:url value='/cart/updateOrderItems' />">
                     <table class="table table-striped table-bordered">
                         <tr>
@@ -58,7 +58,7 @@
                         </c:forEach>
                     </table>
                     <button type="submit" class="btn update">Update</button>
-                    <a href="#" class="btn aButton order" role="button">Order</a>
+                    <a href="<s:url value='/order' />" class="btn aButton order" role="button">Order</a>
                 </form>
             </section>
         </div>

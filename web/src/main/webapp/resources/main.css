@@ -27,6 +27,10 @@ h1 {
 	margin: 20px 0;
 }
 
+th {
+	background-color: #95979b;
+}
+
 button, a[role=button] {
 	min-width: 70px; 
 }

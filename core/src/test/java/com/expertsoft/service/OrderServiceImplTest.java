@@ -10,18 +10,16 @@ import com.expertsoft.model.Phone;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 
@@ -140,6 +138,11 @@ public class OrderServiceImplTest {
         orderService.updateOrderItem(phone.getId(), 2);
         assertEquals(BigDecimal.valueOf(2), cartIndicator.getSubtotal());
         assertEquals(2, cartIndicator.getItemsQuantity());
+    }
+
+    @Test
+    public void getOrderTest() {
+        assertEquals(order, orderService.getOrder());
     }
 
     private Phone createPhone(String model) {

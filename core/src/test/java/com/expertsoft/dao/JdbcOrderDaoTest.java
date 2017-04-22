@@ -10,13 +10,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -103,6 +103,7 @@ public class JdbcOrderDaoTest {
         order.setLastName(lastName);
         order.setDeliveryAddress("1234 Main Street Anytown, USA 123456");
         order.setContactPhoneNo("1-800-354-0387");
+        order.setAdditionalInfo("Lorem ipsum");
         list.add(order);
     }
 

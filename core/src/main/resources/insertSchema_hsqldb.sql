@@ -16,7 +16,8 @@ CREATE TABLE Orders(
   firstName VARCHAR(40) NOT NULL,
   lastName VARCHAR(40) NOT NULL,
   deliveryAddress VARCHAR(60) NOT NULL,
-  contactPhoneNo VARCHAR(20) NOT NULL
+  contactPhoneNo VARCHAR(20) NOT NULL,
+  additionalInfo VARCHAR(255)
 );
 
 CREATE TABLE OrderItems(

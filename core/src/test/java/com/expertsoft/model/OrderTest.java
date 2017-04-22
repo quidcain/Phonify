@@ -66,5 +66,8 @@ public class OrderTest {
 
         order.setContactPhoneNo("1-800-354-0387");
         assertEquals("1-800-354-0387", order.getContactPhoneNo());
+
+        order.setAdditionalInfo("Lorem ipsum");
+        assertEquals("Lorem ipsum", order.getAdditionalInfo());
     }
 }

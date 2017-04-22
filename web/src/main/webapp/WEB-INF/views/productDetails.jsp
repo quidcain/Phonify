@@ -27,7 +27,7 @@
                 <a href="<s:url value='/cart' />" class="btn" role="button">My cart: <span id="itemsQuantity">${cartIndicator.itemsQuantity}</span> items <span id="subtotal">${cartIndicator.subtotal}</span>$</a>
             </header>
             <section>
-                <a href="<s:url value='/' />" class="btn" role="button" id="backToProductList">Back to product list</a>
+                <a href="<s:url value='/' />" class="btn backToProductList" role="button">Back to product list</a>
                 <h1>${phone.model}</h1>
                 <table class="table table-striped table-bordered">
                     <tr>

@@ -22,6 +22,7 @@ public class Order {
     private String lastName;
     private String deliveryAddress;
     private String contactPhoneNo;
+    private String additionalInfo;
 
     public Order() {
         orderItems = new ArrayList<>();
@@ -94,6 +95,14 @@ public class Order {
 
     public void setContactPhoneNo(String contactPhoneNo) {
         this.contactPhoneNo = contactPhoneNo;
+    }
+
+    public String getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
     }
 
     @Override

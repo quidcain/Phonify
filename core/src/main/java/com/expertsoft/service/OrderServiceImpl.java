@@ -109,6 +109,11 @@ public class OrderServiceImpl implements OrderService {
         cartIndicator.setSubtotal(order.getSubtotal());
     }
 
+    @Override
+    public Order getOrder() {
+        return order;
+    }
+
     private int getItemIndex(long phoneId) {
         List<OrderItem> orderItems = order.getOrderItems();
         for (int i = 0, j = orderItems.size(); i < j; i++) {
