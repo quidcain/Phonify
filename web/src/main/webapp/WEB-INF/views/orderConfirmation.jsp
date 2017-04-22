@@ -87,7 +87,7 @@
                     </div>
                 </div>
                 <div class="additionalInfo">${order.additionalInfo}</div>
-                <a href="<s:url value='/' />" class="btn backToCart" role="button">Back to shopping</a>
+                <a href="<s:url value='/' />" class="btn backToShopping" role="button">Back to shopping</a>
             </form>
         </div>
     </section>
