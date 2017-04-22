@@ -21,13 +21,11 @@ public class OrderServiceImpl implements OrderService {
     private CartIndicator cartIndicator;
 
     @Autowired
-    public OrderServiceImpl(OrderDao orderDao, PhoneDao phoneDao, Order order) {
+    public OrderServiceImpl(OrderDao orderDao, PhoneDao phoneDao, Order order, CartIndicator cartIndicator) {
         this.orderDao = orderDao;
         this.phoneDao = phoneDao;
         this.order = order;
-        cartIndicator = new CartIndicator();
-        cartIndicator.setItemsQuantity(0);
-        cartIndicator.setSubtotal(BigDecimal.ZERO);
+        this.cartIndicator = cartIndicator;
     }
 
     @Override

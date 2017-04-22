@@ -2,7 +2,9 @@ package com.expertsoft.controller;
 
 import com.expertsoft.controller.form.ErrorMessageResponse;
 import com.expertsoft.controller.form.SpecificItemForm;
+import com.expertsoft.model.CartIndicator;
 import com.expertsoft.service.OrderService;
+import org.springframework.aop.scope.ScopedObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +34,8 @@ public class AddToCartController {
             return new ResponseEntity<>(errorMessageResponse, HttpStatus.BAD_REQUEST);
         }
         orderService.addOrderItem(specificItemForm.getId(), Long.parseLong(specificItemForm.getQuantity()));
-        return new ResponseEntity<>(orderService.getCartIndicator(), HttpStatus.OK);
+        CartIndicator cartIndicator = (CartIndicator)((ScopedObject)orderService.getCartIndicator()).getTargetObject();
+        return new ResponseEntity<>(cartIndicator, HttpStatus.OK);
     }
 
 }

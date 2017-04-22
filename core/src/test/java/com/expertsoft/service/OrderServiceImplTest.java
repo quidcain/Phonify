@@ -36,9 +36,11 @@ public class OrderServiceImplTest {
 
     private OrderServiceImpl orderService;
 
+    private CartIndicator cartIndicator = new CartIndicator();
+
     @Before
     public void init() {
-        orderService = new OrderServiceImpl(orderDao, phoneDao, order);
+        orderService = new OrderServiceImpl(orderDao, phoneDao, order, cartIndicator);
     }
 
     @Test
