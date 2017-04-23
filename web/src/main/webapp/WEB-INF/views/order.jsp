@@ -71,24 +71,28 @@
                             <sf:label path="firstName" cssClass="col-md-4 control-label">First Name</sf:label>
                             <div class="col-md-8">
                                 <sf:input path="firstName" cssClass="form-control" placeholder="First Name" />
+                                <sf:errors path="firstName" cssClass="errorMessage"/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <sf:label path="lastName" cssClass="col-md-4 control-label">Last Name</sf:label>
                             <div class="col-md-8">
                                 <sf:input path="lastName" cssClass="form-control" placeholder="First Name" />
+                                <sf:errors path="lastName" cssClass="errorMessage"/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <sf:label path="deliveryAddress" cssClass="col-md-4 control-label">Address</sf:label>
                             <div class="col-md-8">
                                 <sf:input path="deliveryAddress" cssClass="form-control" placeholder="Address" />
+                                <sf:errors path="deliveryAddress" cssClass="errorMessage"/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <sf:label path="contactPhoneNo" cssClass="col-md-4 control-label">Phone</sf:label>
                             <div class="col-md-8">
                                 <sf:input path="contactPhoneNo" cssClass="form-control" placeholder="Phone" />
+                                <sf:errors path="contactPhoneNo" cssClass="errorMessage"/>
                             </div>
                         </div>
                         <sf:textarea path="additionalInfo" cssClass="form-control additionalInfo" placeholder="Additional information" maxlength="255"/>

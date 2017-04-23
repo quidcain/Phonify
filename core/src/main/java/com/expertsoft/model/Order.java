@@ -1,10 +1,12 @@
 package com.expertsoft.model;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +20,17 @@ public class Order {
     private BigDecimal subtotal;
     @Value("${delivery.price}")
     private BigDecimal deliveryPrice;
+    @NotBlank
+    @Size(min = 3, max = 40)
     private String firstName;
+    @NotBlank
+    @Size(min = 3, max = 40)
     private String lastName;
+    @NotBlank
+    @Size(min = 3, max = 60)
     private String deliveryAddress;
+    @NotBlank
+    @Size(min = 3, max = 60)
     private String contactPhoneNo;
     private String additionalInfo;
 
@@ -116,6 +126,8 @@ public class Order {
 
     @Override
     public int hashCode() {
+        if (id == null)
+            return 0;
         return Long.hashCode(id);
     }
 }
