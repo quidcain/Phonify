@@ -1,7 +1,7 @@
 package com.expertsoft.controller;
 
 import com.expertsoft.model.CartIndicator;
-import com.expertsoft.service.OrderService;
+import com.expertsoft.service.CartService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,11 +22,11 @@ public class AddToCartControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private OrderService orderService;
+    private CartService cartService;
 
     @Before
     public void init() {
-        AddToCartController controller = new AddToCartController(orderService);
+        AddToCartController controller = new AddToCartController(cartService);
         mockMvc = standaloneSetup(controller).build();
     }
 
@@ -35,7 +35,7 @@ public class AddToCartControllerTest {
         CartIndicator cartIndicator = new CartIndicator();
         cartIndicator.setItemsQuantity(1);
         cartIndicator.setSubtotal(BigDecimal.ONE);
-        when(orderService.getCartIndicator()).thenReturn(cartIndicator);
+        when(cartService.getCartIndicator()).thenReturn(cartIndicator);
         mockMvc.perform(post("/addToCart")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(createRequestInJson(0, "2")))
@@ -49,6 +49,8 @@ public class AddToCartControllerTest {
                 .content(createRequestInJson(0, "abc")))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
+
+
 
     private String createRequestInJson(long phoneId, String quantity) {
         return "{ \"phoneId\": \"" + phoneId + "\", " +

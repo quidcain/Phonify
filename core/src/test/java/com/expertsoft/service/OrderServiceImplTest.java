@@ -2,45 +2,34 @@ package com.expertsoft.service;
 
 
 import com.expertsoft.dao.OrderDao;
-import com.expertsoft.dao.PhoneDao;
-import com.expertsoft.model.CartIndicator;
+import com.expertsoft.model.Cart;
+import com.expertsoft.model.CartItem;
 import com.expertsoft.model.Order;
-import com.expertsoft.model.OrderItem;
-import com.expertsoft.model.Phone;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderServiceImplTest {
-    private Order order = new Order();
 
     @Mock
     private OrderDao orderDao;
 
-    @Mock
-    private PhoneDao phoneDao;
-
     private OrderServiceImpl orderService;
 
-    private CartIndicator cartIndicator = new CartIndicator();
 
     @Before
     public void init() {
-        orderService = new OrderServiceImpl(orderDao, phoneDao, order, cartIndicator);
+        orderService = new OrderServiceImpl(orderDao);
     }
 
     @Test
@@ -62,7 +51,10 @@ public class OrderServiceImplTest {
     @Test
     public void saveTest() {
         doNothing().when(orderDao).save(any(Order.class));
-        orderService.save(new Order());
+        Cart cart = new Cart();
+        cart.setCartItems(new ArrayList<>());
+        cart.getCartItems().add(new CartItem());
+        orderService.save(cart);
         verify(orderDao, times(1)).save(any(Order.class));
     }
 
@@ -71,89 +63,5 @@ public class OrderServiceImplTest {
         doNothing().when(orderDao).delete(anyLong());
         orderService.delete(0);
         verify(orderDao, times(1)).delete(anyLong());
-    }
-
-    @Test
-    public void addOrderItemTest() {
-        Phone phone = createPhone("iPhone");
-        when(phoneDao.get(1)).thenReturn(phone);
-        phone = createPhone("Motorola");
-        when(phoneDao.get(2)).thenReturn(phone);
-        orderService.addOrderItem(1, 1);
-        CartIndicator cartIndicator = orderService.getCartIndicator();
-        assertEquals(1, cartIndicator.getItemsQuantity());
-        assertEquals(BigDecimal.ONE, cartIndicator.getSubtotal());
-        orderService.addOrderItem(1, 2);
-        assertEquals(3, cartIndicator.getItemsQuantity());
-        assertEquals(BigDecimal.valueOf(3), cartIndicator.getSubtotal());
-        orderService.addOrderItem(2, 3);
-        assertEquals(6, cartIndicator.getItemsQuantity());
-        assertEquals(BigDecimal.valueOf(6), cartIndicator.getSubtotal());
-    }
-
-    @Test
-    public void getOrderItemsTest() {
-        List<OrderItem> list = new ArrayList<>();
-        order.setOrderItems(list);
-        assertEquals(0, orderService.getOrderItems().size());
-        OrderItem orderItem = new OrderItem();
-        orderItem.setOrder(order);
-        list.add(orderItem);
-        assertEquals(1, orderService.getOrderItems().size());
-    }
-
-    @Test
-    public void deleteOrderItemTest() {
-        Phone phone = createPhone("iPhone");
-        when(phoneDao.get(1)).thenReturn(phone);
-        orderService.addOrderItem(phone.getId(), 3);
-        boolean noSuchElementExceptionThrown = false;
-        try {
-            orderService.deleteOrderItem(2);
-        } catch (NoSuchElementException e) {
-            noSuchElementExceptionThrown = true;
-        }
-        assertTrue(noSuchElementExceptionThrown);
-        CartIndicator cartIndicator = orderService.getCartIndicator();
-        assertEquals(BigDecimal.valueOf(3), cartIndicator.getSubtotal());
-        assertEquals(3, cartIndicator.getItemsQuantity());
-        assertEquals(1, order.getOrderItems().size());
-
-        orderService.deleteOrderItem(1);
-        assertEquals(0, cartIndicator.getItemsQuantity());
-        assertEquals(BigDecimal.ZERO, cartIndicator.getSubtotal());
-        assertEquals(0, order.getOrderItems().size());
-    }
-
-    @Test
-    public void updateOrderItemTest() {
-        Phone phone = createPhone("iPhone");
-        when(phoneDao.get(1)).thenReturn(phone);
-        orderService.addOrderItem(phone.getId(), 3);
-        orderService.updateOrderItem(phone.getId(), 4);
-        CartIndicator cartIndicator = orderService.getCartIndicator();
-        assertEquals(BigDecimal.valueOf(4), cartIndicator.getSubtotal());
-        assertEquals(4, cartIndicator.getItemsQuantity());
-        orderService.updateOrderItem(phone.getId(), 2);
-        assertEquals(BigDecimal.valueOf(2), cartIndicator.getSubtotal());
-        assertEquals(2, cartIndicator.getItemsQuantity());
-        orderService.updateOrderItem(phone.getId(), 2);
-        assertEquals(BigDecimal.valueOf(2), cartIndicator.getSubtotal());
-        assertEquals(2, cartIndicator.getItemsQuantity());
-    }
-
-    @Test
-    public void getOrderTest() {
-        assertEquals(order, orderService.getOrder());
-    }
-
-    private Phone createPhone(String model) {
-        Phone phone = new Phone();
-        phone.setId(1);
-        phone.setModel(model);
-        phone.setColor("black");
-        phone.setDisplaySize(4);
-        phone.setPrice(BigDecimal.ONE);
-        return phone;
     }
 }

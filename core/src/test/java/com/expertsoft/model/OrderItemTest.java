@@ -28,12 +28,6 @@ public class OrderItemTest {
     }
 
     @Test
-    public void hashCodeTest() {
-        orderItem.setId(-1L);
-        assertEquals((int)(-1L ^ -1L >>> 32), orderItem.hashCode());
-    }
-    
-    @Test
     public void setterGetterTest() {
         orderItem.setId(-1L);
         assertEquals(new Long(-1L), orderItem.getId());

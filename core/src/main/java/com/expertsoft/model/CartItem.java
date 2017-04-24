@@ -1,18 +1,19 @@
 package com.expertsoft.model;
 
-public class OrderItem {
+
+public class CartItem {
     private Long id;
     private Phone phone;
-    private Order order;
+    private Cart cart;
 
     private long quantity;
 
-    public OrderItem() {
+    public CartItem() {
     }
 
-    public OrderItem(Phone phone, Order order, long quantity) {
+    public CartItem(Phone phone, Cart cart, long quantity) {
         this.phone = phone;
-        this.order = order;
+        this.cart = cart;
         this.quantity = quantity;
     }
 
@@ -32,12 +33,12 @@ public class OrderItem {
         this.phone = phone;
     }
 
-    public Order getOrder() {
-        return order;
+    public Cart getCart() {
+        return cart;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     public long getQuantity() {
@@ -52,8 +53,8 @@ public class OrderItem {
     public boolean equals(Object o) {
         if (o == null)
             return false;
-        if (o.getClass() != OrderItem.class)
+        if (o.getClass() != CartItem.class)
             return false;
-        return this.id == ((OrderItem)o).id;
+        return this.id == ((CartItem)o).id;
     }
 }

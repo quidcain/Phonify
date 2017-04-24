@@ -1,13 +1,9 @@
 package com.expertsoft.model;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
-@Component
-@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
+
 public class CartIndicator {
     private long itemsQuantity;
     private BigDecimal subtotal;

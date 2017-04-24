@@ -29,7 +29,7 @@
                 <h1>Cart</h1>
                 <a href="<s:url value='/' />" class="btn aButton backToProductList" role="button">Back to product list</a>
                 <a href="<s:url value='/order' />" class="btn aButton order" role="button">Order</a>
-                <form method="post" action="<s:url value='/cart/updateOrderItems' />">
+                <form method="post" action="<s:url value='/cart/updateCartItems' />">
                     <table class="table table-striped table-bordered">
                         <tr>
                             <th>Model</th>
@@ -39,20 +39,20 @@
                             <th>Quantity</th>
                             <th>Action</th>
                         </tr>
-                        <c:forEach items="${orderItemList}" var="orderItem">
+                        <c:forEach items="${cartItemList}" var="cartItem">
                             <tr>
-                                <td><a href="<s:url value='/productDetails/${orderItem.phone.id}' />">${orderItem.phone.model}</a></td>
-                                <td>${orderItem.phone.color}</td>
-                                <td>${orderItem.phone.displaySize}"</td>
-                                <td>${orderItem.phone.price}$</td>
+                                <td><a href="<s:url value='/productDetails/${cartItem.phone.id}' />">${cartItem.phone.model}</a></td>
+                                <td>${cartItem.phone.color}</td>
+                                <td>${cartItem.phone.displaySize}"</td>
+                                <td>${cartItem.phone.price}$</td>
                                 <td>
-                                    <c:set var="quantity" value="quantity_${orderItem.phone.id}"/>
-                                    <input type="text" name="items[${orderItem.phone.id}].quantity" value="${empty requestScope[quantity] ? orderItem.quantity : requestScope[quantity]}">
-                                    <c:set var="errorMessage" value="errorMessage_${orderItem.phone.id}"/>
+                                    <c:set var="quantity" value="quantity_${cartItem.phone.id}"/>
+                                    <input type="text" name="items[${cartItem.phone.id}].quantity" value="${empty requestScope[quantity] ? cartItem.quantity : requestScope[quantity]}">
+                                    <c:set var="errorMessage" value="errorMessage_${cartItem.phone.id}"/>
                                     <span class="errorMessage">${requestScope[errorMessage]}</span>
                                 </td>
                                 <td>
-                                    <button type="submit" class="btn" formaction="cart/deleteOrderItem/${orderItem.phone.id}">Delete</button>
+                                    <button type="submit" class="btn" formaction="cart/deleteCartItem/${cartItem.phone.id}">Delete</button>
                                 </td>
                             </tr>
                         </c:forEach>

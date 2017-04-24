@@ -1,6 +1,7 @@
 package com.expertsoft.controller;
 
-import com.expertsoft.model.Order;
+import com.expertsoft.model.Cart;
+import com.expertsoft.service.CartService;
 import com.expertsoft.service.OrderService;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,16 +22,20 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 public class OrderControllerTest {
     private MockMvc mockMvc;
     private OrderController controller;
-    private Order order = new Order();
+    private Cart cart = new Cart();
+
+    @Mock
+    private CartService cartService;
 
     @Mock
     private OrderService orderService;
 
+
     @Before
     public void init() {
-        controller = new OrderController(orderService);
-        when(orderService.getOrder())
-                .thenReturn(order);
+        controller = new OrderController(cartService, orderService);
+        when(cartService.getCart())
+                .thenReturn(cart);
     }
 
     @Test
@@ -41,18 +46,32 @@ public class OrderControllerTest {
                 .build();
         mockMvc.perform(get("/order"))
                 .andExpect(view().name("order"))
-                .andExpect(model().attributeExists("order"))
-                .andExpect(model().attribute("order", order));
+                .andExpect(model().attributeExists("cart"))
+                .andExpect(model().attribute("cart", cart));
     }
 
     @Test
     public void orderConfirmTest() throws Exception {
         mockMvc = standaloneSetup(controller)
+                .setSingleView(
+                        new InternalResourceView("/WEB-INF/views/order.jsp"))
                 .build();
-        mockMvc.perform(post("/order"))
+        mockMvc.perform(post("/order")
+                .param("firstName", "John")
+                .param("lastName", "Doe")
+                .param("deliveryAddress", "1234 Main Street Anytown")
+                .param("contactPhoneNo", "123456"))
                 .andExpect(view().name("orderConfirmation"))
-                .andExpect(model().attributeExists("order"))
-                .andExpect(model().attribute("order", order));
+                .andExpect(model().attributeExists("cart"))
+                .andExpect(model().attribute("cart", cart));
+        mockMvc.perform(post("/order")
+                .param("firstName", "")
+                .param("lastName", "Doe")
+                .param("deliveryAddress", "1234 Main Street Anytown")
+                .param("contactPhoneNo", "123456"))
+                .andExpect(view().name("order"))
+                .andExpect(model().attributeExists("cart"))
+                .andExpect(model().attribute("cart", cart));
     }
 
 }

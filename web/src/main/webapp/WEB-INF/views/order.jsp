@@ -33,13 +33,13 @@
                         <th>Quantity</th>
                         <th>Price</th>
                     </tr>
-                    <c:forEach items="${order.orderItems}" var="orderItem">
+                    <c:forEach items="${cart.cartItems}" var="cartItem">
                         <tr>
-                            <td><a href="<s:url value='/productDetails/${orderItem.phone.id}' />">${orderItem.phone.model}</a></td>
-                            <td>${orderItem.phone.color}</td>
-                            <td>${orderItem.phone.displaySize}"</td>
-                            <td>${orderItem.quantity}</td>
-                            <td>${orderItem.phone.price}$</td>
+                            <td><a href="<s:url value='/productDetails/${cartItem.phone.id}' />">${cartItem.phone.model}</a></td>
+                            <td>${cartItem.phone.color}</td>
+                            <td>${cartItem.phone.displaySize}"</td>
+                            <td>${cartItem.quantity}</td>
+                            <td>${cartItem.phone.price}$</td>
                         </tr>
                     </c:forEach>
                     <tr class="price">
@@ -47,26 +47,26 @@
                         <td></td>
                         <td></td>
                         <td>Subtotal</td>
-                        <td>${order.subtotal}$</td>
+                        <td>${cart.subtotal}$</td>
                     </tr>
                     <tr class="price">
                         <td></td>
                         <td></td>
                         <td></td>
                         <td>Delivery</td>
-                        <td>${order.deliveryPrice}$</td>
+                        <td>${cart.deliveryPrice}$</td>
                     </tr>
                     <tr class="price">
                         <td></td>
                         <td></td>
                         <td></td>
                         <td>TOTAL</td>
-                        <td>${order.totalPrice}$</td>
+                        <td>${cart.totalPrice}$</td>
                     </tr>
                 </table>
                 <div class="customerInfo">
                     <c:url var="actionUrl" value="/order"/>
-                    <sf:form cssClass="form-horizontal" method="post" action="${actionUrl}" modelAttribute="order" >
+                    <sf:form cssClass="form-horizontal" method="post" action="${actionUrl}" modelAttribute="cart" >
                         <div class="form-group row">
                             <sf:label path="firstName" cssClass="col-md-4 control-label">First Name</sf:label>
                             <div class="col-md-8">

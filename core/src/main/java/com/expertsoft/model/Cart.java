@@ -1,25 +1,44 @@
 package com.expertsoft.model;
 
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
+
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
-public class Order {
+@Component
+@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class Cart {
     private Long id;
-    private List<OrderItem> orderItems;
+    private List<CartItem> cartItems;
     private BigDecimal subtotal;
+    @Value("${delivery.price}")
     private BigDecimal deliveryPrice;
+    @NotBlank
+    @Size(min = 3, max = 40)
     private String firstName;
+    @NotBlank
+    @Size(min = 3, max = 40)
     private String lastName;
+    @NotBlank
+    @Size(min = 3, max = 60)
     private String deliveryAddress;
+    @NotBlank
+    @Size(min = 3, max = 60)
     private String contactPhoneNo;
     private String additionalInfo;
+    private CartIndicator cartIndicator;
 
-    public Order() {
-        orderItems = new ArrayList<>();
+    public Cart() {
+        cartItems = new ArrayList<>();
         subtotal = BigDecimal.ZERO;
+        cartIndicator = new CartIndicator();
     }
 
     public Long getId() {
@@ -30,12 +49,12 @@ public class Order {
         this.id = id;
     }
 
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
+    public List<CartItem> getCartItems() {
+        return cartItems;
     }
 
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
     }
 
     public BigDecimal getSubtotal() {
@@ -98,12 +117,20 @@ public class Order {
         this.additionalInfo = additionalInfo;
     }
 
+    public CartIndicator getCartIndicator() {
+        return cartIndicator;
+    }
+
+    public void setCartIndicator(CartIndicator cartIndicator) {
+        this.cartIndicator = cartIndicator;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null)
             return false;
-        if (o.getClass() != Order.class)
+        if (o.getClass() != Cart.class)
             return false;
-        return this.id == ((Order)o).id;
+        return this.id == ((Cart)o).id;
     }
 }

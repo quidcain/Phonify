@@ -1,8 +1,8 @@
 package com.expertsoft.controller;
 
-import com.expertsoft.model.OrderItem;
+import com.expertsoft.model.CartItem;
 import com.expertsoft.model.Phone;
-import com.expertsoft.service.OrderService;
+import com.expertsoft.service.CartService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,18 +25,18 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 @RunWith(MockitoJUnitRunner.class)
 public class CartControllerTest {
     private MockMvc mockMvc;
-    private List<OrderItem> expectedOrderItems;
+    private List<CartItem> expectedCartItems;
     private CartController controller;
 
     @Mock
-    private OrderService orderService;
+    private CartService cartService;
 
     @Before
     public void init() {
-        expectedOrderItems = createOrderItemList();
-        controller = new CartController(orderService);
-        when(orderService.getOrderItems())
-                .thenReturn(expectedOrderItems);
+        expectedCartItems = createCartItemList();
+        controller = new CartController(cartService);
+        when(cartService.getCartItems())
+                .thenReturn(expectedCartItems);
     }
 
     @Test
@@ -47,29 +47,29 @@ public class CartControllerTest {
                 .build();
         mockMvc.perform(get("/cart"))
                 .andExpect(view().name("cart"))
-                .andExpect(model().attributeExists("orderItemList"))
-                .andExpect(model().attribute("orderItemList", hasItems(expectedOrderItems.toArray())));
+                .andExpect(model().attributeExists("cartItemList"))
+                .andExpect(model().attribute("cartItemList", hasItems(expectedCartItems.toArray())));
     }
 
     @Test
     public void testDelete() throws Exception {
         mockMvc = standaloneSetup(controller)
                 .build();
-        doNothing().when(orderService).deleteOrderItem(anyLong());
-        mockMvc.perform(post("/cart/deleteOrderItem/{phoneId}", 1))
+        doNothing().when(cartService).deleteCartItem(anyLong());
+        mockMvc.perform(post("/cart/deleteCartItem/{phoneId}", 1))
                 .andExpect(redirectedUrl("/cart"));
-        verify(orderService, times(1)).deleteOrderItem(anyLong());
+        verify(cartService, times(1)).deleteCartItem(anyLong());
     }
 
     @Test
     public void testUpdate() throws Exception {
         mockMvc = standaloneSetup(controller)
                 .build();
-        mockMvc.perform(post("/cart/updateOrderItems")
+        mockMvc.perform(post("/cart/updateCartItems")
                 .param("items[1].quantity", "1")
                 .param("items[2].quantity", "2"))
                 .andExpect(redirectedUrl("/cart"));
-        mockMvc.perform(post("/cart/updateOrderItems")
+        mockMvc.perform(post("/cart/updateCartItems")
                 .param("items[1].quantity", "-3")
                 .param("items[2].quantity", "800"))
                 .andExpect(flash().attributeExists("errorMessage_1"))
@@ -77,7 +77,7 @@ public class CartControllerTest {
                 .andExpect(flash().attributeExists("errorMessage_2"))
                 .andExpect(flash().attribute("errorMessage_2", "Value must be from 1 to 99!"))
                 .andExpect(redirectedUrl("/cart"));
-        mockMvc.perform(post("/cart/updateOrderItems")
+        mockMvc.perform(post("/cart/updateCartItems")
                 .param("items[1].quantity", "3")
                 .param("items[2].quantity", "a"))
                 .andExpect(flash().attributeExists("errorMessage_2"))
@@ -86,9 +86,9 @@ public class CartControllerTest {
 
     }
 
-    private List<OrderItem> createOrderItemList() {
-        List<OrderItem> orderItems = new ArrayList<>(2);
-        OrderItem orderItem = new OrderItem();
+    private List<CartItem> createCartItemList() {
+        List<CartItem> cartItems = new ArrayList<>(2);
+        CartItem cartItem = new CartItem();
 
         Phone phone = new Phone();
         phone.setId(1);
@@ -96,21 +96,21 @@ public class CartControllerTest {
         phone.setColor("black");
         phone.setDisplaySize(4);
 
-        orderItem.setPhone(phone);
-        orderItem.setQuantity(1);
-        orderItems.add(orderItem);
+        cartItem.setPhone(phone);
+        cartItem.setQuantity(1);
+        cartItems.add(cartItem);
 
-        orderItem = new OrderItem();
+        cartItem = new CartItem();
         phone = new Phone();
         phone.setId(2);
         phone.setModel("Motorolla Moto X");
         phone.setColor("black");
         phone.setDisplaySize(4);
 
-        orderItem.setPhone(phone);
-        orderItem.setQuantity(2);
-        orderItems.add(orderItem);
+        cartItem.setPhone(phone);
+        cartItem.setQuantity(2);
+        cartItems.add(cartItem);
 
-        return orderItems;
+        return cartItems;
     }
 }

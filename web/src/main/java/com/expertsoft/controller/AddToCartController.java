@@ -3,8 +3,7 @@ package com.expertsoft.controller;
 import com.expertsoft.controller.form.ErrorMessageResponse;
 import com.expertsoft.controller.form.SpecificItemForm;
 import com.expertsoft.model.CartIndicator;
-import com.expertsoft.service.OrderService;
-import org.springframework.aop.scope.ScopedObject;
+import com.expertsoft.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +17,11 @@ import javax.validation.Valid;
 
 @Controller
 public class AddToCartController {
-    private OrderService orderService;
+    private CartService cartService;
 
     @Autowired
-    public AddToCartController(OrderService orderService) {
-        this.orderService = orderService;
+    public AddToCartController(CartService cartService) {
+        this.cartService = cartService;
     }
 
     @ResponseBody
@@ -33,8 +32,8 @@ public class AddToCartController {
             errorMessageResponse.setMessage(result.getFieldError().getDefaultMessage());
             return new ResponseEntity<>(errorMessageResponse, HttpStatus.BAD_REQUEST);
         }
-        orderService.addOrderItem(specificItemForm.getId(), Long.parseLong(specificItemForm.getQuantity()));
-        CartIndicator cartIndicator = (CartIndicator)((ScopedObject)orderService.getCartIndicator()).getTargetObject();
+        cartService.addOrderItem(specificItemForm.getId(), Long.parseLong(specificItemForm.getQuantity()));
+        CartIndicator cartIndicator = cartService.getCartIndicator();
         return new ResponseEntity<>(cartIndicator, HttpStatus.OK);
     }
 
