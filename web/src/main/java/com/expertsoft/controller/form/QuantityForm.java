@@ -4,7 +4,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 
-public class GenericQuantityForm {
+public class QuantityForm {
 
     @Max(value = 99, message = "{quantity.minmax}")
     @Min(value = 1, message = "{quantity.minmax}")

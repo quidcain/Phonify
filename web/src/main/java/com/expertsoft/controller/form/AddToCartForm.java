@@ -1,6 +1,6 @@
 package com.expertsoft.controller.form;
 
-public class SpecificItemForm extends GenericQuantityForm {
+public class AddToCartForm extends QuantityForm {
     private long id;
 
     public long getId() {

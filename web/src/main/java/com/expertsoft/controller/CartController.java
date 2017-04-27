@@ -1,7 +1,7 @@
 package com.expertsoft.controller;
 
-import com.expertsoft.controller.form.EntireItemsForm;
-import com.expertsoft.controller.form.GenericQuantityForm;
+import com.expertsoft.controller.form.UpdateCartItemsForm;
+import com.expertsoft.controller.form.QuantityForm;
 import com.expertsoft.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,7 +40,7 @@ public class CartController {
     }
 
     @PostMapping("/updateCartItems")
-    public String updateCartItem(@Valid EntireItemsForm entireItemsForm, BindingResult result, RedirectAttributes model) {
+    public String updateCartItems(@Valid UpdateCartItemsForm updateCartItemsForm, BindingResult result, RedirectAttributes model) {
         if (result.hasErrors()) {
             for (FieldError error : result.getFieldErrors()) {
                 error.getDefaultMessage();
@@ -52,8 +52,8 @@ public class CartController {
                 model.addFlashAttribute("quantity_" + phoneId, error.getRejectedValue());
             }
         } else {
-            Map<Long, GenericQuantityForm> items = entireItemsForm.getItems();
-            for (Map.Entry<Long, GenericQuantityForm> item : items.entrySet()) {
+            Map<Long, QuantityForm> items = updateCartItemsForm.getItems();
+            for (Map.Entry<Long, QuantityForm> item : items.entrySet()) {
                 long phoneId = item.getKey();
                 long quantity = Long.parseLong(item.getValue().getQuantity());
                 cartService.updateCartItem(phoneId, quantity);

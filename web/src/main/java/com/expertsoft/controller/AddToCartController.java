@@ -1,7 +1,7 @@
 package com.expertsoft.controller;
 
 import com.expertsoft.controller.form.ErrorMessageResponse;
-import com.expertsoft.controller.form.SpecificItemForm;
+import com.expertsoft.controller.form.AddToCartForm;
 import com.expertsoft.model.CartIndicator;
 import com.expertsoft.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +26,13 @@ public class AddToCartController {
 
     @ResponseBody
     @RequestMapping(value = "/addToCart")
-    public ResponseEntity<?> addToCart(@Valid @RequestBody SpecificItemForm specificItemForm, BindingResult result){
+    public ResponseEntity<?> addToCart(@Valid @RequestBody AddToCartForm addToCartForm, BindingResult result){
         if (result.hasErrors()) {
             ErrorMessageResponse errorMessageResponse = new ErrorMessageResponse();
             errorMessageResponse.setMessage(result.getFieldError().getDefaultMessage());
             return new ResponseEntity<>(errorMessageResponse, HttpStatus.BAD_REQUEST);
         }
-        cartService.addOrderItem(specificItemForm.getId(), Long.parseLong(specificItemForm.getQuantity()));
+        cartService.addOrderItem(addToCartForm.getId(), Long.parseLong(addToCartForm.getQuantity()));
         CartIndicator cartIndicator = cartService.getCartIndicator();
         return new ResponseEntity<>(cartIndicator, HttpStatus.OK);
     }
