@@ -41,8 +41,8 @@ public class OrderController {
         if (result.hasErrors()) {
             return "order";
         }
-        req.getSession().invalidate();
         orderService.save(cart);
+        req.getSession().invalidate();
         return "orderConfirmation";
     }
 }
