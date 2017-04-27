@@ -8,35 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 
 public class CartTest {
     private Cart cart = new Cart();
 
     @Test
-    public void equalsNull() {
-        assertFalse(cart.equals(null));
-    }
-
-    @Test
-    public void equalsAnotherClass() {
-        assertFalse(cart.equals("cart"));
-    }
-
-    @Test
-    public void equalsCart() {
-        assertEquals(cart, cart);
-        Cart anotherCart = new Cart();
-        anotherCart.setId(-2L);
-        assertNotEquals(cart, anotherCart);
-    }
-
-    @Test
     public void setterGetterTest() {
-        cart.setId(-1L);
-        assertEquals(new Long(-1L), cart.getId());
-
         List<CartItem> list = new ArrayList<>();
         list.add(new CartItem());
         list.add(new CartItem());

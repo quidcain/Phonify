@@ -47,13 +47,4 @@ public class OrderItem {
     public void setQuantity(long quantity) {
         this.quantity = quantity;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null)
-            return false;
-        if (o.getClass() != OrderItem.class)
-            return false;
-        return this.id == ((OrderItem)o).id;
-    }
 }

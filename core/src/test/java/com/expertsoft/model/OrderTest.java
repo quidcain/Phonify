@@ -11,24 +11,6 @@ import static org.junit.Assert.*;
 
 public class OrderTest {
     private Order order = new Order();
-    
-    @Test
-    public void equalsNull() {
-        assertFalse(order.equals(null));
-    }
-
-    @Test
-    public void equalsAnotherClass() {
-        assertFalse(order.equals("order"));
-    }
-
-    @Test
-    public void equalsOrder() {
-        assertEquals(order, order);
-        Order anotherOrder = new Order();
-        anotherOrder.setId(-2L);
-        assertNotEquals(order, anotherOrder);
-    }
 
     @Test
     public void setterGetterTest() {

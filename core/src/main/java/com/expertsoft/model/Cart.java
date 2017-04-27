@@ -15,7 +15,6 @@ import java.util.List;
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class Cart {
-    private Long id;
     private List<CartItem> cartItems;
     private BigDecimal subtotal;
     @Value("${delivery.price}")
@@ -39,14 +38,6 @@ public class Cart {
         cartItems = new ArrayList<>();
         subtotal = BigDecimal.ZERO;
         cartIndicator = new CartIndicator();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public List<CartItem> getCartItems() {
@@ -123,14 +114,5 @@ public class Cart {
 
     public void setCartIndicator(CartIndicator cartIndicator) {
         this.cartIndicator = cartIndicator;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null)
-            return false;
-        if (o.getClass() != Cart.class)
-            return false;
-        return this.id == ((Cart)o).id;
     }
 }

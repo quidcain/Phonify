@@ -4,21 +4,10 @@ package com.expertsoft.model;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
 public class CartItemTest {
     private CartItem cartItem = new CartItem();
-
-    @Test
-    public void equalsNull() {
-        assertFalse(cartItem.equals(null));
-    }
-
-    @Test
-    public void equalsAnotherClass() {
-        assertFalse(cartItem.equals("cartItem"));
-    }
 
     @Test
     public void equalsOrderItem() {

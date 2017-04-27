@@ -48,13 +48,4 @@ public class CartItem {
     public void setQuantity(long quantity) {
         this.quantity = quantity;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null)
-            return false;
-        if (o.getClass() != CartItem.class)
-            return false;
-        return this.id == ((CartItem)o).id;
-    }
 }

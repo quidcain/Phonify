@@ -98,12 +98,4 @@ public class Order {
         this.additionalInfo = additionalInfo;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null)
-            return false;
-        if (o.getClass() != Order.class)
-            return false;
-        return this.id == ((Order)o).id;
-    }
 }

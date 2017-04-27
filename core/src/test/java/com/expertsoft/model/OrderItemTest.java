@@ -10,16 +10,6 @@ public class OrderItemTest {
     private OrderItem orderItem = new OrderItem();
 
     @Test
-    public void equalsNull() {
-        assertFalse(orderItem.equals(null));
-    }
-
-    @Test
-    public void equalsAnotherClass() {
-        assertFalse(orderItem.equals("orderItem"));
-    }
-
-    @Test
     public void equalsOrderItem() {
         assertEquals(orderItem, orderItem);
         OrderItem anotherOrderItem = new OrderItem();
