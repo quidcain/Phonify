@@ -35,7 +35,7 @@ public class CartControllerTest {
     public void init() {
         expectedCartItems = createCartItemList();
         controller = new CartController(cartService);
-        when(cartService.getCartItems())
+        when(cartService.getCart().getCartItems())
                 .thenReturn(expectedCartItems);
     }
 

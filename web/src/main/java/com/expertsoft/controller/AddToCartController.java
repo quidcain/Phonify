@@ -33,7 +33,7 @@ public class AddToCartController {
             return new ResponseEntity<>(errorMessageResponse, HttpStatus.BAD_REQUEST);
         }
         cartService.addOrderItem(addToCartForm.getId(), Long.parseLong(addToCartForm.getQuantity()));
-        CartIndicator cartIndicator = cartService.getCartIndicator();
+        CartIndicator cartIndicator = cartService.getCart().getCartIndicator();
         return new ResponseEntity<>(cartIndicator, HttpStatus.OK);
     }
 

@@ -44,17 +44,7 @@ public class CartServiceImpl implements CartService {
         cartIndicator.setItemsQuantity(cartIndicator.getItemsQuantity() + quantity);
         cartIndicator.setSubtotal(cart.getSubtotal());
     }
-
-    @Override
-    public CartIndicator getCartIndicator() {
-        return cart.getCartIndicator();
-    }
-
-    @Override
-    public List<CartItem> getCartItems() {
-        return cart.getCartItems();
-    }
-
+    
     @Override
     public void deleteCartItem(long phoneId) {
         int itemIndex = getItemIndex(phoneId);

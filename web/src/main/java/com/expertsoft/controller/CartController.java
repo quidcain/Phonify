@@ -29,7 +29,7 @@ public class CartController {
 
     @GetMapping()
     public String cart(Model model) {
-        model.addAttribute(cartService.getCartItems());
+        model.addAttribute(cartService.getCart().getCartItems());
         return "cart";
     }
 

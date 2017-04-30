@@ -18,7 +18,7 @@ public class CartIndicatorInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        request.setAttribute("cartIndicator", cartService.getCartIndicator());
+        request.setAttribute("cartIndicator", cartService.getCart().getCartIndicator());
         return true;
     }
 }

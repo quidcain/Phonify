@@ -35,7 +35,7 @@ public class AddToCartControllerTest {
         CartIndicator cartIndicator = new CartIndicator();
         cartIndicator.setItemsQuantity(1);
         cartIndicator.setSubtotal(BigDecimal.ONE);
-        when(cartService.getCartIndicator()).thenReturn(cartIndicator);
+        when(cartService.getCart().getCartIndicator()).thenReturn(cartIndicator);
         mockMvc.perform(post("/addToCart")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(createRequestInJson(0, "2")))

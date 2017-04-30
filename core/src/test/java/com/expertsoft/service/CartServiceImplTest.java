@@ -39,7 +39,7 @@ public class CartServiceImplTest {
         phone = createPhone("Motorola");
         when(phoneDao.get(2)).thenReturn(phone);
         cartService.addOrderItem(1, 1);
-        CartIndicator cartIndicator = cartService.getCartIndicator();
+        CartIndicator cartIndicator = cartService.getCart().getCartIndicator();
         assertEquals(1, cartIndicator.getItemsQuantity());
         assertEquals(BigDecimal.ONE, cartIndicator.getSubtotal());
         cartService.addOrderItem(1, 2);
@@ -54,11 +54,11 @@ public class CartServiceImplTest {
     public void getOrderItemsTest() {
         List<CartItem> list = new ArrayList<>();
         cart.setCartItems(list);
-        assertEquals(0, cartService.getCartItems().size());
+        assertEquals(0, cartService.getCart().getCartItems().size());
         CartItem cartItem = new CartItem();
         cartItem.setCart(cart);
         list.add(cartItem);
-        assertEquals(1, cartService.getCartItems().size());
+        assertEquals(1, cartService.getCart().getCartItems().size());
     }
 
     @Test
@@ -73,7 +73,7 @@ public class CartServiceImplTest {
             noSuchElementExceptionThrown = true;
         }
         assertTrue(noSuchElementExceptionThrown);
-        CartIndicator cartIndicator = cartService.getCartIndicator();
+        CartIndicator cartIndicator = cartService.getCart().getCartIndicator();
         assertEquals(BigDecimal.valueOf(3), cartIndicator.getSubtotal());
         assertEquals(3, cartIndicator.getItemsQuantity());
         assertEquals(1, cart.getCartItems().size());
@@ -90,7 +90,7 @@ public class CartServiceImplTest {
         when(phoneDao.get(1)).thenReturn(phone);
         cartService.addOrderItem(phone.getId(), 3);
         cartService.updateCartItem(phone.getId(), 4);
-        CartIndicator cartIndicator = cartService.getCartIndicator();
+        CartIndicator cartIndicator = cartService.getCart().getCartIndicator();
         assertEquals(BigDecimal.valueOf(4), cartIndicator.getSubtotal());
         assertEquals(4, cartIndicator.getItemsQuantity());
         cartService.updateCartItem(phone.getId(), 2);
