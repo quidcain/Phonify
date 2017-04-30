@@ -24,7 +24,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public void addOrderItem(long id, long quantity) {
         boolean itemAlreadyPresents = false;
-        Phone phone = null;
+        Phone phone;
         for (CartItem item : cart.getCartItems()) {
             phone = item.getPhone();
             if (phone.getId() == id) {
@@ -35,27 +35,23 @@ public class CartServiceImpl implements CartService {
         }
         if (!itemAlreadyPresents) {
             phone = phoneDao.get(id);
-            CartItem item = new CartItem(phone, cart, quantity);
+            CartItem item = new CartItem(phone, quantity);
             cart.getCartItems().add(item);
         }
-        cart.setSubtotal(cart.getSubtotal().add(
-                phone.getPrice().multiply(BigDecimal.valueOf(quantity))));
         CartIndicator cartIndicator = cart.getCartIndicator();
         cartIndicator.setItemsQuantity(cartIndicator.getItemsQuantity() + quantity);
-        cartIndicator.setSubtotal(cart.getSubtotal());
+        recalculateSubtotal();
     }
-    
+
     @Override
     public void deleteCartItem(long phoneId) {
         int itemIndex = getItemIndex(phoneId);
         List<CartItem> orderItems = cart.getCartItems();
         CartItem item = orderItems.get(itemIndex);
-        cart.setSubtotal(cart.getSubtotal().subtract(
-                item.getPhone().getPrice().multiply(BigDecimal.valueOf(item.getQuantity()))));
         CartIndicator cartIndicator = cart.getCartIndicator();
         cartIndicator.setItemsQuantity(cartIndicator.getItemsQuantity() - item.getQuantity());
-        cartIndicator.setSubtotal(cart.getSubtotal());
         orderItems.remove(itemIndex);
+        recalculateSubtotal();
     }
 
     @Override
@@ -66,15 +62,26 @@ public class CartServiceImpl implements CartService {
         if (quantityDifference == 0)
             return;
         item.setQuantity(newQuantity);
-        cart.setSubtotal(cart.getSubtotal().add(
-                item.getPhone().getPrice().multiply(BigDecimal.valueOf(quantityDifference))));
         CartIndicator cartIndicator = cart.getCartIndicator();
         cartIndicator.setItemsQuantity(cartIndicator.getItemsQuantity() + quantityDifference);
-        cartIndicator.setSubtotal(cart.getSubtotal());
+        recalculateSubtotal();
     }
 
     public Cart getCart() {
         return cart;
+    }
+
+    private void recalculateSubtotal() {
+        List<CartItem> orderItems = cart.getCartItems();
+        BigDecimal subtotal = BigDecimal.ZERO;
+        for (int i = 0, j = orderItems.size(); i < j; i++) {
+            CartItem item = orderItems.get(i);
+            BigDecimal phonePrice = item.getPhone().getPrice();
+            long itemQuantity = item.getQuantity();
+            subtotal = subtotal.add(phonePrice.multiply(BigDecimal.valueOf(itemQuantity)));
+        }
+        cart.setSubtotal(subtotal);
+        cart.getCartIndicator().setSubtotal(subtotal);
     }
 
     private int getItemIndex(long phoneId) {

@@ -1,5 +1,6 @@
 package com.expertsoft.controller;
 
+import com.expertsoft.model.Cart;
 import com.expertsoft.model.CartIndicator;
 import com.expertsoft.service.CartService;
 import org.junit.Before;
@@ -20,6 +21,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 @RunWith(MockitoJUnitRunner.class)
 public class AddToCartControllerTest {
     private MockMvc mockMvc;
+    private Cart cart = new Cart();
 
     @Mock
     private CartService cartService;
@@ -28,6 +30,7 @@ public class AddToCartControllerTest {
     public void init() {
         AddToCartController controller = new AddToCartController(cartService);
         mockMvc = standaloneSetup(controller).build();
+        when(cartService.getCart()).thenReturn(cart);
     }
 
     @Test
@@ -35,7 +38,7 @@ public class AddToCartControllerTest {
         CartIndicator cartIndicator = new CartIndicator();
         cartIndicator.setItemsQuantity(1);
         cartIndicator.setSubtotal(BigDecimal.ONE);
-        when(cartService.getCart().getCartIndicator()).thenReturn(cartIndicator);
+        cart.setCartIndicator(cartIndicator);
         mockMvc.perform(post("/addToCart")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(createRequestInJson(0, "2")))

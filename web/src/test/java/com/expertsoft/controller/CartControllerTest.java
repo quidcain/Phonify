@@ -1,5 +1,6 @@
 package com.expertsoft.controller;
 
+import com.expertsoft.model.Cart;
 import com.expertsoft.model.CartItem;
 import com.expertsoft.model.Phone;
 import com.expertsoft.service.CartService;
@@ -27,16 +28,18 @@ public class CartControllerTest {
     private MockMvc mockMvc;
     private List<CartItem> expectedCartItems;
     private CartController controller;
+    private Cart cart = new Cart();
 
     @Mock
     private CartService cartService;
 
+
     @Before
     public void init() {
         expectedCartItems = createCartItemList();
+        cart.setCartItems(expectedCartItems);
         controller = new CartController(cartService);
-        when(cartService.getCart().getCartItems())
-                .thenReturn(expectedCartItems);
+        when(cartService.getCart()).thenReturn(cart);
     }
 
     @Test

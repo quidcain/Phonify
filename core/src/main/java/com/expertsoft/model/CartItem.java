@@ -2,27 +2,15 @@ package com.expertsoft.model;
 
 
 public class CartItem {
-    private Long id;
     private Phone phone;
-    private Cart cart;
-
     private long quantity;
 
     public CartItem() {
     }
 
-    public CartItem(Phone phone, Cart cart, long quantity) {
+    public CartItem(Phone phone, long quantity) {
         this.phone = phone;
-        this.cart = cart;
         this.quantity = quantity;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public Phone getPhone() {
@@ -31,14 +19,6 @@ public class CartItem {
 
     public void setPhone(Phone phone) {
         this.phone = phone;
-    }
-
-    public Cart getCart() {
-        return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
     }
 
     public long getQuantity() {

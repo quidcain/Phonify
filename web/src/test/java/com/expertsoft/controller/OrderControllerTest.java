@@ -62,16 +62,14 @@ public class OrderControllerTest {
                 .param("deliveryAddress", "1234 Main Street Anytown")
                 .param("contactPhoneNo", "123456"))
                 .andExpect(view().name("orderConfirmation"))
-                .andExpect(model().attributeExists("cart"))
-                .andExpect(model().attribute("cart", cart));
+                .andExpect(model().attributeExists("cart"));
         mockMvc.perform(post("/order")
                 .param("firstName", "")
                 .param("lastName", "Doe")
                 .param("deliveryAddress", "1234 Main Street Anytown")
                 .param("contactPhoneNo", "123456"))
                 .andExpect(view().name("order"))
-                .andExpect(model().attributeExists("cart"))
-                .andExpect(model().attribute("cart", cart));
+                .andExpect(model().attributeExists("cart"));
     }
 
 }

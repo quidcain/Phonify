@@ -33,7 +33,7 @@ public class CartServiceImplTest {
     }
 
     @Test
-    public void addOrderItemTest() {
+    public void addCartItemTest() {
         Phone phone = createPhone("iPhone");
         when(phoneDao.get(1)).thenReturn(phone);
         phone = createPhone("Motorola");
@@ -51,18 +51,17 @@ public class CartServiceImplTest {
     }
 
     @Test
-    public void getOrderItemsTest() {
+    public void getCartItemsTest() {
         List<CartItem> list = new ArrayList<>();
         cart.setCartItems(list);
         assertEquals(0, cartService.getCart().getCartItems().size());
         CartItem cartItem = new CartItem();
-        cartItem.setCart(cart);
         list.add(cartItem);
         assertEquals(1, cartService.getCart().getCartItems().size());
     }
 
     @Test
-    public void deleteOrderItemTest() {
+    public void deleteCartItemTest() {
         Phone phone = createPhone("iPhone");
         when(phoneDao.get(1)).thenReturn(phone);
         cartService.addOrderItem(phone.getId(), 3);
