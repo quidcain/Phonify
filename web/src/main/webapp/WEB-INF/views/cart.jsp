@@ -1,5 +1,6 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE HTML>
 <html>
@@ -29,7 +30,9 @@
                 <h1>Cart</h1>
                 <a href="<s:url value='/' />" class="btn aButton backToProductList" role="button">Back to product list</a>
                 <a href="<s:url value='/order' />" class="btn aButton order" role="button">Order</a>
-                <form method="post" action="<s:url value='/cart/updateCartItems' />">
+                <c:url var="actionUrl" value="/cart"/>
+                <sf:form method="post" action="${actionUrl}" modelAttribute="updateCartItemsForm" >
+                <%--<form method="post" action="<s:url value='/cart' />">--%>
                     <table class="table table-striped table-bordered">
                         <tr>
                             <th>Model</th>
@@ -46,10 +49,9 @@
                                 <td>${cartItem.phone.displaySize}"</td>
                                 <td>${cartItem.phone.price}$</td>
                                 <td>
-                                    <c:set var="quantity" value="quantity_${cartItem.phone.id}"/>
-                                    <input type="text" name="items[${cartItem.phone.id}].quantity" value="${empty requestScope[quantity] ? cartItem.quantity : requestScope[quantity]}">
-                                    <c:set var="errorMessage" value="errorMessage_${cartItem.phone.id}"/>
-                                    <span class="errorMessage">${requestScope[errorMessage]}</span>
+                                    <c:set var="rejectedValue" value="${updateCartItemsForm.items[cartItem.phone.id].quantity}"/>
+                                    <input type="text" name="items[${cartItem.phone.id}].quantity" value="${empty rejectedValue ? cartItem.quantity : rejectedValue}">
+                                    <sf:errors path="items[${cartItem.phone.id}].quantity" cssClass="errorMessage"/>
                                 </td>
                                 <td>
                                     <button type="submit" class="btn" formaction="cart/deleteCartItem/${cartItem.phone.id}">Delete</button>
@@ -59,7 +61,8 @@
                     </table>
                     <button type="submit" class="btn update">Update</button>
                     <a href="<s:url value='/order' />" class="btn aButton order" role="button">Order</a>
-                </form>
+                <%--</form>--%>
+                </sf:form>
             </section>
         </div>
     </body>
