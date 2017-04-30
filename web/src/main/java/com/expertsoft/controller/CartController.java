@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -39,12 +40,14 @@ public class CartController {
     public String updateCartItems(@ModelAttribute @Valid UpdateCartItemsForm updateCartItemsForm, BindingResult result, Model model) {
         model.addAttribute(cartService.getCart().getCartItems());
         if (!result.hasErrors()) {
-            Map<Long, QuantityForm> items = updateCartItemsForm.getItems();
-            for (Map.Entry<Long, QuantityForm> item : items.entrySet()) {
+            Map<Long, QuantityForm> formItems = updateCartItemsForm.getItems();
+            Map<Long, Long> items = new HashMap<>();
+            for (Map.Entry<Long, QuantityForm> item : formItems.entrySet()) {
                 long phoneId = item.getKey();
                 long quantity = Long.parseLong(item.getValue().getQuantity());
-                cartService.updateCartItem(phoneId, quantity);
+                items.put(phoneId, quantity);
             }
+            cartService.updateCartItems(items);
         }
         return "cart";
     }

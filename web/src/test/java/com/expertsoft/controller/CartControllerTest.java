@@ -67,25 +67,21 @@ public class CartControllerTest {
     @Test
     public void testUpdate() throws Exception {
         mockMvc = standaloneSetup(controller)
+                .setSingleView(
+                        new InternalResourceView("/WEB-INF/views/cart.jsp"))
                 .build();
-        mockMvc.perform(post("/cart/updateCartItems")
+        mockMvc.perform(post("/cart")
                 .param("items[1].quantity", "1")
                 .param("items[2].quantity", "2"))
-                .andExpect(redirectedUrl("/cart"));
-        mockMvc.perform(post("/cart/updateCartItems")
+                .andExpect(view().name("cart"));
+        mockMvc.perform(post("/cart")
                 .param("items[1].quantity", "-3")
                 .param("items[2].quantity", "800"))
-                .andExpect(flash().attributeExists("errorMessage_1"))
-                .andExpect(flash().attribute("errorMessage_1", "Value must be from 1 to 99!"))
-                .andExpect(flash().attributeExists("errorMessage_2"))
-                .andExpect(flash().attribute("errorMessage_2", "Value must be from 1 to 99!"))
-                .andExpect(redirectedUrl("/cart"));
-        mockMvc.perform(post("/cart/updateCartItems")
+                .andExpect(view().name("cart"));
+        mockMvc.perform(post("/cart")
                 .param("items[1].quantity", "3")
                 .param("items[2].quantity", "a"))
-                .andExpect(flash().attributeExists("errorMessage_2"))
-                .andExpect(flash().attribute("errorMessage_2", "Value must be from 1 to 99!"))
-                .andExpect(redirectedUrl("/cart"));
+                .andExpect(view().name("cart"));
 
     }
 

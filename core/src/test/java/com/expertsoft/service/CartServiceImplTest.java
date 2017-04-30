@@ -10,9 +10,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -34,9 +32,9 @@ public class CartServiceImplTest {
 
     @Test
     public void addCartItemTest() {
-        Phone phone = createPhone("iPhone");
+        Phone phone = createPhone("iPhone", 1, BigDecimal.ONE);
         when(phoneDao.get(1)).thenReturn(phone);
-        phone = createPhone("Motorola");
+        phone = createPhone("Motorola", 2, BigDecimal.ONE);
         when(phoneDao.get(2)).thenReturn(phone);
         cartService.addOrderItem(1, 1);
         CartIndicator cartIndicator = cartService.getCart().getCartIndicator();
@@ -62,7 +60,7 @@ public class CartServiceImplTest {
 
     @Test
     public void deleteCartItemTest() {
-        Phone phone = createPhone("iPhone");
+        Phone phone = createPhone("iPhone", 1, BigDecimal.ONE);
         when(phoneDao.get(1)).thenReturn(phone);
         cartService.addOrderItem(phone.getId(), 3);
         boolean noSuchElementExceptionThrown = false;
@@ -84,20 +82,20 @@ public class CartServiceImplTest {
     }
 
     @Test
-    public void updateOrderItemTest() {
-        Phone phone = createPhone("iPhone");
-        when(phoneDao.get(1)).thenReturn(phone);
-        cartService.addOrderItem(phone.getId(), 3);
-        cartService.updateCartItem(phone.getId(), 4);
+    public void updateOrderItemsTest() {
+        Phone iPhone = createPhone("iPhone",1, BigDecimal.ONE);
+        Phone samsung = createPhone("Samsung",2,  BigDecimal.ONE);
+        when(phoneDao.get(1)).thenReturn(iPhone);
+        when(phoneDao.get(2)).thenReturn(samsung);
+        cartService.addOrderItem(iPhone.getId(), 3);
+        cartService.addOrderItem(samsung.getId(), 2);
+        cartService.updateCartItems(new HashMap<Long, Long>() {{
+            put(1L, 4L);
+            put(2L, 1L);
+        }});
         CartIndicator cartIndicator = cartService.getCart().getCartIndicator();
-        assertEquals(BigDecimal.valueOf(4), cartIndicator.getSubtotal());
-        assertEquals(4, cartIndicator.getItemsQuantity());
-        cartService.updateCartItem(phone.getId(), 2);
-        assertEquals(BigDecimal.valueOf(2), cartIndicator.getSubtotal());
-        assertEquals(2, cartIndicator.getItemsQuantity());
-        cartService.updateCartItem(phone.getId(), 2);
-        assertEquals(BigDecimal.valueOf(2), cartIndicator.getSubtotal());
-        assertEquals(2, cartIndicator.getItemsQuantity());
+        assertEquals(BigDecimal.valueOf(5), cartIndicator.getSubtotal());
+        assertEquals(5, cartIndicator.getItemsQuantity());
     }
 
     @Test
@@ -105,13 +103,13 @@ public class CartServiceImplTest {
         assertEquals(cart, cartService.getCart());
     }
 
-    private Phone createPhone(String model) {
+    private Phone createPhone(String model, long id, BigDecimal price) {
         Phone phone = new Phone();
-        phone.setId(1);
+        phone.setId(id);
         phone.setModel(model);
         phone.setColor("black");
         phone.setDisplaySize(4);
-        phone.setPrice(BigDecimal.ONE);
+        phone.setPrice(price);
         return phone;
     }
 }

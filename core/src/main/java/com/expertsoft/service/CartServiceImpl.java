@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 
@@ -55,15 +56,17 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void updateCartItem(long phoneId, long newQuantity) {
-        int itemIndex = getItemIndex(phoneId);
-        CartItem item = cart.getCartItems().get(itemIndex);
-        long quantityDifference = newQuantity - item.getQuantity();
-        if (quantityDifference == 0)
-            return;
-        item.setQuantity(newQuantity);
+    public void updateCartItems(Map<Long, Long> items) {
         CartIndicator cartIndicator = cart.getCartIndicator();
-        cartIndicator.setItemsQuantity(cartIndicator.getItemsQuantity() + quantityDifference);
+        cartIndicator.setItemsQuantity(0);
+        for (Map.Entry<Long, Long> item : items.entrySet()) {
+            Long phoneId = item.getKey();
+            Long newQuantity = item.getValue();
+            int itemIndex = getItemIndex(phoneId);
+            CartItem cartItem = cart.getCartItems().get(itemIndex);
+            cartItem.setQuantity(newQuantity);
+            cartIndicator.setItemsQuantity(cartIndicator.getItemsQuantity() + newQuantity);
+        }
         recalculateSubtotal();
     }
 
