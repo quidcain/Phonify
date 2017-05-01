@@ -66,7 +66,7 @@
                 </table>
                 <div class="customerInfo">
                     <c:url var="actionUrl" value="/order"/>
-                    <sf:form cssClass="form-horizontal" method="post" action="${actionUrl}" modelAttribute="cart" >
+                    <sf:form cssClass="form-horizontal" method="post" action="${actionUrl}" modelAttribute="orderDetailsForm" >
                         <div class="form-group row">
                             <sf:label path="firstName" cssClass="col-md-4 control-label">First Name</sf:label>
                             <div class="col-md-8">

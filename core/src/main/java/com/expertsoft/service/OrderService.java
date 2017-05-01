@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface OrderService {
     Order get(long id);
-    void save(Cart cart);
+    Order save(Cart cart);
     void delete(long id);
     List<Order> findAll();
 }

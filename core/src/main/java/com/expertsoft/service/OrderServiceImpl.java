@@ -26,7 +26,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void save(Cart cart) {
+    public Order save(Cart cart) {
         Order order = new Order();
         order.setOrderItems(new ArrayList<>());
         order.setSubtotal(cart.getSubtotal());
@@ -44,6 +44,7 @@ public class OrderServiceImpl implements OrderService {
             order.getOrderItems().add(orderItem);
         }
         orderDao.save(order);
+        return order;
     }
 
     @Override

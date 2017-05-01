@@ -14,6 +14,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 
@@ -50,11 +51,16 @@ public class OrderServiceImplTest {
 
     @Test
     public void saveTest() {
-        doNothing().when(orderDao).save(any(Order.class));
+        doAnswer(invocationOnMock -> {
+            Order order = (Order)invocationOnMock.getArguments()[0];
+            order.setId(1);
+            return order;
+        }).when(orderDao).save(any(Order.class));
         Cart cart = new Cart();
         cart.setCartItems(new ArrayList<>());
         cart.getCartItems().add(new CartItem());
-        orderService.save(cart);
+        Order order = orderService.save(cart);
+        assertEquals(Long.valueOf(1), order.getId());
         verify(orderDao, times(1)).save(any(Order.class));
     }
 

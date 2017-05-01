@@ -29,13 +29,13 @@
                 <th>Quantity</th>
                 <th>Price</th>
             </tr>
-            <c:forEach items="${cart.cartItems}" var="cartItem">
+            <c:forEach items="${order.orderItems}" var="orderItem">
                 <tr>
-                    <td><a href="<s:url value='/productDetails/${cartItem.phone.id}' />">${cartItem.phone.model}</a></td>
-                    <td>${cartItem.phone.color}</td>
-                    <td>${cartItem.phone.displaySize}"</td>
-                    <td>${cartItem.quantity}</td>
-                    <td>${cartItem.phone.price}$</td>
+                    <td><a href="<s:url value='/productDetails/${orderItem.phone.id}' />">${orderItem.phone.model}</a></td>
+                    <td>${orderItem.phone.color}</td>
+                    <td>${orderItem.phone.displaySize}"</td>
+                    <td>${orderItem.quantity}</td>
+                    <td>${orderItem.phone.price}$</td>
                 </tr>
             </c:forEach>
             <tr class="price">
@@ -43,21 +43,21 @@
                 <td></td>
                 <td></td>
                 <td>Subtotal</td>
-                <td>${cart.subtotal}$</td>
+                <td>${order.subtotal}$</td>
             </tr>
             <tr class="price">
                 <td></td>
                 <td></td>
                 <td></td>
                 <td>Delivery</td>
-                <td>${cart.deliveryPrice}$</td>
+                <td>${order.deliveryPrice}$</td>
             </tr>
             <tr class="price">
                 <td></td>
                 <td></td>
                 <td></td>
                 <td>TOTAL</td>
-                <td>${cart.totalPrice}$</td>
+                <td>${order.totalPrice}$</td>
             </tr>
         </table>
         <div class="customerInfo">
@@ -65,28 +65,28 @@
                 <div class="form-group row">
                     <span class="col-md-4">First Name</span>
                     <div class="col-md-8">
-                        <span id="firstName">${cart.firstName}</span>
+                        <span id="firstName">${order.firstName}</span>
                     </div>
                 </div>
                 <div class="form-group row">
                     <span class="col-md-4">Last Name</span>
                     <div class="col-md-8">
-                        <span id="lastName">${cart.lastName}</span>
+                        <span id="lastName">${order.lastName}</span>
                     </div>
                 </div>
                 <div class="form-group row">
                     <span class="col-md-4">Address</span>
                     <div class="col-md-8">
-                        <span id="deliveryAddress">${cart.deliveryAddress}</span>
+                        <span id="deliveryAddress">${order.deliveryAddress}</span>
                     </div>
                 </div>
                 <div class="form-group row">
                     <span class="col-md-4">Phone</span>
                     <div class="col-md-8">
-                        <span id="contactPhoneNo">${cart.contactPhoneNo}</span>
+                        <span id="contactPhoneNo">${order.contactPhoneNo}</span>
                     </div>
                 </div>
-                <div class="additionalInfo">${cart.additionalInfo}</div>
+                <div class="additionalInfo">${order.additionalInfo}</div>
                 <a href="<s:url value='/' />" class="btn backToShopping" role="button">Back to shopping</a>
             </form>
         </div>

@@ -1,20 +1,21 @@
 package com.expertsoft.controller;
 
+import com.expertsoft.controller.form.OrderDetailsForm;
 import com.expertsoft.model.Cart;
+import com.expertsoft.model.Order;
 import com.expertsoft.service.CartService;
 import com.expertsoft.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
+@RequestMapping("/order")
 public class OrderController {
     private CartService cartService;
     private OrderService orderService;
@@ -25,24 +26,37 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @GetMapping("/order")
+    @GetMapping
     public String order(Model model) {
         model.addAttribute(cartService.getCart());
+        model.addAttribute(new OrderDetailsForm());
         return "order";
     }
 
-    @PostMapping("/order")
-    public String orderConfirm(@ModelAttribute @Valid Cart cart, BindingResult result, Model model, HttpServletRequest req) {
-        Cart proxyCart = cartService.getCart();
-        cart.setCartItems(proxyCart.getCartItems());
-        cart.setSubtotal(proxyCart.getSubtotal());
-        cart.setDeliveryPrice(proxyCart.getDeliveryPrice());
+    @PostMapping
+    public String orderConfirm(@ModelAttribute @Valid OrderDetailsForm orderDetailsForm, BindingResult result, Model model, HttpServletRequest req) {
+        Cart cart = cartService.getCart();
         model.addAttribute(cart);
         if (result.hasErrors()) {
             return "order";
         }
-        orderService.save(cart);
+        cart.setFirstName(orderDetailsForm.getFirstName());
+        cart.setLastName(orderDetailsForm.getLastName());
+        cart.setDeliveryAddress(orderDetailsForm.getDeliveryAddress());
+        cart.setContactPhoneNo(orderDetailsForm.getContactPhoneNo());
+        cart.setAdditionalInfo(orderDetailsForm.getAdditionalInfo());
+
+        Order order = orderService.save(cart);
         req.getSession().invalidate();
+        return "redirect:/order/" + order.getId();
+    }
+
+    @GetMapping("/{orderId}")
+    public String orderConfirmation(@PathVariable long orderId, Model model) throws OrderNotFoundException {
+        Order order = orderService.get(orderId);
+        if (order == null)
+            throw new OrderNotFoundException();
+        model.addAttribute(order);
         return "orderConfirmation";
     }
 }
