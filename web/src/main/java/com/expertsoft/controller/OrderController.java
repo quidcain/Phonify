@@ -3,7 +3,7 @@ package com.expertsoft.controller;
 import com.expertsoft.controller.form.OrderDetailsForm;
 import com.expertsoft.model.Cart;
 import com.expertsoft.model.Order;
-import com.expertsoft.security.IdCryptUtils;
+import com.expertsoft.security.IdCoder;
 import com.expertsoft.service.CartService;
 import com.expertsoft.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +20,13 @@ import javax.validation.Valid;
 public class OrderController {
     private CartService cartService;
     private OrderService orderService;
+    private IdCoder idCoder;
 
     @Autowired
-    public OrderController(CartService cartService, OrderService orderService) {
+    public OrderController(CartService cartService, OrderService orderService, IdCoder idCoder) {
         this.cartService = cartService;
         this.orderService = orderService;
+        this.idCoder = idCoder;
     }
 
     @GetMapping
@@ -50,14 +52,14 @@ public class OrderController {
         Order order = orderService.save(cart);
         req.getSession().invalidate();
 
-        return "redirect:/order/" + IdCryptUtils.encrypt(order.getId());
+        return "redirect:/order/" + idCoder.encrypt(order.getId());
     }
 
     @GetMapping("/{orderId}")
     public String orderConfirmation(@PathVariable String orderId, Model model) throws OrderNotFoundException {
         Order order = null;
         try {
-            order = orderService.get(IdCryptUtils.decrypt(orderId));
+            order = orderService.get(idCoder.decrypt(orderId));
         } catch (IllegalArgumentException e) {
         }
         if (order == null)

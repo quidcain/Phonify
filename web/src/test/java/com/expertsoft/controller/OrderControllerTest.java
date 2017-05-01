@@ -2,7 +2,7 @@ package com.expertsoft.controller;
 
 import com.expertsoft.model.Cart;
 import com.expertsoft.model.Order;
-import com.expertsoft.security.IdCryptUtils;
+import com.expertsoft.security.IdCoder;
 import com.expertsoft.service.CartService;
 import com.expertsoft.service.OrderService;
 import org.junit.Before;
@@ -33,12 +33,13 @@ public class OrderControllerTest {
     @Mock
     private OrderService orderService;
 
+    private IdCoder idCoder = new IdCoder("0123456789abcdefghijklmn");
+
 
     @Before
     public void init() {
-        controller = new OrderController(cartService, orderService);
-        when(cartService.getCart())
-                .thenReturn(cart);
+        controller = new OrderController(cartService, orderService, idCoder);
+        when(cartService.getCart()).thenReturn(cart);
         when(orderService.save(any(Cart.class))).thenReturn(order);
         when(orderService.get(1)).thenReturn(order);
         order.setId(1);
@@ -68,7 +69,7 @@ public class OrderControllerTest {
                 .param("deliveryAddress", "1234 Main Street Anytown")
                 .param("contactPhoneNo", "123456"))
                 .andExpect(model().attributeExists("cart"))
-                .andExpect(view().name("redirect:/order/" + IdCryptUtils.encrypt(1L)));
+                .andExpect(view().name("redirect:/order/" + idCoder.encrypt(1L)));
         mockMvc.perform(post("/order")
                 .param("firstName", "")
                 .param("lastName", "Doe")
@@ -83,10 +84,10 @@ public class OrderControllerTest {
     public void orderConfirmationTest() throws Exception {
         mockMvc = standaloneSetup(controller)
                 .build();
-        mockMvc.perform(get("/order/" + IdCryptUtils.encrypt(1L)))
+        mockMvc.perform(get("/order/" + idCoder.encrypt(1L)))
                 .andExpect(view().name("orderConfirmation"))
                 .andExpect(model().attributeExists("order"));
-        mockMvc.perform(get("/order/" + IdCryptUtils.encrypt(2L)))
+        mockMvc.perform(get("/order/" + idCoder.encrypt(2L)))
                 .andExpect(status().is(404));
         mockMvc.perform(get("/order/2"))
                 .andExpect(status().is(404));

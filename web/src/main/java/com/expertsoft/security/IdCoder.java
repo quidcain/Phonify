@@ -1,26 +1,31 @@
 package com.expertsoft.security;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import javax.crypto.Cipher;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
 import java.security.Key;
 import java.util.Base64;
 
-public class IdCryptUtils {
-    private static String algorithm = "DESede";
-    private static Key key;
-    private static Cipher cipher;
-    static {
+@Component
+public class IdCoder {
+    private String algorithm = "DESede";
+    private Key key;
+    private Cipher cipher;
+
+    public IdCoder(@Value("${idcoder.key}") String keySeed) {
         try {
             SecretKeyFactory factory = SecretKeyFactory.getInstance("DESede");
-            key = factory.generateSecret(new DESedeKeySpec(new String("Phonify1234123gvHgVbjg0i").getBytes()));
+            key = factory.generateSecret(new DESedeKeySpec(keySeed.getBytes()));
             cipher = Cipher.getInstance(algorithm);
         } catch (Exception e) {
             throw  new RuntimeException(e);
         }
     }
 
-    public static String encrypt(Long input) {
+    public String encrypt(Long input) {
         try {
             cipher.init(Cipher.ENCRYPT_MODE, key);
             byte[] inputBytes = input.toString().getBytes();
@@ -31,7 +36,7 @@ public class IdCryptUtils {
         }
     }
 
-    public static Long decrypt(String input) {
+    public Long decrypt(String input) {
         try {
             cipher.init(Cipher.DECRYPT_MODE, key);
             byte[] inputBytes = Base64.getDecoder().decode(input);

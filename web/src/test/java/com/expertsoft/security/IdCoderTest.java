@@ -5,14 +5,16 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class IdCryptUtilsTest {
+public class IdCoderTest {
+    IdCoder idCoder = new IdCoder("0123456789abcdefghijklmn");
+
     @Test(expected = IllegalArgumentException.class)
     public void testUtils() {
-        String encryptedValue = IdCryptUtils.encrypt(1L);
+        String encryptedValue = idCoder.encrypt(1L);
         System.out.println(encryptedValue);
-        Long decryptedValue = IdCryptUtils.decrypt(encryptedValue);
+        Long decryptedValue = idCoder.decrypt(encryptedValue);
         System.out.println(decryptedValue);
         assertEquals(Long.valueOf(1), decryptedValue);
-        IdCryptUtils.decrypt("1");
+        idCoder.decrypt("1");
     }
 }
