@@ -1,0 +1,48 @@
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+#wrapper {
+	min-height: 100%;
+	padding: 0;
+}
+
+.container {
+	width: 1000px;
+}
+
+#wrapper header {
+	border-bottom: 3px solid #000;
+}
+
+#wrapper header a[role=button] {
+	margin-top: 16px;
+	float: right;
+}
+
+h1 {
+	font-size: 25px;
+	margin: 20px 0;
+}
+
+th {
+	background-color: #95979b;
+}
+
+button, a[role=button] {
+	min-width: 70px; 
+}
+
+a, a:hover {
+	color: inherit;
+}
+
+a[role=button] {
+	background-color: buttonface;
+}
+
+.errorMessage {
+	color: #a94442;
+}

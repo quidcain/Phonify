@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>web</artifactId>
+    <artifactId>admin</artifactId>
     <packaging>war</packaging>
 
     <build>
@@ -19,7 +19,7 @@
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <configuration>
                     <url>http://localhost:8080/manager/text</url>
-                    <path>/phonify</path>
+                    <path>/phonifyAdmin</path>
                     <server>TomcatServer</server>
                 </configuration>
             </plugin>

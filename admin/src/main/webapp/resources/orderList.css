@@ -1,0 +1,11 @@
+td {
+    vertical-align: middle !important;
+}
+
+input[type="text"] {
+    text-align: right;
+}
+
+.hidden {
+    display: none;
+}

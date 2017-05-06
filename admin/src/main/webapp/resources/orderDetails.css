@@ -1,0 +1,35 @@
+.backToCart {
+    margin-bottom: 20px;
+}
+
+tr.price td:nth-of-type(-n+3) {
+    visibility: hidden;
+}
+
+.customerInfo {
+    width: 325px;
+    height: 300px;
+}
+
+label {
+    font-weight: inherit;
+}
+
+label {
+    text-align: left !important;
+}
+
+.addInfo {
+    resize: none;
+    min-height: 140px !important;
+    word-wrap: break-word;
+}
+
+.order {
+    margin-top: 20px;
+    min-width: 95px;
+}
+
+.backToShopping {
+    margin-top: 20px;
+}

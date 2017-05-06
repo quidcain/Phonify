@@ -24,5 +24,4 @@ public class ProductDetailsController {
         model.addAttribute(phoneService.get(phoneId));
         return "productDetails";
     }
-
 }
