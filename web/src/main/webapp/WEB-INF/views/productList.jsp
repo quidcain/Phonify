@@ -11,10 +11,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="<s:url value="/resources/main.css" />">
-        <%--link .css file with the same name as page--%>
-        <c:set var="fullPageName" value="${pageContext.request.getRequestURI()}"/>
-        <c:set var="pageName" value="${fullPageName.substring(fullPageName.lastIndexOf('/') + 1, fullPageName.indexOf('.'))}"/>
-        <link rel="stylesheet" href="<s:url value="/resources/${pageName}.css" />">
+        <link rel="stylesheet" href="<s:url value="/resources/productList.css" />">
         <script src="<s:url value='/resources/addToCart.js' />"></script>
     </head>
     <body>

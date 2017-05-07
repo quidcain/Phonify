@@ -18,9 +18,7 @@
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <configuration>
-                    <url>http://localhost:8080/manager/text</url>
                     <path>/phonifyAdmin</path>
-                    <server>TomcatServer</server>
                 </configuration>
             </plugin>
         </plugins>
