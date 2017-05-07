@@ -1,29 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
+<b:beans xmlns="http://www.springframework.org/schema/security"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns:context="http://www.springframework.org/schema/context"
-         xmlns:security="http://www.springframework.org/schema/security"
+         xmlns:b="http://www.springframework.org/schema/beans"
          xsi:schemaLocation="http://www.springframework.org/schema/beans
          http://www.springframework.org/schema/beans/spring-beans.xsd
-         http://www.springframework.org/schema/context
-         http://www.springframework.org/schema/context/spring-context.xsd
          http://www.springframework.org/schema/security
          http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <security:http auto-config="true" use-expressions="true">
-        <security:intercept-url pattern="/**" access="hasRole('ROLE_ADMIN')" />
-    </security:http>
+    <http pattern="/resources/**" security="none"/>
 
-    <security:authentication-manager>
-        <security:authentication-provider>
-            <security:user-service>
-                <security:user name="admin" password="123456" authorities="ROLE_ADMIN" />
-            </security:user-service>
-        </security:authentication-provider>
-    </security:authentication-manager>
+    <http auto-config="true" use-expressions="true">
+        <intercept-url pattern="/login" access="permitAll" />
+        <intercept-url pattern="/**" access="hasRole('ROLE_ADMIN')" />
+        <form-login login-page="/login"
+                    default-target-url="/"
+                    authentication-failure-url="/login?error"
+                    username-parameter="username"
+                    password-parameter="password" />
+        <csrf />
+    </http>
 
-    <import resource="classpath:/coreContext.xml" />
+    <authentication-manager>
+        <authentication-provider>
+            <user-service>
+                <user name="admin" password="123456" authorities="ROLE_ADMIN" />
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
 
-    <context:component-scan base-package="com.expertsoft.security"/>
+    <b:import resource="classpath:/coreContext.xml" />
 
-</beans>
+</b:beans>

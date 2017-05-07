@@ -1,0 +1,17 @@
+.well {
+	width: 400px;
+	margin: 0 auto;
+}
+
+label {
+	text-align: left !important;
+}
+
+.alert {
+	width: 400px;
+	margin: 10px auto;
+}
+
+.wrapper {
+	margin: 100px auto;
+}
