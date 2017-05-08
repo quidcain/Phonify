@@ -31,7 +31,7 @@
                     </tr>
                     <c:forEach items="${order.orderItems}" var="orderItem">
                         <tr>
-                            <td><a href="<s:url value='/productDetails/${orderItem.phone.id}' />">${orderItem.phone.model}</a></td>
+                            <td>${orderItem.phone.model}</td>
                             <td>${orderItem.phone.color}</td>
                             <td>${orderItem.phone.displaySize}"</td>
                             <td>${orderItem.quantity}</td>

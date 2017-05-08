@@ -13,7 +13,7 @@ public class LoginController {
     @GetMapping
     public String login(@RequestParam(required = false) String error, Model model) {
         if (error != null) {
-            model.addAttribute("error", "Invalid username and password!");
+            model.addAttribute("error", true);
         }
         return "login";
     }
