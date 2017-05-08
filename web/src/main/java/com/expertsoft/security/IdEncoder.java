@@ -10,12 +10,12 @@ import java.security.Key;
 import java.util.Base64;
 
 @Component
-public class IdCoder {
+public class IdEncoder {
     private String algorithm = "DESede";
     private Key key;
     private Cipher cipher;
 
-    public IdCoder(@Value("${idcoder.key}") String keySeed) {
+    public IdEncoder(@Value("${idcoder.key}") String keySeed) {
         try {
             SecretKeyFactory factory = SecretKeyFactory.getInstance("DESede");
             key = factory.generateSecret(new DESedeKeySpec(keySeed.getBytes()));
