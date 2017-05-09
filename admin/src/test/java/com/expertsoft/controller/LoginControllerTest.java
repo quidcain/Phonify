@@ -26,6 +26,10 @@ public class LoginControllerTest {
                 .param("error", ""))
                 .andExpect(view().name("login"))
                 .andExpect(model().attributeExists("error"));
+        mockMvc.perform(get("/login")
+                .param("logout", ""))
+                .andExpect(view().name("login"))
+                .andExpect(model().attributeExists("logout"));
     }
 
 

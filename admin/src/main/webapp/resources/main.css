@@ -22,6 +22,11 @@ html, body {
 	float: right;
 }
 
+#wrapper header form {
+	margin-top: 16px;
+	float: right;
+}
+
 h1 {
 	font-size: 25px;
 	margin: 20px 0;

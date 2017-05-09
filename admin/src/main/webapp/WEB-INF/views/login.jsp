@@ -23,6 +23,9 @@
                     <c:if test="${not empty error}">
                         <div class="alert alert-danger">Invalid username or password!</div>
                     </c:if>
+                    <c:if test="${not empty logout}">
+                        <div class="alert alert-info">You have successfully logged out!</div>
+                    </c:if>
                     <div class="well">
                         <form class="form-horizontal" method="post" action="<c:url value='/login' />">
                             <div class="form-group row">

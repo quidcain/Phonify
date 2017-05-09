@@ -18,6 +18,10 @@
         <div id="wrapper" class="container">
             <header>
                 <a href="<s:url value='/' />"><img src="<s:url value='/resources/images/phonify.svg' />"></a>
+                <form action="<s:url value='/logout' />" method="post">
+                    <button type="submit" class="btn">Logout</button>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                </form>
             </header>
             <section>
                 <h1>Orders</h1>
