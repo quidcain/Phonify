@@ -13,6 +13,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.view.InternalResourceView;
 
+import java.security.GeneralSecurityException;
+
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -33,8 +35,11 @@ public class OrderControllerTest {
     @Mock
     private OrderService orderService;
 
-    private IdEncoder idEncoder = new IdEncoder("0123456789abcdefghijklmn");
+    private IdEncoder idEncoder;
 
+    public OrderControllerTest() throws GeneralSecurityException {
+        idEncoder = new IdEncoder("0123456789abcdefghijklmn");
+    }
 
     @Before
     public void init() {

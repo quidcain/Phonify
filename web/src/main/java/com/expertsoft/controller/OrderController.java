@@ -4,6 +4,7 @@ import com.expertsoft.controller.form.OrderDetailsForm;
 import com.expertsoft.model.Cart;
 import com.expertsoft.model.Order;
 import com.expertsoft.security.IdEncoder;
+import com.expertsoft.security.ShortEncryptedInputException;
 import com.expertsoft.service.CartService;
 import com.expertsoft.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.security.GeneralSecurityException;
 
 @Controller
 @RequestMapping("/order")
@@ -37,7 +39,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public String orderConfirm(@ModelAttribute @Valid OrderDetailsForm orderDetailsForm, BindingResult result, Model model, HttpServletRequest req) {
+    public String orderConfirm(@ModelAttribute @Valid OrderDetailsForm orderDetailsForm, BindingResult result, Model model, HttpServletRequest req) throws GeneralSecurityException {
         Cart cart = cartService.getCart();
         model.addAttribute(cart);
         if (result.hasErrors()) {
@@ -56,11 +58,11 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}")
-    public String orderConfirmation(@PathVariable String orderId, Model model) throws OrderNotFoundException {
+    public String orderConfirmation(@PathVariable String orderId, Model model) throws OrderNotFoundException, GeneralSecurityException {
         Order order = null;
         try {
             order = orderService.get(idEncoder.decrypt(orderId));
-        } catch (IllegalArgumentException e) {
+        } catch (ShortEncryptedInputException e) {
         }
         if (order == null)
             throw new OrderNotFoundException();
