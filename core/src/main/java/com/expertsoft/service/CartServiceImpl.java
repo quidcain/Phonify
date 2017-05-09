@@ -57,16 +57,14 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void updateCartItems(Map<Long, Long> items) {
-        CartIndicator cartIndicator = cart.getCartIndicator();
-        cartIndicator.setItemsQuantity(0);
+        long newTotalQuantity = 0;
         for (Map.Entry<Long, Long> item : items.entrySet()) {
             Long phoneId = item.getKey();
             Long newQuantity = item.getValue();
-            int itemIndex = getItemIndex(phoneId);
-            CartItem cartItem = cart.getCartItems().get(itemIndex);
-            cartItem.setQuantity(newQuantity);
-            cartIndicator.setItemsQuantity(cartIndicator.getItemsQuantity() + newQuantity);
+            newTotalQuantity += newQuantity;
+            cart.getCartItems().get(getItemIndex(phoneId)).setQuantity(newQuantity);
         }
+        cart.getCartIndicator().setItemsQuantity(newTotalQuantity);
         recalculateSubtotal();
     }
 
@@ -75,13 +73,12 @@ public class CartServiceImpl implements CartService {
     }
 
     private void recalculateSubtotal() {
-        List<CartItem> orderItems = cart.getCartItems();
+        List<CartItem> cartItems = cart.getCartItems();
         BigDecimal subtotal = BigDecimal.ZERO;
-        for (int i = 0, j = orderItems.size(); i < j; i++) {
-            CartItem item = orderItems.get(i);
-            BigDecimal phonePrice = item.getPhone().getPrice();
-            long itemQuantity = item.getQuantity();
-            subtotal = subtotal.add(phonePrice.multiply(BigDecimal.valueOf(itemQuantity)));
+        for (int i = 0, j = cartItems.size(); i < j; i++) {
+            CartItem item = cartItems.get(i);
+            subtotal = subtotal.add(item.getPhone().getPrice()
+                    .multiply(BigDecimal.valueOf(item.getQuantity())));
         }
         cart.setSubtotal(subtotal);
         cart.getCartIndicator().setSubtotal(subtotal);
