@@ -22,6 +22,7 @@
                     <button type="submit" class="btn">Logout</button>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                 </form>
+                <h2 class="principal">${pageContext.request.userPrincipal.name}</h2>
             </header>
             <section>
                 <h1>Order</h1>

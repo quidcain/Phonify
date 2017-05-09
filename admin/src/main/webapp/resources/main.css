@@ -51,3 +51,11 @@ a[role=button] {
 .errorMessage {
 	color: #a94442;
 }
+
+.principal {
+	float: right;
+	font-size: 18px;
+	margin-top: 23px;
+	margin-right: 10px;
+
+}
