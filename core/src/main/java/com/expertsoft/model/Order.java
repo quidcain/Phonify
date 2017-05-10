@@ -16,6 +16,7 @@ public class Order {
     private String deliveryAddress;
     private String contactPhoneNo;
     private String additionalInfo;
+    private Status status;
 
     public Order() {
         orderItems = new ArrayList<>();
@@ -98,6 +99,14 @@ public class Order {
         this.additionalInfo = additionalInfo;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null)
@@ -107,4 +116,7 @@ public class Order {
         return this.id == ((Order)o).id;
     }
 
+    public enum Status {
+        AWAITING, SHIPPED, COMPLETED, CANCELLED;
+    }
 }

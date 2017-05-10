@@ -71,6 +71,7 @@ public class JdbcOrderDaoTest {
         order.setLastName("Doe");
         order.setDeliveryAddress("1234 Main Street Anytown, USA 123456");
         order.setContactPhoneNo("1-800-354-0387");
+        order.setStatus(Order.Status.AWAITING);
         addAllPhones(order);
         orderDao.save(order);
         assertEquals(order, orderDao.get(order.getId()));
@@ -104,6 +105,7 @@ public class JdbcOrderDaoTest {
         order.setDeliveryAddress("1234 Main Street Anytown, USA 123456");
         order.setContactPhoneNo("1-800-354-0387");
         order.setAdditionalInfo("Lorem ipsum");
+        order.setStatus(Order.Status.AWAITING);
         list.add(order);
     }
 

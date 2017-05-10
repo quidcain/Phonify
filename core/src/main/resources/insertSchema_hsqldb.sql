@@ -17,7 +17,9 @@ CREATE TABLE Orders(
   lastName VARCHAR(40) NOT NULL,
   deliveryAddress VARCHAR(60) NOT NULL,
   contactPhoneNo VARCHAR(20) NOT NULL,
-  additionalInfo VARCHAR(255)
+  additionalInfo VARCHAR(255),
+  status VARCHAR(10) DEFAULT 'awaiting',
+  CHECK (status in ('awaiting', 'shipped', 'completed', 'cancelled'))
 );
 
 CREATE TABLE OrderItems(

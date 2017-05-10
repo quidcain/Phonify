@@ -14,11 +14,12 @@ CREATE TABLE IF NOT EXISTS Orders(
   id BIGINT NOT NULL AUTO_INCREMENT,
   subtotal DECIMAL NOT NULL,
   deliveryPrice DECIMAL NOT NULL,
-  firstName varchar(40) NOT NULL,
-  lastName varchar(40) NOT NULL,
-  deliveryAddress varchar(60) NOT NULL,
-  contactPhoneNo varchar(20) NOT NULL,
+  firstName VARCHAR(40) NOT NULL,
+  lastName VARCHAR(40) NOT NULL,
+  deliveryAddress VARCHAR(60) NOT NULL,
+  contactPhoneNo VARCHAR(20) NOT NULL,
   additionalInfo VARCHAR(255),
+  status ENUM ('awaiting', 'shipped', 'completed', 'cancelled') NOT NULL,
   PRIMARY KEY (id)
 ) DEFAULT CHARSET=utf8;
 

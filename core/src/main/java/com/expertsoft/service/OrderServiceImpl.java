@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -36,6 +37,7 @@ public class OrderServiceImpl implements OrderService {
         order.setDeliveryAddress(cart.getDeliveryAddress());
         order.setContactPhoneNo(cart.getContactPhoneNo());
         order.setAdditionalInfo(cart.getAdditionalInfo());
+        order.setStatus(Order.Status.AWAITING);
         for(CartItem cartItem : cart.getCartItems()) {
             OrderItem orderItem = new OrderItem();
             orderItem.setPhone(cartItem.getPhone());
@@ -55,5 +57,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findAll() {
         return orderDao.findAll();
+    }
+
+    @Override
+    public void changeStatuses(Map<Long, Order.Status> statuses) {
+        List<Order> orders = orderDao.findAll();
+        for (Order order : orders) {
+            Long id = order.getId();
+            orderDao.delete(id);
+            order.setStatus(statuses.get(id));
+            orderDao.save(order);
+        }
     }
 }

@@ -29,7 +29,6 @@
                 <a href="<s:url value='/order' />" class="btn aButton order" role="button">Order</a>
                 <c:url var="actionUrl" value="/cart"/>
                 <sf:form method="post" action="${actionUrl}" modelAttribute="updateCartItemsForm" >
-                <%--<form method="post" action="<s:url value='/cart' />">--%>
                     <table class="table table-striped table-bordered">
                         <tr>
                             <th>Model</th>
@@ -58,7 +57,6 @@
                     </table>
                     <button type="submit" class="btn update">Update</button>
                     <a href="<s:url value='/order' />" class="btn aButton order" role="button">Order</a>
-                <%--</form>--%>
                 </sf:form>
             </section>
         </div>

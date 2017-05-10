@@ -63,5 +63,8 @@ public class OrderTest {
 
         order.setAdditionalInfo("Lorem ipsum");
         assertEquals("Lorem ipsum", order.getAdditionalInfo());
+
+        order.setStatus(Order.Status.AWAITING);
+        assertEquals(Order.Status.AWAITING, order.getStatus());
     }
 }

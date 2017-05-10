@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.servlet.view.InternalResourceView;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
@@ -34,12 +36,19 @@ public class OrderListControllerTest {
         OrderListController controller = new OrderListController(orderService);
         when(orderService.findAll())
                 .thenReturn(expectedOrders);
-        mockMvc = standaloneSetup(controller).build();
+        mockMvc = standaloneSetup(controller)
+                .setSingleView(
+                        new InternalResourceView("/WEB-INF/views/orderList.jsp"))
+                .build();
     }
 
     @Test
     public void testProductListPage() throws Exception {
         mockMvc.perform(get("/"))
+                .andExpect(view().name("orderList"))
+                .andExpect(model().attributeExists("orderList"))
+                .andExpect(model().attribute("orderList", hasItems(expectedOrders.toArray())));
+        mockMvc.perform(post("/orderList"))
                 .andExpect(view().name("orderList"))
                 .andExpect(model().attributeExists("orderList"))
                 .andExpect(model().attribute("orderList", hasItems(expectedOrders.toArray())));

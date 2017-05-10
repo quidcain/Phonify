@@ -33,6 +33,7 @@ public class JdbcOrderDao implements OrderDao {
         order.setDeliveryAddress(rs.getString("deliveryAddress"));
         order.setContactPhoneNo(rs.getString("contactPhoneNo"));
         order.setAdditionalInfo(rs.getString("additionalInfo"));
+        order.setStatus(Order.Status.valueOf(rs.getString("status").toUpperCase()));
         return order;
     }
 
@@ -65,7 +66,7 @@ public class JdbcOrderDao implements OrderDao {
     public Order get(long id) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource("id", id);
         String query = "select " +
-                "O.id, O.subtotal, O.deliveryPrice, O.firstName, O.lastName, O.deliveryAddress, O.contactPhoneNo, O.additionalInfo, " +
+                "O.id, O.subtotal, O.deliveryPrice, O.firstName, O.lastName, O.deliveryAddress, O.contactPhoneNo, O.additionalInfo, O.status, " +
                 "I.id as iId, I.quantity, I.pId " +
                 "from Orders as O " +
                 "inner join OrderItems as I on I.oId=O.id " +
@@ -95,8 +96,9 @@ public class JdbcOrderDao implements OrderDao {
         parameterSource.addValue("deliveryAddress", order.getDeliveryAddress());
         parameterSource.addValue("contactPhoneNo", order.getContactPhoneNo());
         parameterSource.addValue("additionalInfo", order.getAdditionalInfo());
-        jdbcOperations.update("INSERT INTO Orders (subtotal, deliveryPrice, firstName, lastName, deliveryAddress, contactPhoneNo, additionalInfo) " +
-                "VALUES (:subtotal,  :deliveryPrice, :firstName, :lastName, :deliveryAddress, :contactPhoneNo, :additionalInfo);", parameterSource, keyHolder);
+        parameterSource.addValue("status", order.getStatus().toString().toLowerCase());
+        jdbcOperations.update("INSERT INTO Orders (subtotal, deliveryPrice, firstName, lastName, deliveryAddress, contactPhoneNo, additionalInfo, status) " +
+                "VALUES (:subtotal,  :deliveryPrice, :firstName, :lastName, :deliveryAddress, :contactPhoneNo, :additionalInfo, :status);", parameterSource, keyHolder);
         long id = keyHolder.getKey().longValue();
         order.setId(id);
         MapSqlParameterSource[] batchArgs = new MapSqlParameterSource[order.getOrderItems().size()];
@@ -127,7 +129,7 @@ public class JdbcOrderDao implements OrderDao {
     @Override
     public List<Order> findAll() {
         String query = "select " +
-                "O.id, O.subtotal, O.deliveryPrice, O.firstName, O.lastName, O.deliveryAddress, O.contactPhoneNo, O.additionalInfo, " +
+                "O.id, O.subtotal, O.deliveryPrice, O.firstName, O.lastName, O.deliveryAddress, O.contactPhoneNo, O.additionalInfo, O.status, " +
                 "I.id as iId, I.quantity, I.pId " +
                 "from Orders as O " +
                 "inner join OrderItems as I on I.oId=O.id";
