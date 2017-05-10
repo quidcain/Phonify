@@ -12,7 +12,7 @@ public class AddToCartFormTest {
     public void setterGetterTest() throws Throwable {
         addToCartForm.setId(4);
         assertEquals(4, addToCartForm.getId());
-        addToCartForm.setQuantity("4");
-        assertEquals("4", addToCartForm.getQuantity());
+        addToCartForm.setQuantity("4L");
+        assertEquals("4L", addToCartForm.getQuantity());
     }
 }

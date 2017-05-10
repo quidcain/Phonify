@@ -10,7 +10,7 @@ public class QuantityFormTest {
 
     @Test
     public void setterGetterTest() throws Throwable {
-        quantityForm.setQuantity("4");
-        assertEquals("4", quantityForm.getQuantity());
+        quantityForm.setQuantity(4L);
+        assertEquals(Long.valueOf(4), quantityForm.getQuantity());
     }
 }

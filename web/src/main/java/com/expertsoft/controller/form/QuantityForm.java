@@ -8,13 +8,13 @@ public class QuantityForm {
 
     @Max(value = 99, message = "{quantity.minmax}")
     @Min(value = 1, message = "{quantity.minmax}")
-    private String quantity;
+    private Long quantity;
 
-    public String getQuantity() {
+    public Long getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(Long quantity) {
         this.quantity = quantity;
     }
 }

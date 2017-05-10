@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.beans.PropertyEditorSupport;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,11 +46,25 @@ public class CartController {
             Map<Long, Long> items = new HashMap<>();
             for (Map.Entry<Long, QuantityForm> item : formItems.entrySet()) {
                 long phoneId = item.getKey();
-                long quantity = Long.parseLong(item.getValue().getQuantity());
+                long quantity = item.getValue().getQuantity();
                 items.put(phoneId, quantity);
             }
             cartService.updateCartItems(items);
         }
         return "cart";
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Long.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String s) {
+                try {
+                    setValue(Long.parseLong(s));
+                } catch (NumberFormatException e) {
+                    setValue(0);
+                }
+            }
+        });
     }
 }
